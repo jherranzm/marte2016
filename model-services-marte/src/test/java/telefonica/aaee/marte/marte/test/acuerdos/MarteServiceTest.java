@@ -1,4 +1,4 @@
-package telefonica.aaee.marte.test.acuerdos;
+package telefonica.aaee.marte.marte.test.acuerdos;
 
 import static org.junit.Assert.assertTrue;
 
@@ -12,15 +12,15 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import telefonica.aaee.marte.model.Acuerdo;
-import telefonica.aaee.marte.service.AcuerdoService;
-import telefonica.aaee.marte.test.config.JPAAcuerdosTestConfig;
-import telefonica.aaee.marte.test.config.ServicesTestConfig;
+import telefonica.aaee.marte.marte.dao.model.Acuerdo;
+import telefonica.aaee.marte.marte.dao.service.AcuerdoService;
+import telefonica.aaee.marte.marte.test.config.JPAMarteTestConfig;
+import telefonica.aaee.marte.marte.test.config.ServicesTestConfig;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes={ServicesTestConfig.class, JPAAcuerdosTestConfig.class})
+@ContextConfiguration(classes={ServicesTestConfig.class, JPAMarteTestConfig.class})
 @Transactional
-public class AcuerdoServiceTest {
+public class MarteServiceTest {
 
 	protected final Log logger = LogFactory.getLog(getClass());
 

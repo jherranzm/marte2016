@@ -1,4 +1,4 @@
-package telefonica.aaee.marte.service;
+package telefonica.aaee.marte.marte.dao.service;
 
 import java.util.List;
 
@@ -15,8 +15,8 @@ import org.springframework.data.jpa.repository.support.JpaMetamodelEntityInforma
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.stereotype.Service;
 
-import telefonica.aaee.marte.model.Acuerdo;
-import telefonica.aaee.marte.specifications.AcuerdoSpecifications;
+import telefonica.aaee.marte.marte.dao.model.Acuerdo;
+import telefonica.aaee.marte.marte.dao.specifications.AcuerdoSpecifications;
 
 @Service
 public class AcuerdoService extends GenericAcuerdosService {
@@ -54,7 +54,7 @@ public class AcuerdoService extends GenericAcuerdosService {
 	public Page<Acuerdo> findByCif(String cif, Integer pageNumber){
 		PageRequest request = new PageRequest(pageNumber - 1, PAGE_SIZE,
 				new Sort(
-						new Order(Direction.ASC, "fechaVigor")
+						new Order(Direction.ASC, "acuerdoNumero")
 						)
 		);
 		return repo.findAll(AcuerdoSpecifications.searchByCif(cif), request);
@@ -72,7 +72,7 @@ public class AcuerdoService extends GenericAcuerdosService {
 	public Page<Acuerdo> findByTipoAcuerdoActivos(String tipoAcuerdo, Integer pageNumber) {
 		PageRequest request = new PageRequest(pageNumber - 1, PAGE_SIZE,
 				new Sort(
-						new Order(Direction.ASC, "fechaVigor")
+						new Order(Direction.ASC, "acuerdoNumero")
 						)
 		);
 		return repo.findAll(AcuerdoSpecifications.searchByTipoAcuerdoActivos(tipoAcuerdo), request);
@@ -85,7 +85,7 @@ public class AcuerdoService extends GenericAcuerdosService {
 	public Page<Acuerdo> findByTipoAcuerdoNoActivos(String tipoAcuerdo, Integer pageNumber) {
 		PageRequest request = new PageRequest(pageNumber - 1, PAGE_SIZE,
 				new Sort(
-						new Order(Direction.ASC, "fechaVigor")
+						new Order(Direction.ASC, "acuerdoNumero")
 						)
 		);
 		return repo.findAll(AcuerdoSpecifications.searchByTipoAcuerdoNoActivos(tipoAcuerdo), request);
