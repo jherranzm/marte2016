@@ -63,10 +63,32 @@ public class AcuerdoService extends GenericAcuerdosService {
 	public Page<Acuerdo> findByCifActivos(String cif, Integer pageNumber) {
 		PageRequest request = new PageRequest(pageNumber - 1, PAGE_SIZE,
 				new Sort(
-						new Order(Direction.ASC, "fechaVigor")
+						new Order(Direction.DESC, "acuerdoNumero")
 						)
 		);
 		return repo.findAll(AcuerdoSpecifications.searchByCifActivos(cif), request);
+	}
+
+	public Page<Acuerdo> findByTipoAcuerdoActivos(String tipoAcuerdo, Integer pageNumber) {
+		PageRequest request = new PageRequest(pageNumber - 1, PAGE_SIZE,
+				new Sort(
+						new Order(Direction.ASC, "fechaVigor")
+						)
+		);
+		return repo.findAll(AcuerdoSpecifications.searchByTipoAcuerdoActivos(tipoAcuerdo), request);
+	}
+
+	public Acuerdo findByIDAcuerdo(String IDAcuerdo, int i) {
+		return repo.findOne(IDAcuerdo);
+	}
+
+	public Page<Acuerdo> findByTipoAcuerdoNoActivos(String tipoAcuerdo, Integer pageNumber) {
+		PageRequest request = new PageRequest(pageNumber - 1, PAGE_SIZE,
+				new Sort(
+						new Order(Direction.ASC, "fechaVigor")
+						)
+		);
+		return repo.findAll(AcuerdoSpecifications.searchByTipoAcuerdoNoActivos(tipoAcuerdo), request);
 	}
 	
 }

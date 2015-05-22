@@ -1,6 +1,7 @@
 package telefonica.aaee.marte.model;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -20,6 +21,8 @@ import javax.persistence.TemporalType;
 @Entity
 @Table(name="vacuerdos")
 public class Acuerdo implements Serializable {
+	
+	
 	private static final long serialVersionUID = 1L;
 
 	private String acuerdoNumero;
@@ -235,6 +238,8 @@ public class Acuerdo implements Serializable {
 
 	@Override
 	public String toString() {
+		SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd");
+
 		StringBuilder builder = new StringBuilder();
 		builder.append("Acuerdo [IDAcuerdo=");
 		builder.append(IDAcuerdo);
@@ -251,13 +256,13 @@ public class Acuerdo implements Serializable {
 		builder.append(", usuario=");
 		builder.append(usuario);
 		builder.append(", fechaVigor=");
-		builder.append(fechaVigor);
+		builder.append((fechaVigor != null ? sdf.format(fechaVigor) : ""));
 		builder.append(", baja=");
 		builder.append(baja);
 		builder.append(", descripcion=");
 		builder.append(descripcion);
 		builder.append(", fechaBaja=");
-		builder.append(fechaBaja);
+		builder.append((fechaBaja != null ? sdf.format(fechaBaja) : ""));
 		builder.append(", causaBaja=");
 		builder.append(causaBaja);
 		builder.append(", finalizado=");

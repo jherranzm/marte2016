@@ -45,4 +45,47 @@ public class AcuerdoSpecifications {
         };
 	}
 
+	public static Specification<Acuerdo> searchByTipoAcuerdoActivos(
+			final String tipoAcuerdo) {
+        return new Specification<Acuerdo>() {
+
+            public Predicate toPredicate(
+         		   Root<Acuerdo> root
+         		   , CriteriaQuery<?> criteriaQuery
+         		   , CriteriaBuilder criteriaBuilder)
+            {
+                return criteriaBuilder.and(
+                		criteriaBuilder.equal(
+                      		   root.<String>get("tipoAcuerdo")
+                      		   	, tipoAcuerdo )
+                      	, criteriaBuilder.equal(
+                       		   root.<Boolean>get("baja")
+                     		   	, false )
+                		);
+            }
+        };
+	}
+
+	public static Specification<Acuerdo> searchByTipoAcuerdoNoActivos(
+			final String tipoAcuerdo) {
+        return new Specification<Acuerdo>() {
+
+            public Predicate toPredicate(
+         		   Root<Acuerdo> root
+         		   , CriteriaQuery<?> criteriaQuery
+         		   , CriteriaBuilder criteriaBuilder)
+            {
+                return criteriaBuilder.and(
+                		criteriaBuilder.equal(
+                      		   root.<String>get("tipoAcuerdo")
+                      		   	, tipoAcuerdo )
+                      	, criteriaBuilder.equal(
+                       		   root.<Boolean>get("baja")
+                     		   	, true )
+                		);
+            }
+        };
+	}
+
+
 }

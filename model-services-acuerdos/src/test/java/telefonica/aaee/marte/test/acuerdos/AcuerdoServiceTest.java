@@ -46,6 +46,7 @@ public class AcuerdoServiceTest {
 		assertTrue(ret);
 		
 	}
+	
 	@Test
 	public void testAcuerdosPorCifSupraQueEstenActivos() {
 		
@@ -62,6 +63,75 @@ public class AcuerdoServiceTest {
 			logger.info(String.format("Acuerdo : [%s]", acuerdo.toString()));
 		}
 
+		assertTrue(ret);
+		
+	}
+	
+	@Test
+	public void testAcuerdosPorTipoAcuerdoActivos() {
+		
+		boolean ret = false;
+		
+		Page<Acuerdo> page = acuerdoService.findByTipoAcuerdoActivos("02", 1);
+		
+		int total = page.getContent().size();
+		logger.info(String.format("Número de acuerdos : [%d]", total));
+		
+		ret = total > 0;
+		
+		for(Acuerdo acuerdo : page.getContent()){
+			logger.info(String.format("Acuerdo : [%s]", acuerdo.toString()));
+		}
+
+		assertTrue(ret);
+		
+	}
+	
+	@Test
+	public void testAcuerdosPorTipoAcuerdoNOActivos() {
+		
+		boolean ret = false;
+		
+		Page<Acuerdo> page = acuerdoService.findByTipoAcuerdoNoActivos("02", 1);
+		
+		int total = page.getContent().size();
+		logger.info(String.format("Número de acuerdos : [%d]", total));
+		
+		ret = total > 0;
+		
+		for(Acuerdo acuerdo : page.getContent()){
+			logger.info(String.format("Acuerdo : [%s]", acuerdo.toString()));
+		}
+		
+		assertTrue(ret);
+		
+	}
+	
+	@Test
+	public void testAcuerdosPorIDAcuerdo() {
+		
+		boolean ret = false;
+		
+		Acuerdo acuerdo = acuerdoService.findByIDAcuerdo("T010028275", 1);
+		
+		ret = acuerdo!= null;
+		assertTrue(ret);
+		
+		if (ret) {
+			logger.info(String.format("Acuerdo : [%s]", acuerdo.toString()));
+		}
+		
+		
+	}
+	
+	@Test
+	public void testIDAcuerdoNoExiste() {
+		
+		boolean ret = false;
+		
+		Acuerdo acuerdo = acuerdoService.findByIDAcuerdo("T020028275", 1);
+		
+		ret = (acuerdo == null);
 		assertTrue(ret);
 		
 	}
