@@ -2,6 +2,10 @@ package telefonica.aaee.marte.acuerdos.test;
 
 import static org.junit.Assert.assertTrue;
 
+import java.util.List;
+
+import javax.persistence.Tuple;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.Test;
@@ -115,6 +119,42 @@ public class TramitacionAPITest {
 		}
 		
 		assertTrue(ret);
+		
+	}
+	
+	@Test
+	public void testGroupBy(){
+		boolean ret = false;
+		
+		List<Tuple> tupleResult = tramitacionAPIService.groupByEstadoTram();
+		
+		ret = (tupleResult.size() > 0);
+		
+		for (Tuple t : tupleResult) {
+			Integer id = (Integer) t.get(0);
+			Long num = (Long) t.get(1);
+		    logger.info(String.format("EstadoTram : [%d] : [%d]", id, num));
+		}
+		
+		assertTrue(ret);
+		
+		
+	}
+	
+	@Test
+	public void testTramitacionAPIGroupBy(){
+		boolean ret = false;
+		
+		List<TramitacionAPI> tupleResult = tramitacionAPIService.groupTramitacionAPIByEstadoTram();
+		
+		ret = (tupleResult.size() > 0);
+		
+		for (TramitacionAPI t : tupleResult) {
+		    logger.info(String.format("T : [%s]", t.toString()));
+		}
+		
+		assertTrue(ret);
+		
 		
 	}
 	

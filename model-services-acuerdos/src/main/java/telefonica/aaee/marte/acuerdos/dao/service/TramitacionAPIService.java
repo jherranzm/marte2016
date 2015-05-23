@@ -5,7 +5,13 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
+import javax.persistence.Tuple;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -21,6 +27,9 @@ import telefonica.aaee.marte.acuerdos.dao.specifications.TramitacionAPISpecifica
 
 @Service
 public class TramitacionAPIService extends GenericAcuerdosService {
+
+	protected final Log logger = LogFactory.getLog(getClass());
+
 	private SimpleJpaRepository<TramitacionAPI, Long> repo;
 
 	public TramitacionAPIService() {
@@ -97,5 +106,33 @@ public class TramitacionAPIService extends GenericAcuerdosService {
 		return repo.findAll(TramitacionAPISpecifications.searchByEstadoTram(estadoTram), request);
 	}
 	
+	public List<Tuple> groupByEstadoTram(){
+		CriteriaBuilder builder = em.getCriteriaBuilder();
+		CriteriaQuery<Tuple> cq = builder.createTupleQuery();
+		Root<TramitacionAPI> root = cq.from(TramitacionAPI.class);
+		
+		cq.multiselect(root.get("estadoTram"), builder.count(root.get("id")));  //using metamodel
+		cq.groupBy(root.get("estadoTram"));
+		List<Tuple> tupleResult = em.createQuery(cq).getResultList();
+		for (Tuple t : tupleResult) {
+			Integer id = (Integer) t.get(0);
+			Long num = (Long) t.get(1);
+		    logger.info(String.format("EstadoTram : [%d] : [%d]", id, num));
+		}
+		return tupleResult;
+	}
+	
+	public List<TramitacionAPI> groupTramitacionAPIByEstadoTram(){
+		CriteriaBuilder builder = em.getCriteriaBuilder();
+		CriteriaQuery<TramitacionAPI> cq = builder.createQuery(TramitacionAPI.class);
+		Root<TramitacionAPI> root = cq.from(TramitacionAPI.class);
+		cq.multiselect(root.get("estadoTram"));  //using metamodel
+		cq.groupBy(root.get("estadoTram"));
+		List<TramitacionAPI> tupleResult = em.createQuery(cq).getResultList();
+		for (TramitacionAPI t : tupleResult) {
+		    logger.info(String.format("T : [%s]", t.toString()));
+		}
+		return tupleResult;
+	}
 
 }
