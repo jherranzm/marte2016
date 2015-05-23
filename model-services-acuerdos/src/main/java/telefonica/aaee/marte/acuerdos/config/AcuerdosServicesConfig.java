@@ -1,12 +1,11 @@
-package telefonica.aaee.marte.config;
+package telefonica.aaee.marte.acuerdos.config;
 
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @ComponentScan(value ={
-		"telefonica.aaee.marte.repository",
-		"telefonica.aaee.marte.service",
-		"telefonica.aaee.marte.model"
+		"telefonica.aaee.marte.acuerdos.service",
+		"telefonica.aaee.marte.acuerdos.model"
 		})
 public class AcuerdosServicesConfig{ }

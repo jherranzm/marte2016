@@ -1,4 +1,4 @@
-package telefonica.aaee.marte.config;
+package telefonica.aaee.marte.acuerdos.test.config;
 
 import java.util.Properties;
 
@@ -20,19 +20,16 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.EclipseLinkJpaVendorAdapter;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import telefonica.aaee.util.Constantes;
-
-@Configuration //Specifies the class as configuration
+@Configuration 
 @EnableTransactionManagement
 @EnableJpaRepositories(
         entityManagerFactoryRef = "acuerdosEntityManagerFactory", 
         transactionManagerRef = "acuerdosTransactionManager",
-        basePackages = {"telefonica.aaee.dao.acuerdos"}
+        basePackages = {"telefonica.aaee.marte.acuerdos.dao"}
         )
-@ComponentScan("telefonica.aaee.dao.acuerdos") //Specifies which package to scan
-@PropertySource("file:${catalina.home}/conf/application.properties")
-public class JPAAcuerdosConfig 
-	{
+@ComponentScan("telefonica.aaee.marte.acuerdos.dao") //Specifies which package to scan
+@PropertySource("file:/usr/local/apache-tomcat-7.0.53/conf/application.properties")
+public class JPAAcuerdosTestConfig {
 
 	protected final Log logger = LogFactory.getLog(getClass());
 	
@@ -53,8 +50,8 @@ public class JPAAcuerdosConfig
 	      dataSource.setUsername( environment.getRequiredProperty(USERNAME) );
 	      dataSource.setPassword( environment.getRequiredProperty(PASSWORD) );
 	      
-	      
 	      logger.info("***** acuerdosDataSource!");
+	        
 	      return dataSource;
 	   }
 
@@ -64,9 +61,13 @@ public class JPAAcuerdosConfig
         LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
 
         em.setDataSource(dataSource());
-        em.setPackagesToScan("telefonica.aaee.dao.acuerdos");
+        em.setPackagesToScan(
+        		"telefonica.aaee.marte.acuerdos.dao.model"
+        		, "telefonica.aaee.marte.acuerdos.dao.service"
+        		, "telefonica.aaee.marte.acuerdos.dao.specifications"
+        		);
         em.setJpaProperties(additionalProperties());
-        em.setPersistenceUnitName(Constantes.JPAAcuerdosPU);
+        em.setPersistenceUnitName("JPAAcuerdosPU");
         
         JpaVendorAdapter vendorAdapter = new EclipseLinkJpaVendorAdapter();
         em.setJpaVendorAdapter(vendorAdapter);
@@ -97,4 +98,5 @@ public class JPAAcuerdosConfig
            }
         };
      }
+
 }

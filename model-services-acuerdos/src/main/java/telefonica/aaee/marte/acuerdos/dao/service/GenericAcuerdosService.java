@@ -1,4 +1,4 @@
-package telefonica.aaee.marte.service;
+package telefonica.aaee.marte.acuerdos.dao.service;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -13,6 +13,6 @@ public class GenericAcuerdosService {
 	@Qualifier(value = "acuerdosEntityManagerFactory")
 	protected EntityManager em;
 	
-	public final Integer PAGE_SIZE = 50;
+	public final Integer PAGE_SIZE = 10;
 
 }
