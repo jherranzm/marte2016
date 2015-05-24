@@ -75,6 +75,28 @@ public class TramitacionAPISpecifications {
         };
 	}
 
+	public static Specification<TramitacionAPI> searchByFechaTramitacionPrevista(
+			final Date inicioPeriodo
+			, final Date finalPeriodo) {
+        return new Specification<TramitacionAPI>() {
+
+            public Predicate toPredicate(
+         		   Root<TramitacionAPI> root
+         		   , CriteriaQuery<?> criteriaQuery
+         		   , CriteriaBuilder criteriaBuilder)
+            {
+            	Predicate mayorOIgualQue = criteriaBuilder.greaterThanOrEqualTo(
+              		   root.<Date>get("fechaTramPrevista")
+            		   	, inicioPeriodo );
+            	Predicate menorOIgualQue = criteriaBuilder.lessThanOrEqualTo(
+            			root.<Date>get("fechaTramPrevista")
+            			, finalPeriodo );
+            	
+                return criteriaBuilder.and(mayorOIgualQue, menorOIgualQue);
+            }
+        };
+	}
+
 	public static Specification<TramitacionAPI> searchByEstadoTram(
 			final int estadoTram) {
         return new Specification<TramitacionAPI>() {

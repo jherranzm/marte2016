@@ -8,6 +8,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.Tuple;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Root;
 
 import org.apache.commons.logging.Log;
@@ -23,6 +24,7 @@ import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.stereotype.Service;
 
 import telefonica.aaee.marte.acuerdos.dao.model.TramitacionAPI;
+import telefonica.aaee.marte.acuerdos.dao.model.YearMonthEstatusVO;
 import telefonica.aaee.marte.acuerdos.dao.specifications.TramitacionAPISpecifications;
 
 @Service
@@ -96,6 +98,19 @@ public class TramitacionAPIService extends GenericAcuerdosService {
 		);
 		return repo.findAll(TramitacionAPISpecifications.searchByFechaTramitacionPrevista(fechaTramitacionPrevista), request);
 	}
+	
+	public Page<TramitacionAPI> findByFechaTramitacionPrevista(
+				Date inicioPeriodo
+				, Date finPeriodo
+				, Integer pageNumber) {
+		PageRequest request = new PageRequest(pageNumber - 1, PAGE_SIZE,
+				new Sort(
+						new Order(Direction.ASC, "id")
+						)
+				);
+		return repo.findAll(TramitacionAPISpecifications
+				.searchByFechaTramitacionPrevista(inicioPeriodo, finPeriodo), request);
+	}
 
 	public Page<TramitacionAPI> findByEstadoTram(int estadoTram, Integer pageNumber) {
 		PageRequest request = new PageRequest(pageNumber - 1, PAGE_SIZE,
@@ -122,17 +137,57 @@ public class TramitacionAPIService extends GenericAcuerdosService {
 		return tupleResult;
 	}
 	
-	public List<TramitacionAPI> groupTramitacionAPIByEstadoTram(){
+	
+	public List<YearMonthEstatusVO> groupByMesTramitacionPrevista(){
+		
 		CriteriaBuilder builder = em.getCriteriaBuilder();
-		CriteriaQuery<TramitacionAPI> cq = builder.createQuery(TramitacionAPI.class);
+		CriteriaQuery<YearMonthEstatusVO> cq = builder.createQuery(YearMonthEstatusVO.class);
 		Root<TramitacionAPI> root = cq.from(TramitacionAPI.class);
-		cq.multiselect(root.get("estadoTram"));  //using metamodel
-		cq.groupBy(root.get("estadoTram"));
-		List<TramitacionAPI> tupleResult = em.createQuery(cq).getResultList();
-		for (TramitacionAPI t : tupleResult) {
-		    logger.info(String.format("T : [%s]", t.toString()));
-		}
+		
+		Expression<Integer> year = builder.function("year", Integer.class, root.get("fechaTramPrevista"));
+		Expression<Integer> month = builder.function("month", Integer.class, root.get("fechaTramPrevista"));
+		
+		Expression<Boolean> estaPendiente = builder.equal(root.<Integer>get("estadoTram"), 0);
+		Expression<Boolean> estaRechazada = builder.equal(root.<Integer>get("estadoTram"), 2);
+		Expression<Boolean> estaTramitada = builder.or(
+				builder.equal(root.<Integer>get("estadoTram"), 1)
+				, builder.equal(root.<Integer>get("estadoTram"), 3));
+		Expression<Integer> exp0 = builder.literal(0);
+		Expression<Integer> exp1 = builder.literal(1);
+		
+		Expression<Integer> pendiente = builder.function("if", Integer.class
+				, estaPendiente, exp1, exp0 );
+		Expression<Integer> rechazada = builder.function("if", Integer.class
+				, estaRechazada, exp1, exp0 );
+		Expression<Integer> tramitada = builder.function("if", Integer.class
+				, estaTramitada, exp1, exp0 );
+		
+		Expression<Long> totalPorAnioMes = builder.count(root.get("id"));
+		Expression<Long> totalPendientes = builder.sumAsLong(pendiente);
+		Expression<Long> totalRechazadas = builder.sumAsLong(rechazada);
+		Expression<Long> totalTramitadas = builder.sumAsLong(tramitada);
+		
+		cq.multiselect(year, month
+					, totalPorAnioMes
+					, totalPendientes, totalRechazadas, totalTramitadas);  
+		
+		cq.groupBy(year, month);
+		
+//		List<Tuple> tupleResult = em.createQuery(cq).getResultList();
+//		for (Tuple t : tupleResult) {
+//			Integer resYear = (Integer) t.get(0);
+//			Integer resMonth = (Integer) t.get(1);
+//			Long num = (Long) t.get(2);
+//			Long pendientes = (Long) t.get(3);
+//			Long rechazadas = (Long) t.get(4);
+//			Long tramitadas = (Long) t.get(5);
+//			logger.info(String.format("fechaTramPrevista : [%d][%d] : [%d][%d][%d][%d]", resYear, resMonth, num, pendientes, rechazadas, tramitadas));
+//		}
+		
+		List<YearMonthEstatusVO> tupleResult = em.createQuery(cq).getResultList();
+		
+		
 		return tupleResult;
 	}
-
+	
 }

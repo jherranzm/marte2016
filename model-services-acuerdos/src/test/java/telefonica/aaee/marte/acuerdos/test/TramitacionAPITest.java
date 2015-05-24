@@ -2,6 +2,8 @@ package telefonica.aaee.marte.acuerdos.test;
 
 import static org.junit.Assert.assertTrue;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Tuple;
@@ -17,6 +19,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import telefonica.aaee.marte.acuerdos.dao.model.TramitacionAPI;
+import telefonica.aaee.marte.acuerdos.dao.model.YearMonthEstatusVO;
 import telefonica.aaee.marte.acuerdos.dao.service.TramitacionAPIService;
 import telefonica.aaee.marte.acuerdos.test.config.JPAAcuerdosTestConfig;
 import telefonica.aaee.marte.acuerdos.test.config.ServicesTestConfig;
@@ -140,18 +143,53 @@ public class TramitacionAPITest {
 		
 		
 	}
-	
 	@Test
-	public void testTramitacionAPIGroupBy(){
+	public void testGroupByFechaTramitacionPrevista(){
 		boolean ret = false;
 		
-		List<TramitacionAPI> tupleResult = tramitacionAPIService.groupTramitacionAPIByEstadoTram();
+		List<YearMonthEstatusVO> tupleResult = tramitacionAPIService.groupByMesTramitacionPrevista();
 		
 		ret = (tupleResult.size() > 0);
 		
-		for (TramitacionAPI t : tupleResult) {
-		    logger.info(String.format("T : [%s]", t.toString()));
+		for(YearMonthEstatusVO res : tupleResult){
+		    logger.info(String.format("Estadísticas : [%s]", res.toString()));
 		}
+
+		assertTrue(ret);
+		
+		
+	}
+	
+	
+	@Test
+	public void testTramitacionPrevista(){
+		boolean ret = false;
+		
+		Calendar cal = Calendar.getInstance();
+		cal.set(Calendar.YEAR, 2015);
+//		cal.set(Calendar.MONTH, 4); //Mayo! 0,Enero; 1, Febrero
+		cal.set(Calendar.MONTH, 3); //Mayo! 0,Enero; 1, Febrero
+		cal.set(Calendar.DAY_OF_MONTH, 1);
+		cal.set(Calendar.HOUR, 0);
+		cal.set(Calendar.MINUTE, 0);
+		cal.set(Calendar.SECOND, 0);
+		
+		Date fechaInicio = cal.getTime();
+		cal.set(Calendar.DAY_OF_MONTH, 31);
+		Date fechaFin = cal.getTime();
+		
+		Page<TramitacionAPI> page = tramitacionAPIService.findByFechaTramitacionPrevista(
+				fechaInicio, fechaFin, 1);
+		
+		ret = (page.getContent().size() > 0);
+		
+		logger.info(String.format("Número de elementos en la página : [%d]", page.getContent().size()));
+		logger.info(String.format("Número de páginas                : [%d]", page.getTotalPages()));
+		logger.info(String.format("Número de elementos totales      : [%d]", page.getTotalElements()));
+
+		//		for (TramitacionAPI t : page) {
+//			logger.info(String.format("T : [%s]", t.toString()));
+//		}
 		
 		assertTrue(ret);
 		
