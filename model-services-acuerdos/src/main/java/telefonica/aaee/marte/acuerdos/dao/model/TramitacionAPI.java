@@ -1,5 +1,6 @@
 package telefonica.aaee.marte.acuerdos.dao.model;
 
+
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
