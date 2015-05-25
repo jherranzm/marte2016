@@ -18,7 +18,10 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import telefonica.aaee.marte.acuerdos.dao.model.EstadoTramitacion;
 import telefonica.aaee.marte.acuerdos.dao.model.TramitacionAPI;
+import telefonica.aaee.marte.acuerdos.dao.service.CodAPIService;
+import telefonica.aaee.marte.acuerdos.dao.service.EstadoTramitacionService;
 import telefonica.aaee.marte.acuerdos.dao.service.TramitacionAPIService;
 import telefonica.aaee.marte.acuerdos.dao.vo.YearMonthEstatusVO;
 import telefonica.aaee.marte.acuerdos.test.config.JPAAcuerdosTestConfig;
@@ -32,7 +35,13 @@ public class TramitacionAPITest {
 	protected final Log logger = LogFactory.getLog(getClass());
 
 	@Autowired
+	private CodAPIService codAPIService;
+	
+	@Autowired
 	private TramitacionAPIService tramitacionAPIService;
+	
+	@Autowired
+	private EstadoTramitacionService estadoTramitacionService;
 
 	@Test
 	public void testAcuerdosFindByCif() {
@@ -108,7 +117,9 @@ public class TramitacionAPITest {
 		
 		boolean ret = false;
 		
-		Page<TramitacionAPI> page = tramitacionAPIService.findByEstadoTram(2, 1);
+		EstadoTramitacion et = estadoTramitacionService.findById(2L);
+		
+		Page<TramitacionAPI> page = tramitacionAPIService.findByEstadoTram(et, 1);
 		
 		int total = page.getContent().size();
 		logger.info(String.format("Número de elementos en la página : [%d]", total));
@@ -134,7 +145,7 @@ public class TramitacionAPITest {
 		ret = (tupleResult.size() > 0);
 		
 		for (Tuple t : tupleResult) {
-			Integer id = (Integer) t.get(0);
+			Long id = (Long) t.get(0);
 			Long num = (Long) t.get(1);
 		    logger.info(String.format("EstadoTram : [%d] : [%d]", id, num));
 		}
@@ -243,6 +254,31 @@ public class TramitacionAPITest {
 //						));
 //			}
 //		}
+		
+		assertTrue(ret);
+		
+	}
+
+	@Test
+	public void testAcuerdosBajaTramitada() {
+		
+		boolean ret = false;
+		
+		EstadoTramitacion et = estadoTramitacionService.findById(1L);
+		String tipoPeticion = "Baja";
+		
+		Page<TramitacionAPI> page = tramitacionAPIService.findByTipoPeticionEstadoTram(tipoPeticion, et, 1);
+		
+		int total = page.getContent().size();
+		logger.info(String.format("Número de elementos en la página : [%d]", total));
+		logger.info(String.format("Número de páginas                : [%d]", page.getTotalPages()));
+		logger.info(String.format("Número de elementos totales      : [%d]", page.getTotalElements()));
+		
+		ret = total > 0;
+		
+		for(TramitacionAPI tramitacion : page.getContent()){
+			logger.info(String.format("TramitacionAPI : [%s]", tramitacion.toString()));
+		}
 		
 		assertTrue(ret);
 		

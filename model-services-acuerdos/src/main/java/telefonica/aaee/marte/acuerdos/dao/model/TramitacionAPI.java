@@ -10,7 +10,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -88,7 +90,10 @@ public class TramitacionAPI implements Serializable {
 	@Column(name="E_Mail")
 	private String email;
 
-	private int estadoTram;
+	//bi-directional many-to-one association to EstadoTramitacion
+	@ManyToOne
+	@JoinColumn(name="EstadoTram")
+	private EstadoTramitacion marteEstadoTramitacion;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="FECHA_CORREO")
@@ -109,8 +114,10 @@ public class TramitacionAPI implements Serializable {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date finVigencia;
 
-	@Column(name="id_motivo_baja_MARTE")
-	private int idMotivoBajaMarte;
+	//bi-directional many-to-one association to MarteMotivosBaja
+	@ManyToOne
+	@JoinColumn(name="id_motivo_baja_MARTE")
+	private MotivoBaja motivoBajaMARTE;
 
 	private String idAcuerdo;
 
@@ -156,6 +163,14 @@ public class TramitacionAPI implements Serializable {
 	private String tramitar;
 
 	private String usuarioGAE;
+
+	public MotivoBaja getMotivoBajaMARTE() {
+		return motivoBajaMARTE;
+	}
+
+	public void setMotivoBajaMARTE(MotivoBaja motivoBajaMARTE) {
+		this.motivoBajaMARTE = motivoBajaMARTE;
+	}
 
 	public TramitacionAPI() {
 	}
@@ -344,13 +359,6 @@ public class TramitacionAPI implements Serializable {
 		this.email = email;
 	}
 
-	public int getEstadoTram() {
-		return this.estadoTram;
-	}
-
-	public void setEstadoTram(int estadoTram) {
-		this.estadoTram = estadoTram;
-	}
 
 	public Date getFechaCorreo() {
 		return this.fechaCorreo;
@@ -398,14 +406,6 @@ public class TramitacionAPI implements Serializable {
 
 	public void setFinVigencia(Date finVigencia) {
 		this.finVigencia = finVigencia;
-	}
-
-	public int getIdMotivoBajaMarte() {
-		return this.idMotivoBajaMarte;
-	}
-
-	public void setIdMotivoBajaMarte(int idMotivoBajaMarte) {
-		this.idMotivoBajaMarte = idMotivoBajaMarte;
 	}
 
 	public String getIdAcuerdo() {
@@ -560,338 +560,15 @@ public class TramitacionAPI implements Serializable {
 		this.usuarioGAE = usuarioGAE;
 	}
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result
-				+ ((acuerdoNumero == null) ? 0 : acuerdoNumero.hashCode());
-		result = prime * result
-				+ ((autorizacion == null) ? 0 : autorizacion.hashCode());
-		result = prime * result
-				+ ((bajaCliente == null) ? 0 : bajaCliente.hashCode());
-		result = prime
-				* result
-				+ ((cambioImporteTemporal == null) ? 0 : cambioImporteTemporal
-						.hashCode());
-		result = prime * result
-				+ ((cargaGAE == null) ? 0 : cargaGAE.hashCode());
-		result = prime * result + ((ccc == null) ? 0 : ccc.hashCode());
-		result = prime * result
-				+ ((cccAnteriror == null) ? 0 : cccAnteriror.hashCode());
-		result = prime * result + ((cif == null) ? 0 : cif.hashCode());
-		result = prime * result + ((codAPI == null) ? 0 : codAPI.hashCode());
-		result = prime * result
-				+ ((codAPIOrig == null) ? 0 : codAPIOrig.hashCode());
-		result = prime * result + descuentoPlanaMT;
-		result = prime * result + descuentoPlanaMTAnterior;
-		result = prime * result + descuentoPlanaNM;
-		result = prime * result + descuentoPlanaNMAnterior;
-		result = prime
-				* result
-				+ ((direccionAnterior == null) ? 0 : direccionAnterior
-						.hashCode());
-		result = prime * result + ((email == null) ? 0 : email.hashCode());
-		result = prime * result
-				+ ((envioCorreo == null) ? 0 : envioCorreo.hashCode());
-		result = prime * result + estadoTram;
-		result = prime * result
-				+ ((fechaCorreo == null) ? 0 : fechaCorreo.hashCode());
-		result = prime * result
-				+ ((fechaGAE == null) ? 0 : fechaGAE.hashCode());
-		result = prime * result
-				+ ((fechaPeticion == null) ? 0 : fechaPeticion.hashCode());
-		result = prime * result
-				+ ((fechaTramAPI == null) ? 0 : fechaTramAPI.hashCode());
-		result = prime
-				* result
-				+ ((fechaTramPrevista == null) ? 0 : fechaTramPrevista
-						.hashCode());
-		result = prime * result
-				+ ((finVigencia == null) ? 0 : finVigencia.hashCode());
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result
-				+ ((idAcuerdo == null) ? 0 : idAcuerdo.hashCode());
-		result = prime * result + idMotivoBajaMarte;
-		result = prime * result + idTareaGAE;
-		long temp;
-		temp = Double.doubleToLongBits(importeFijoMT);
-		result = prime * result + (int) (temp ^ (temp >>> 32));
-		temp = Double.doubleToLongBits(importeFijoMTAnterior);
-		result = prime * result + (int) (temp ^ (temp >>> 32));
-		temp = Double.doubleToLongBits(importeFijoNM);
-		result = prime * result + (int) (temp ^ (temp >>> 32));
-		temp = Double.doubleToLongBits(importeFijoNMAnterior);
-		result = prime * result + (int) (temp ^ (temp >>> 32));
-		result = prime * result
-				+ ((matComercial == null) ? 0 : matComercial.hashCode());
-		result = prime * result
-				+ ((matJArea == null) ? 0 : matJArea.hashCode());
-		result = prime * result
-				+ ((matPeticionario == null) ? 0 : matPeticionario.hashCode());
-		result = prime * result + motivoBaja;
-		result = prime * result + ((nombre == null) ? 0 : nombre.hashCode());
-		result = prime * result
-				+ ((observaciones == null) ? 0 : observaciones.hashCode());
-		result = prime * result
-				+ ((operadora == null) ? 0 : operadora.hashCode());
-		result = prime
-				* result
-				+ ((peticionTramitacion == null) ? 0 : peticionTramitacion
-						.hashCode());
-		result = prime
-				* result
-				+ ((planaAutoajustable == null) ? 0 : planaAutoajustable
-						.hashCode());
-		result = prime * result
-				+ ((respuesta == null) ? 0 : respuesta.hashCode());
-		result = prime * result
-				+ ((soporteAnterior == null) ? 0 : soporteAnterior.hashCode());
-		result = prime * result
-				+ ((territorio == null) ? 0 : territorio.hashCode());
-		result = prime * result + ((tipoDoc == null) ? 0 : tipoDoc.hashCode());
-		result = prime * result
-				+ ((tipoPlanas == null) ? 0 : tipoPlanas.hashCode());
-		result = prime * result
-				+ ((tipoSoporte == null) ? 0 : tipoSoporte.hashCode());
-		result = prime * result + ((trabajo == null) ? 0 : trabajo.hashCode());
-		result = prime * result
-				+ ((tramitar == null) ? 0 : tramitar.hashCode());
-		result = prime * result
-				+ ((usuarioGAE == null) ? 0 : usuarioGAE.hashCode());
-		return result;
+	public EstadoTramitacion getMarteEstadoTramitacion() {
+		return this.marteEstadoTramitacion;
 	}
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		TramitacionAPI other = (TramitacionAPI) obj;
-		if (acuerdoNumero == null) {
-			if (other.acuerdoNumero != null)
-				return false;
-		} else if (!acuerdoNumero.equals(other.acuerdoNumero))
-			return false;
-		if (autorizacion == null) {
-			if (other.autorizacion != null)
-				return false;
-		} else if (!autorizacion.equals(other.autorizacion))
-			return false;
-		if (bajaCliente == null) {
-			if (other.bajaCliente != null)
-				return false;
-		} else if (!bajaCliente.equals(other.bajaCliente))
-			return false;
-		if (cambioImporteTemporal == null) {
-			if (other.cambioImporteTemporal != null)
-				return false;
-		} else if (!cambioImporteTemporal.equals(other.cambioImporteTemporal))
-			return false;
-		if (cargaGAE == null) {
-			if (other.cargaGAE != null)
-				return false;
-		} else if (!cargaGAE.equals(other.cargaGAE))
-			return false;
-		if (ccc == null) {
-			if (other.ccc != null)
-				return false;
-		} else if (!ccc.equals(other.ccc))
-			return false;
-		if (cccAnteriror == null) {
-			if (other.cccAnteriror != null)
-				return false;
-		} else if (!cccAnteriror.equals(other.cccAnteriror))
-			return false;
-		if (cif == null) {
-			if (other.cif != null)
-				return false;
-		} else if (!cif.equals(other.cif))
-			return false;
-		if (codAPI == null) {
-			if (other.codAPI != null)
-				return false;
-		} else if (!codAPI.equals(other.codAPI))
-			return false;
-		if (codAPIOrig == null) {
-			if (other.codAPIOrig != null)
-				return false;
-		} else if (!codAPIOrig.equals(other.codAPIOrig))
-			return false;
-		if (descuentoPlanaMT != other.descuentoPlanaMT)
-			return false;
-		if (descuentoPlanaMTAnterior != other.descuentoPlanaMTAnterior)
-			return false;
-		if (descuentoPlanaNM != other.descuentoPlanaNM)
-			return false;
-		if (descuentoPlanaNMAnterior != other.descuentoPlanaNMAnterior)
-			return false;
-		if (direccionAnterior == null) {
-			if (other.direccionAnterior != null)
-				return false;
-		} else if (!direccionAnterior.equals(other.direccionAnterior))
-			return false;
-		if (email == null) {
-			if (other.email != null)
-				return false;
-		} else if (!email.equals(other.email))
-			return false;
-		if (envioCorreo == null) {
-			if (other.envioCorreo != null)
-				return false;
-		} else if (!envioCorreo.equals(other.envioCorreo))
-			return false;
-		if (estadoTram != other.estadoTram)
-			return false;
-		if (fechaCorreo == null) {
-			if (other.fechaCorreo != null)
-				return false;
-		} else if (!fechaCorreo.equals(other.fechaCorreo))
-			return false;
-		if (fechaGAE == null) {
-			if (other.fechaGAE != null)
-				return false;
-		} else if (!fechaGAE.equals(other.fechaGAE))
-			return false;
-		if (fechaPeticion == null) {
-			if (other.fechaPeticion != null)
-				return false;
-		} else if (!fechaPeticion.equals(other.fechaPeticion))
-			return false;
-		if (fechaTramAPI == null) {
-			if (other.fechaTramAPI != null)
-				return false;
-		} else if (!fechaTramAPI.equals(other.fechaTramAPI))
-			return false;
-		if (fechaTramPrevista == null) {
-			if (other.fechaTramPrevista != null)
-				return false;
-		} else if (!fechaTramPrevista.equals(other.fechaTramPrevista))
-			return false;
-		if (finVigencia == null) {
-			if (other.finVigencia != null)
-				return false;
-		} else if (!finVigencia.equals(other.finVigencia))
-			return false;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		if (idAcuerdo == null) {
-			if (other.idAcuerdo != null)
-				return false;
-		} else if (!idAcuerdo.equals(other.idAcuerdo))
-			return false;
-		if (idMotivoBajaMarte != other.idMotivoBajaMarte)
-			return false;
-		if (idTareaGAE != other.idTareaGAE)
-			return false;
-		if (Double.doubleToLongBits(importeFijoMT) != Double
-				.doubleToLongBits(other.importeFijoMT))
-			return false;
-		if (Double.doubleToLongBits(importeFijoMTAnterior) != Double
-				.doubleToLongBits(other.importeFijoMTAnterior))
-			return false;
-		if (Double.doubleToLongBits(importeFijoNM) != Double
-				.doubleToLongBits(other.importeFijoNM))
-			return false;
-		if (Double.doubleToLongBits(importeFijoNMAnterior) != Double
-				.doubleToLongBits(other.importeFijoNMAnterior))
-			return false;
-		if (matComercial == null) {
-			if (other.matComercial != null)
-				return false;
-		} else if (!matComercial.equals(other.matComercial))
-			return false;
-		if (matJArea == null) {
-			if (other.matJArea != null)
-				return false;
-		} else if (!matJArea.equals(other.matJArea))
-			return false;
-		if (matPeticionario == null) {
-			if (other.matPeticionario != null)
-				return false;
-		} else if (!matPeticionario.equals(other.matPeticionario))
-			return false;
-		if (motivoBaja != other.motivoBaja)
-			return false;
-		if (nombre == null) {
-			if (other.nombre != null)
-				return false;
-		} else if (!nombre.equals(other.nombre))
-			return false;
-		if (observaciones == null) {
-			if (other.observaciones != null)
-				return false;
-		} else if (!observaciones.equals(other.observaciones))
-			return false;
-		if (operadora == null) {
-			if (other.operadora != null)
-				return false;
-		} else if (!operadora.equals(other.operadora))
-			return false;
-		if (peticionTramitacion == null) {
-			if (other.peticionTramitacion != null)
-				return false;
-		} else if (!peticionTramitacion.equals(other.peticionTramitacion))
-			return false;
-		if (planaAutoajustable == null) {
-			if (other.planaAutoajustable != null)
-				return false;
-		} else if (!planaAutoajustable.equals(other.planaAutoajustable))
-			return false;
-		if (respuesta == null) {
-			if (other.respuesta != null)
-				return false;
-		} else if (!respuesta.equals(other.respuesta))
-			return false;
-		if (soporteAnterior == null) {
-			if (other.soporteAnterior != null)
-				return false;
-		} else if (!soporteAnterior.equals(other.soporteAnterior))
-			return false;
-		if (territorio == null) {
-			if (other.territorio != null)
-				return false;
-		} else if (!territorio.equals(other.territorio))
-			return false;
-		if (tipoDoc == null) {
-			if (other.tipoDoc != null)
-				return false;
-		} else if (!tipoDoc.equals(other.tipoDoc))
-			return false;
-		if (tipoPlanas == null) {
-			if (other.tipoPlanas != null)
-				return false;
-		} else if (!tipoPlanas.equals(other.tipoPlanas))
-			return false;
-		if (tipoSoporte == null) {
-			if (other.tipoSoporte != null)
-				return false;
-		} else if (!tipoSoporte.equals(other.tipoSoporte))
-			return false;
-		if (trabajo == null) {
-			if (other.trabajo != null)
-				return false;
-		} else if (!trabajo.equals(other.trabajo))
-			return false;
-		if (tramitar == null) {
-			if (other.tramitar != null)
-				return false;
-		} else if (!tramitar.equals(other.tramitar))
-			return false;
-		if (usuarioGAE == null) {
-			if (other.usuarioGAE != null)
-				return false;
-		} else if (!usuarioGAE.equals(other.usuarioGAE))
-			return false;
-		return true;
+	public void setMarteEstadoTramitacion(EstadoTramitacion marteEstadoTramitacion) {
+		this.marteEstadoTramitacion = marteEstadoTramitacion;
 	}
 
+	
 	@Override
 	public String toString() {
 		
@@ -945,7 +622,7 @@ public class TramitacionAPI implements Serializable {
 		builder.append(", email=");
 		builder.append(email);
 		builder.append(", estadoTram=");
-		builder.append(estadoTram);
+		builder.append(marteEstadoTramitacion);
 		builder.append(", fechaPeticion=");
 		builder.append(sdf.format(fechaPeticion));
 		builder.append(", fechaTramPrevista=");
@@ -970,8 +647,8 @@ public class TramitacionAPI implements Serializable {
 		builder.append(matPeticionario);
 		builder.append(", motivoBaja=");
 		builder.append(motivoBaja);
-		builder.append(", idMotivoBajaMarte=");
-		builder.append(idMotivoBajaMarte);
+		builder.append(", motivoBajaMARTE=");
+		builder.append(motivoBajaMARTE);
 		builder.append(", nombre=");
 		builder.append(nombre);
 		builder.append(", observaciones=");

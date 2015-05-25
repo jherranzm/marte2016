@@ -30,6 +30,7 @@ import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.stereotype.Service;
 
 import telefonica.aaee.marte.acuerdos.dao.model.CodAPI;
+import telefonica.aaee.marte.acuerdos.dao.model.EstadoTramitacion;
 import telefonica.aaee.marte.acuerdos.dao.model.TramitacionAPI;
 import telefonica.aaee.marte.acuerdos.dao.specifications.TramitacionAPISpecifications;
 import telefonica.aaee.marte.acuerdos.dao.vo.EstadisticasPorTipoPeticionVO;
@@ -38,7 +39,7 @@ import telefonica.aaee.marte.acuerdos.dao.vo.YearMonthEstatusVO;
 @Service
 public class TramitacionAPIService extends GenericAcuerdosService {
 
-	private static final String ESTADO_TRAM = "estadoTram";
+	private static final String ESTADO_TRAM = "marteEstadoTramitacion";
 	private static final String FECHA_TRAM_PREVISTA = "fechaTramPrevista";
 
 	protected final Log logger = LogFactory.getLog(getClass());
@@ -126,7 +127,7 @@ public class TramitacionAPIService extends GenericAcuerdosService {
 				.searchByFechaTramitacionPrevista(inicioPeriodo, finPeriodo), request);
 	}
 
-	public Page<TramitacionAPI> findByEstadoTram(int estadoTram, Integer pageNumber) {
+	public Page<TramitacionAPI> findByEstadoTram(EstadoTramitacion estadoTram, Integer pageNumber) {
 		PageRequest request = new PageRequest(pageNumber - 1, PAGE_SIZE,
 				new Sort(
 						new Order(Direction.ASC, "id")
@@ -140,11 +141,11 @@ public class TramitacionAPIService extends GenericAcuerdosService {
 		CriteriaQuery<Tuple> cq = builder.createTupleQuery();
 		Root<TramitacionAPI> root = cq.from(TramitacionAPI.class);
 		
-		cq.multiselect(root.get(ESTADO_TRAM), builder.count(root.get("id")));  //using metamodel
-		cq.groupBy(root.get(ESTADO_TRAM));
+		cq.multiselect(root.get(ESTADO_TRAM).get("id"), builder.count(root.get("id")));  //using metamodel
+		cq.groupBy(root.get(ESTADO_TRAM).get("id"));
 		List<Tuple> tupleResult = em.createQuery(cq).getResultList();
 		for (Tuple t : tupleResult) {
-			Integer id = (Integer) t.get(0);
+			Long id = (Long) t.get(0);
 			Long num = (Long) t.get(1);
 		    logger.info(String.format("EstadoTram : [%d] : [%d]", id, num));
 		}
@@ -164,11 +165,11 @@ public class TramitacionAPIService extends GenericAcuerdosService {
 		Expression<Integer> year = builder.function("year", Integer.class, root.get(FECHA_TRAM_PREVISTA));
 		Expression<Integer> month = builder.function("month", Integer.class, root.get(FECHA_TRAM_PREVISTA));
 		
-		Expression<Boolean> estaPendiente = builder.equal(root.<Integer>get(ESTADO_TRAM), 0);
-		Expression<Boolean> estaRechazada = builder.equal(root.<Integer>get(ESTADO_TRAM), 2);
+		Expression<Boolean> estaPendiente = builder.equal(root.get(ESTADO_TRAM).get("id"), 0);
+		Expression<Boolean> estaRechazada = builder.equal(root.<Integer>get(ESTADO_TRAM).get("id"), 2);
 		Expression<Boolean> estaTramitada = builder.or(
-				builder.equal(root.<Integer>get(ESTADO_TRAM), 1)
-				, builder.equal(root.<Integer>get(ESTADO_TRAM), 3));
+				builder.equal(root.<Integer>get(ESTADO_TRAM).get("id"), 1)
+				, builder.equal(root.<Integer>get(ESTADO_TRAM).get("id"), 3));
 		Expression<Integer> exp0 = builder.literal(0);
 		Expression<Integer> exp1 = builder.literal(1);
 		
@@ -211,11 +212,11 @@ public class TramitacionAPIService extends GenericAcuerdosService {
 		Expression<Integer> year = builder.function("year", Integer.class, root.get(FECHA_TRAM_PREVISTA));
 		Expression<Integer> month = builder.function("month", Integer.class, root.get(FECHA_TRAM_PREVISTA));
 		
-		Expression<Boolean> estaPendiente = builder.equal(root.<Integer>get(ESTADO_TRAM), 0);
-		Expression<Boolean> estaRechazada = builder.equal(root.<Integer>get(ESTADO_TRAM), 2);
+		Expression<Boolean> estaPendiente = builder.equal(root.get(ESTADO_TRAM).get("id"), 0);
+		Expression<Boolean> estaRechazada = builder.equal(root.get(ESTADO_TRAM).get("id"), 2);
 		Expression<Boolean> estaTramitada = builder.or(
-				builder.equal(root.<Integer>get(ESTADO_TRAM), 1)
-				, builder.equal(root.<Integer>get(ESTADO_TRAM), 3));
+				builder.equal(root.get(ESTADO_TRAM).get("id"), 1)
+				, builder.equal(root.get(ESTADO_TRAM).get("id"), 3));
 		Expression<Integer> exp0 = builder.literal(0);
 		Expression<Integer> exp1 = builder.literal(1);
 		
@@ -311,6 +312,16 @@ public class TramitacionAPIService extends GenericAcuerdosService {
 		logger.info(eptp);
 		
 		return lista;
+	}
+
+	public Page<TramitacionAPI> findByTipoPeticionEstadoTram(
+			String tipoPeticion, EstadoTramitacion et, Integer pageNumber) {
+		PageRequest request = new PageRequest(pageNumber - 1, PAGE_SIZE,
+				new Sort(
+						new Order(Direction.DESC, "id")
+						)
+		);
+		return repo.findAll(TramitacionAPISpecifications.searchByTipoPeticionEstadoTram(tipoPeticion, et), request);
 	}
 	
 }
