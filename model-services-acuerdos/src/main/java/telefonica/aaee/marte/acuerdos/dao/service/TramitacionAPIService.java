@@ -2,6 +2,7 @@ package telefonica.aaee.marte.acuerdos.dao.service;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -30,8 +31,9 @@ import org.springframework.stereotype.Service;
 
 import telefonica.aaee.marte.acuerdos.dao.model.CodAPI;
 import telefonica.aaee.marte.acuerdos.dao.model.TramitacionAPI;
-import telefonica.aaee.marte.acuerdos.dao.model.YearMonthEstatusVO;
 import telefonica.aaee.marte.acuerdos.dao.specifications.TramitacionAPISpecifications;
+import telefonica.aaee.marte.acuerdos.dao.vo.EstadisticasPorTipoPeticionVO;
+import telefonica.aaee.marte.acuerdos.dao.vo.YearMonthEstatusVO;
 
 @Service
 public class TramitacionAPIService extends GenericAcuerdosService {
@@ -250,6 +252,8 @@ public class TramitacionAPIService extends GenericAcuerdosService {
 	
 	public List<Tuple> getPeticionesPorTipoPorAnioYMes(){
 		
+		EstadisticasPorTipoPeticionVO eptp = new EstadisticasPorTipoPeticionVO();
+		
 		List<Tuple> lista = new ArrayList<Tuple>();
 		
 		CriteriaBuilder builder = em.getCriteriaBuilder();
@@ -266,6 +270,7 @@ public class TramitacionAPIService extends GenericAcuerdosService {
 		listaExpresiones.add(year);
 		listaExpresiones.add(month);
 		
+		List<String> cabeceras = new ArrayList<String>();
 		
 		for(CodAPI codAPI : listaCampos){
 			logger.info(String.format("CodAPI : [%s]", codAPI));
@@ -277,13 +282,33 @@ public class TramitacionAPIService extends GenericAcuerdosService {
 					, isCodAPI, exp1, exp0 );
 			Expression<Long> totalCodAPI = builder.sumAsLong(sumCodAPI);
 			listaExpresiones.add(totalCodAPI);
+			cabeceras.add(codAPI.getCodApi());
 		}
 		
+		eptp.setCampos(cabeceras);
+		
 		cq.multiselect(listaExpresiones);
+		
+		cq.orderBy(builder.desc(year), builder.desc(month));
 		
 		TypedQuery<Tuple> peticiones = em.createQuery(cq);
 		
 		lista = peticiones.getResultList();
+		
+		HashMap<String, List<Long>> resultados = eptp.getResultados();
+		
+		for(Tuple tuple : lista){
+			Integer keyYear = (Integer)tuple.get(0);
+			Integer keyMonth = (Integer)tuple.get(1);
+			List<Long> l = new ArrayList<Long>();
+			for(int k = 2; k<tuple.getElements().size(); k++){
+				l.add((Long)tuple.get(k));
+			}
+			resultados.put(new String(keyYear+"-"+keyMonth), l);
+		}
+		eptp.setResultados(resultados);
+		
+		logger.info(eptp);
 		
 		return lista;
 	}

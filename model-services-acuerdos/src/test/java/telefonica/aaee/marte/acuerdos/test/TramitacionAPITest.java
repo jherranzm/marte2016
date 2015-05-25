@@ -19,8 +19,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import telefonica.aaee.marte.acuerdos.dao.model.TramitacionAPI;
-import telefonica.aaee.marte.acuerdos.dao.model.YearMonthEstatusVO;
 import telefonica.aaee.marte.acuerdos.dao.service.TramitacionAPIService;
+import telefonica.aaee.marte.acuerdos.dao.vo.YearMonthEstatusVO;
 import telefonica.aaee.marte.acuerdos.test.config.JPAAcuerdosTestConfig;
 import telefonica.aaee.marte.acuerdos.test.config.ServicesTestConfig;
 
@@ -236,13 +236,13 @@ public class TramitacionAPITest {
 		
 		ret = (page.size() > 0);
 		
-		for (Tuple t : page) {
-			for(int k = 0; k < t.getElements().size(); k++){
-				logger.info(String.format("T : [%d]"
-						, t.get(k)
-						));
-			}
-		}
+//		for (Tuple t : page) {
+//			for(int k = 0; k < t.getElements().size(); k++){
+//				logger.info(String.format("T : [%d]"
+//						, t.get(k)
+//						));
+//			}
+//		}
 		
 		assertTrue(ret);
 		

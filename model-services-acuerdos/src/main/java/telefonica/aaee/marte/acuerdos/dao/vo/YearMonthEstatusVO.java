@@ -1,4 +1,4 @@
-package telefonica.aaee.marte.acuerdos.dao.model;
+package telefonica.aaee.marte.acuerdos.dao.vo;
 
 public class YearMonthEstatusVO {
 	
