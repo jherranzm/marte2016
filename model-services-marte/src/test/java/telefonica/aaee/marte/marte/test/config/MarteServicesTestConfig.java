@@ -1,4 +1,4 @@
-package telefonica.aaee.marte.marte.config;
+package telefonica.aaee.marte.marte.test.config;
 
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -10,4 +10,4 @@ import org.springframework.context.annotation.Configuration;
 		, "telefonica.aaee.marte.marte.dao.vo"
 		, "telefonica.aaee.marte.marte.dao.model"
 		})
-public class MarteServicesConfig{ }
+public class MarteServicesTestConfig{ }

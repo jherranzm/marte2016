@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 
 import telefonica.aaee.util.Constantes;
 
-public class GenericAcuerdosService {
+public class GenericMarteService {
 
 	@PersistenceContext(unitName = Constantes.JPAMartePU)
 	@Qualifier(value = "marteEntityManagerFactory")

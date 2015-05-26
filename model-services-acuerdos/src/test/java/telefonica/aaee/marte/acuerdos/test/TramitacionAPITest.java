@@ -24,12 +24,15 @@ import telefonica.aaee.marte.acuerdos.dao.service.CodAPIService;
 import telefonica.aaee.marte.acuerdos.dao.service.EstadoTramitacionService;
 import telefonica.aaee.marte.acuerdos.dao.service.TramitacionAPIService;
 import telefonica.aaee.marte.acuerdos.dao.vo.YearMonthEstatusVO;
+import telefonica.aaee.marte.acuerdos.test.config.AcuerdosServicesTestConfig;
 import telefonica.aaee.marte.acuerdos.test.config.JPAAcuerdosTestConfig;
-import telefonica.aaee.marte.acuerdos.test.config.ServicesTestConfig;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes={ServicesTestConfig.class, JPAAcuerdosTestConfig.class})
+@ContextConfiguration(classes={
+		AcuerdosServicesTestConfig.class
+		, JPAAcuerdosTestConfig.class
+		})
 @Transactional
 public class TramitacionAPITest {
 	protected final Log logger = LogFactory.getLog(getClass());
@@ -213,7 +216,6 @@ public class TramitacionAPITest {
 		
 		Calendar cal = Calendar.getInstance();
 		cal.set(Calendar.YEAR, 2015);
-//		cal.set(Calendar.MONTH, 4); //Mayo! 0,Enero; 1, Febrero
 		cal.set(Calendar.MONTH, 3); //Mayo! 0,Enero; 1, Febrero
 		cal.set(Calendar.DAY_OF_MONTH, 1);
 		cal.set(Calendar.HOUR, 0);
@@ -247,14 +249,6 @@ public class TramitacionAPITest {
 		
 		ret = (page.size() > 0);
 		
-//		for (Tuple t : page) {
-//			for(int k = 0; k < t.getElements().size(); k++){
-//				logger.info(String.format("T : [%d]"
-//						, t.get(k)
-//						));
-//			}
-//		}
-		
 		assertTrue(ret);
 		
 	}
@@ -282,6 +276,49 @@ public class TramitacionAPITest {
 		
 		assertTrue(ret);
 		
+	}
+	
+	@Test
+	public void testSave(){
+		
+		logger.info("testSave!");
+		
+		TramitacionAPI tramAPI = new TramitacionAPI();
+		
+		Calendar cal = Calendar.getInstance();
+		Date fechaPeticion = cal.getTime();
+
+		cal.set(Calendar.YEAR, 2500);
+		cal.set(Calendar.MONTH, 11); //Mayo! 0,Enero; 1, Febrero
+		cal.set(Calendar.DAY_OF_MONTH, 31);
+		cal.set(Calendar.HOUR, 0);
+		cal.set(Calendar.MINUTE, 0);
+		cal.set(Calendar.SECOND, 0);
+		
+		Date fechaTramitacionPrevista = cal.getTime();
+		
+		tramAPI.setFechaPeticion(fechaPeticion);
+		tramAPI.setFechaTramPrevista(fechaTramitacionPrevista);
+		tramAPI.setFechaTramAPI(fechaTramitacionPrevista);
+		tramAPI.setFechaGAE(fechaTramitacionPrevista);
+		tramAPI.setFechaCorreo(fechaTramitacionPrevista);
+		tramAPI.setFinVigencia(fechaTramitacionPrevista);
+		
+//		Acuerdo acuerdo = acuerdoService.findById("T010002319");
+//		
+//		// Información proveniente de ACUERDO
+//		tramAPI.setTipoDoc(acuerdo.getTipoDoc());
+//		tramAPI.setAcuerdoNumero(acuerdo.getAcuerdoNumero());
+//		tramAPI.setCif(acuerdo.getCif());
+//		tramAPI.setPlanaAutoajustable(acuerdo.getPlanaAutoajustable());
+//		tramAPI.setTipoPlanas(acuerdo.getModalidadConcertada());
+		
+		logger.info(String.format("TramitacionAPI : [%s]", tramAPI.toString()));
+		
+		TramitacionAPI retTramAPI = tramitacionAPIService.save(tramAPI);
+		logger.info(String.format("TramitacionAPI : [%s]", retTramAPI.toString()));
+		
+		assertTrue(retTramAPI.getId() > 0);
 	}
 	
 }

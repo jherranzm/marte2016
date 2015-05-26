@@ -323,5 +323,9 @@ public class TramitacionAPIService extends GenericAcuerdosService {
 		);
 		return repo.findAll(TramitacionAPISpecifications.searchByTipoPeticionEstadoTram(tipoPeticion, et), request);
 	}
+
+	public TramitacionAPI save(TramitacionAPI tramAPI) {
+		return repo.saveAndFlush(tramAPI);
+	}
 	
 }

@@ -19,7 +19,7 @@ import telefonica.aaee.marte.marte.dao.model.Acuerdo;
 import telefonica.aaee.marte.marte.dao.specifications.AcuerdoSpecifications;
 
 @Service
-public class AcuerdoService extends GenericAcuerdosService {
+public class AcuerdoService extends GenericMarteService {
 
 	private SimpleJpaRepository<Acuerdo, String> repo;
 

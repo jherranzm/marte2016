@@ -15,10 +15,10 @@ import org.springframework.transaction.annotation.Transactional;
 import telefonica.aaee.marte.marte.dao.model.Acuerdo;
 import telefonica.aaee.marte.marte.dao.service.AcuerdoService;
 import telefonica.aaee.marte.marte.test.config.JPAMarteTestConfig;
-import telefonica.aaee.marte.marte.test.config.ServicesTestConfig;
+import telefonica.aaee.marte.marte.test.config.MarteServicesTestConfig;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes={ServicesTestConfig.class, JPAMarteTestConfig.class})
+@ContextConfiguration(classes={MarteServicesTestConfig.class, JPAMarteTestConfig.class})
 @Transactional
 public class MarteServiceTest {
 

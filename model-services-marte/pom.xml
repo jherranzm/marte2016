@@ -6,8 +6,8 @@
 		http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>telefonica.aaee.marte</groupId>
-  <artifactId>model-services-acuerdos</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <artifactId>model-services-marte</artifactId>
+  <version>2016-01</version>
 
 
 	<properties>

@@ -9,4 +9,4 @@ import org.springframework.context.annotation.Configuration;
 		, "telefonica.aaee.marte.acuerdos.dao.service"
 		, "telefonica.aaee.marte.acuerdos.dao.specifications"
 		})
-public class ServicesTestConfig{ }
+public class AcuerdosServicesTestConfig{ }
