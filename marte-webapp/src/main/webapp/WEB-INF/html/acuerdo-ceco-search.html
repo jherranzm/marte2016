@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="head" >
+	<meta charset="UTF-8" />
+	<title th:text="#{app.name}">AAEE Utilidades</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+
+	<link rel="shortcut icon" th:href="@{/img/icons/favicon.ico}" />
+
+	<!-- CSS to style the file input field as button and adjust the Bootstrap progress bars -->
+	<link rel="stylesheet" type="text/css"
+		href="../../css/jquery.fileupload.css"
+		th:href="@{/css/jquery.fileupload.css}" />
+	<link rel="stylesheet" type="text/css"
+		href="../../css/jquery.fileupload-ui.css"
+		th:href="@{/css/jquery.fileupload-ui.css}" />
+	
+	
+	<!-- Bootstrap -->
+	<link rel="stylesheet" type="text/css" media="screen"
+		href="../../css/bootstrap.css" 
+		th:href="@{/css/bootstrap.css}" />
+	<link rel="stylesheet" type="text/css" media="screen"
+		href="../../css/bootstrap-sticky-footer.css" 
+		th:href="@{/css/bootstrap-sticky-footer.css}" />
+
+
+	<!-- app -->
+	<link rel="stylesheet" type="text/css" media="screen"
+		href="../../css/app.css" 
+		th:href="@{/css/app.css}" />
+
+	<!-- dropzone -->
+	<link rel="stylesheet" type="text/css" media="screen"
+		href="../../css/dropzone.css" 
+		th:href="@{/css/dropzone.css}" />
+
+	<!-- datepicker -->
+	<link rel="stylesheet" type="text/css" media="screen"
+		href="../../css/bootstrap-datepicker.css" 
+		th:href="@{/css/bootstrap-datepicker.css}" />
+	
+</head>
+<body>
+
+				<div th:fragment="search">
+					<div id="search" class="col-sm-12">
+						<form method="post" class="form-horizontal form-inline"
+							th:action="@{/acuerdoceco/search.html}"
+							th:object="${searchForm}">
+							
+							<div class="col-sm-12">
+								<div class=" col-sm-3">
+									<label for="queTipo" 
+										th:text="#{acuerdoceco.form.field.tipoDeServicio}">Tipo de Servicio</label>
+								</div>
+								<div class=" col-sm-2">
+									<label for="queNum" 
+										th:text="#{acuerdoceco.form.field.numeroComercial}">Número Comercial</label>
+								</div>
+								<div class=" col-sm-2">
+									<label for="queCargo" 
+										th:text="#{acuerdoceco.form.field.cargo}">Cargo</label>
+								</div>
+								<div class=" col-sm-2">
+									<label for="queCeco01" 
+										th:text="#{acuerdoceco.form.field.ceco01}">Ceco01</label>
+								</div>
+								<div class=" col-sm-2">
+									<label for="queCeco02" 
+										th:text="#{acuerdoceco.form.field.ceco02}">Ceco02</label>
+								</div>
+
+
+								<div class=" col-sm-1">
+								</div>
+							</div>
+							<div class="col-sm-12">
+								<div class=" col-sm-3">
+									<select 
+										id="queTipo" name="queTipo" 
+										class="form-control input-sm" th:remove="all-but-first">
+										<option th:each="tipo : ${tipos}" 
+											th:value="${tipo.tipoDeServicio}"
+											th:text="${tipo.descTipoDeServicio}">CECO 02</option>
+										<option>option1</option>
+										<option>option2</option>
+										<option>option3</option>
+									</select>
+								</div>
+								<div class=" col-sm-2">
+									<input id="queNum" name="queNum" type="text"
+									class="form-control input-sm" 
+									value=""  />
+								</div>
+								<div class=" col-sm-2">
+									<select 
+										id="queCargo" name="queCargo" 
+										class="form-control input-sm" th:remove="all-but-first">
+										<option th:each="cargo : ${cargos}" 
+											th:value="${cargo}"
+											th:text="${cargo}">Cargo 001</option>
+										<option>Cargo 002</option>
+										<option>Cargo 003</option>
+										<option>Cargo 004</option>
+									</select>
+								</div>
+								<div class=" col-sm-2">
+									<select 
+										id="queCeco01" name="queCeco01" 
+										class="form-control input-sm" th:remove="all-but-first">
+										<option th:each="ceco01 : ${cecos01}" 
+											th:value="${ceco01}"
+											th:text="${ceco01}">Cargo 001</option>
+										<option>Cargo 002</option>
+										<option>Cargo 003</option>
+										<option>Cargo 004</option>
+									</select>
+								</div>
+								<div class=" col-sm-2">
+									<select 
+										id="queCeco02" name="queCeco02" 
+										class="form-control input-sm" th:remove="all-but-first">
+										<option th:each="ceco02 : ${cecos02}" 
+											th:value="${ceco02}"
+											th:text="${ceco02}">Cargo 001</option>
+										<option>Cargo 002</option>
+										<option>Cargo 003</option>
+										<option>Cargo 004</option>
+									</select>
+								</div>
+
+
+
+								<div class=" col-sm-1">
+									<button id="btn-save" type="submit" class="btn-sm btn-primary" >
+										 <span class="glyphicon glyphicon-search"></span>
+									</button>
+								</div>
+								
+								
+								<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+								<input type="hidden" name="idAcuerdo" th:value="${acuerdoForm.id}"/>
+							</div>
+						</form>
+						
+					</div>
+				</div>
+				
+</body>
+</html>

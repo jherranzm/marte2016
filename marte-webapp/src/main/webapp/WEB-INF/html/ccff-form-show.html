@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="html/header :: head">
+	<meta charset="UTF-8" />
+	<title>Concepto Facturable</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+	<link rel="shortcut icon" th:href="@{/img/icons/favicon.ico}" />
+
+	<!-- CSS to style the file input field as button and adjust the Bootstrap progress bars -->
+	<link rel="stylesheet" type="text/css"
+		href="../../css/jquery.fileupload.css"
+		th:href="@{/css/jquery.fileupload.css}" />
+	<link rel="stylesheet" type="text/css"
+		href="../../css/jquery.fileupload-ui.css"
+		th:href="@{/css/jquery.fileupload-ui.css}" />
+	
+	<!-- Bootstrap -->
+	<link rel="stylesheet" type="text/css" media="screen"
+		href="../../css/bootstrap.css" 
+		th:href="@{/css/bootstrap.css}" />
+	<link rel="stylesheet" type="text/css" media="screen"
+		href="../../css/bootstrap-sticky-footer.css" 
+		th:href="@{/css/bootstrap-sticky-footer.css}" />
+
+	<!-- app -->
+	<link rel="stylesheet" type="text/css" media="screen"
+		href="../../css/app.css" 
+		th:href="@{/css/app.css}" />
+
+	<!-- dropzone -->
+	<link rel="stylesheet" type="text/css" media="screen"
+		href="../../css/dropzone.css" 
+		th:href="@{/css/dropzone.css}" />
+
+	<!-- datepicker -->
+	<link rel="stylesheet" type="text/css" media="screen"
+		href="../../css/bootstrap-datepicker.css" 
+		th:href="@{/css/bootstrap-datepicker.css}" />
+	
+	<title data-th-text="#{app.name}">Titulo</title>
+
+</head>
+<body>
+
+<!-- Docs master nav -->
+<div th:replace="html/header :: header">
+	<div class="navbar navbar-inverse navbar-static-top bs-docs-nav"
+	id="top" role="banner" th:fragment="header">	
+		<div class="container">
+			<div class="navbar-header">
+				<a th:href="@{/index.jsp}" class="navbar-brand" 
+					data-th-text="#{app.name}">AAEE</a>
+			</div>
+			<div class="collapse navbar-collapse bs-navbar-collapse"
+				role="navigation">
+				<ul class="nav navbar-nav">
+					<li class="active"><a
+						th:href="@{/index.jsp}"
+						data-th-text="#{go.home}">Go Home
+					</a></li>
+	
+					<li sec:authorize="hasRole('ROLE_ADMIN')" class="dropdown"><a href="#" class="dropdown-toggle"
+							data-toggle="dropdown" > 
+							<span data-th-text="#{menu.informes}">menu.informes</span>
+							<b class="caret"></b></a>
+							<ul class="dropdown-menu">
+								<li><a
+									th:href="@{/role/pages/1}" data-th-text="#{role.form.list.title}">
+										role.form.list.title
+								</a></li>
+								<li><a
+									th:href="@{/usuario/pages/1}" data-th-text="#{usuario.form.list.title}">
+										usuario.form.list.title
+								</a></li>
+								<li class="divider"></li>
+								<li><a
+									th:href="@{/consulta/pages/1}" data-th-text="#{consulta.form.list.title}">
+										consulta.form.list.title
+								</a></li>
+								<li><a
+									th:href="@{/pestanya/pages/1}" data-th-text="#{pestanya.form.list.title}">
+										pestanya.form.list.title
+								</a></li>
+								<li><a
+									th:href="@{/informe/pages/1}" data-th-text="#{informe.form.list.title}">
+										informe.form.list.title
+								</a></li>
+								<li><a
+									th:href="@{/regladenegocio/pages/1}" data-th-text="#{regladenegocio.form.list.title}">
+										regladenegocio.form.list.title
+								</a></li>
+							</ul></li>
+			
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="wrap">
+	<div class="container">
+	
+		<div th:replace="html/breadcrumb :: breadcrumb('cuotas')"></div>
+	
+		<form method="post" class="form-horizontal"
+			th:action="@{/acuerdoccff/edit/{id}(id=${ccff.id})}" 
+			th:object="${ccff}">
+
+					<div class="form-group">
+						<label for="id" class="col-sm-2 control-label" th:text="#{acuerdoccff.form.field.id}">
+							ID
+						</label>
+						<div class="col-sm-2">
+							<input id="id" name="id" type="text" 
+							class="form-control input-sm" 
+							th:field="${ccff.id}" 
+							value="123456789" 
+							th:disabled="disabled"
+							disabled="disabled"
+							/>
+						</div> 
+					</div>
+			
+			
+					<div class="form-group">
+						<label for="tipoDeServicio" class="col-sm-2 control-label" th:text="#{acuerdoccff.form.field.tipoDeServicio}">
+							Tipo de Servicio
+						</label>
+						<div class="col-sm-1">
+							<input id="tipoDeServicio" name="tipoDeServicio" type="text" 
+							class="form-control input-sm" 
+							th:field="${ccff.tipoDeServicio}" 
+							value="Tipo de Servicio" 
+							th:disabled="disabled"
+							disabled="disabled"
+							/>
+						</div> 
+						<div class="col-sm-9">
+							<input id="descTipoDeServicio" name="descTipoDeServicio" type="text" 
+							class="form-control input-sm" 
+							th:field="${ccff.descTipoDeServicio}" 
+							value="Desc.Tipo de Servicio" 
+							th:disabled="disabled"
+							disabled="disabled"
+							/>
+						</div> 
+					</div>
+			
+					<div class="form-group">
+						<label for="conceptoFacturable" class="col-sm-2 control-label" th:text="#{acuerdoccff.form.field.conceptoFacturable}">
+							Concepto Facturable
+						</label>
+						<div class="col-sm-10">
+							<input id="conceptoFacturable" name="conceptoFacturable" type="text" 
+							class="form-control input-sm" 
+							th:field="${ccff.conceptoFacturable}" 
+							value="0100112345abcd" 
+							th:disabled="disabled"
+							disabled="disabled"
+							/>
+						</div> 
+					</div>
+			
+					<div class="form-group">
+						<label for="codigoPersonalizacion" class="col-sm-2 control-label" th:text="#{acuerdoccff.form.field.codigoPersonalizacion}">
+							Código Personalización
+						</label>
+						<div class="col-sm-10">
+							<input id="codigoPersonalizacion" name="codigoPersonalizacion" type="text" 
+							class="form-control input-sm" 
+							th:field="${ccff.codigoPersonalizacion}" 
+							value="abcd" 
+							th:disabled="disabled"
+							disabled="disabled"
+							/>
+						</div> 
+					</div>
+			
+					<div class="form-group">
+						<label for="descConceptoFacturable" class="col-sm-2 control-label" th:text="#{acuerdoccff.form.field.descConceptoFacturable}">
+							Desc.Concepto Facturable
+						</label>
+						<div class="col-sm-10">
+							<input id="descConceptoFacturable" name="descConceptoFacturable" type="text" 
+							class="form-control input-sm" 
+							th:field="${ccff.descConceptoFacturable}" 
+							value="Lorem ipsum dolor..." 
+							th:disabled="disabled"
+							disabled="disabled"
+							/>
+						</div> 
+					</div>
+			
+			
+					<div class="form-group">
+						<label for="importeOriginal" class="col-sm-2 control-label" th:text="#{acuerdoccff.form.field.importeOriginal}">
+							Importe Original
+						</label>
+						<div class="col-sm-2">
+							<input id="importeOriginal" name="importeOriginal" type="text" 
+							class="form-control input-sm" 
+							th:field="${ccff.importeOriginal}" 
+							value="123456.99" 
+							th:disabled="disabled"
+							disabled="disabled"
+							/>
+						</div> 
+					</div>
+			
+			
+					<div class="form-group">
+						<label for="tipoPrecioEspecial" class="col-sm-2 control-label" th:text="#{acuerdoccff.form.field.tipoPrecioEspecial}">
+							Tipo Precio Especial
+						</label>
+						<div class="col-sm-2">
+							<select th:field="*{tipoPrecioEspecial}" th:remove="all-but-first">
+				                <option th:each="tipo : ${tipos}"
+				                        th:value="${tipo}" th:text="${tipo}">Tipo Precio Especial</option>
+				                <option>option1</option>
+				                <option>option2</option>
+				                <option>option3</option>
+				            </select>							
+						
+						
+<!-- 							<select id="tipoPrecioEspecial" name="tipoPrecioEspecial"  -->
+<!-- 							class="form-control input-sm" > -->
+<!-- 								<option value="BOE">BOE</option> -->
+<!-- 								<option value="PPI">PPI (Precio por ítem)</option> -->
+<!-- 								<option value="DTO">Descuento</option> -->
+<!-- 							</select> -->
+						</div> 
+						<label for="importeAcuerdo" class="col-sm-2 control-label" th:text="#{acuerdoccff.form.field.importeAcuerdo}">
+							Importe Acuerdo
+						</label>
+						<div class="col-sm-2">
+							<input id="importeAcuerdo" name="importeAcuerdo" type="number" 
+							class="form-control input-sm" 
+							th:field="${ccff.importeAcuerdo}"
+							step="0.01" min="0.00" 
+							value="123456.99" 
+							th:disabled="disabled"
+							disabled="disabled"
+							/>
+						</div> 
+					</div>
+					
+					<div class="form-group form-param">
+				    	<div class="col-md-offset-4 col-md-4">
+						    <p class="text-center">
+							    <a th:href="@{/acuerdo/cuotas/{id}/1(id=${ccff.idAcuerdo})}"
+								    id="btn-back" class="btn btn-default"  th:text="#{acuerdoccff.form.btn.back}"> Atrás
+							    </a>
+						    </p>
+  						</div>
+  					</div>
+			
+		</form>
+	
+	</div><!-- .container -->	
+</div><!-- #wrap -->	
+	
+<div th:replace="html/footer :: footer">
+
+	<div id="footer" th:fragment="footer">
+		<div class="container">
+			<p class="text-muted credit" data-th-text="#{app.name}">
+				footer
+			</p>
+
+
+	
+		<!--[if lt IE 9]>
+			<script 
+				src="../../js/jquery-1.11.2.min.js"
+				th:src="@{/js/jquery-1.11.2.min.js}"></script>
+		<![endif]-->
+		
+		<!--[if gte IE 9]> 
+			<script 
+				src="../../js/jquery-2.1.1.min.js"
+				th:src="@{/js/jquery-2.1.1.min.js}"></script>
+		<![endif]-->
+		
+		<!--[if !IE]> -->
+			<script 
+				src="../../js/jquery-2.1.1.min.js"
+				th:src="@{/js/jquery-2.1.1.min.js}"></script>
+		<!-- <![endif]-->
+		
+			
+			<script src="../../js/bootstrap.js"
+				th:src="@{/js/bootstrap.js}"></script>
+			<script src="../../js/jquery-ui.js"
+				th:src="@{/js/jquery-ui.js}"></script>
+			<script src="../../js/heartcode-canvasloader-min.js"
+				th:src="@{/js/heartcode-canvasloader-min.js}"></script>
+			<script src="../../js/bootstrap-datepicker.js"
+				th:src="@{/js/bootstrap-datepicker.js}"></script>
+			<script src="../../js/bootstrap-datepicker.es.js"
+				th:src="@{/js/locales/bootstrap-datepicker.es.js}" charset="UTF-8"></script>
+			<script src="../../js/bootstrap-datepicker.ca.js"
+				th:src="@{/js/locales/bootstrap-datepicker.ca.js}" charset="UTF-8"></script>
+			
+		</div>
+	</div>
+
+</div>
+
+
+</body>
+</html>

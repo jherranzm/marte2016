@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:fragment="head" >
+	<meta charset="UTF-8" />
+	<title th:text="#{app.name}">AAEE Utilidades</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+
+	<link rel="shortcut icon" th:href="@{/img/icons/favicon.ico}" />
+
+	<!-- CSS to style the file input field as button and adjust the Bootstrap progress bars -->
+	<link rel="stylesheet" type="text/css"
+		href="../../css/jquery.fileupload.css"
+		th:href="@{/css/jquery.fileupload.css}" />
+	<link rel="stylesheet" type="text/css"
+		href="../../css/jquery.fileupload-ui.css"
+		th:href="@{/css/jquery.fileupload-ui.css}" />
+	
+	
+	<!-- Bootstrap -->
+	<link rel="stylesheet" type="text/css" media="screen"
+		href="../../css/bootstrap.css" 
+		th:href="@{/css/bootstrap.css}" />
+	<link rel="stylesheet" type="text/css" media="screen"
+		href="../../css/bootstrap-sticky-footer.css" 
+		th:href="@{/css/bootstrap-sticky-footer.css}" />
+
+
+	<!-- app -->
+	<link rel="stylesheet" type="text/css" media="screen"
+		href="../../css/app.css" 
+		th:href="@{/css/app.css}" />
+
+	<!-- dropzone -->
+	<link rel="stylesheet" type="text/css" media="screen"
+		href="../../css/dropzone.css" 
+		th:href="@{/css/dropzone.css}" />
+
+	<!-- datepicker -->
+	<link rel="stylesheet" type="text/css" media="screen"
+		href="../../css/bootstrap-datepicker.css" 
+		th:href="@{/css/bootstrap-datepicker.css}" />
+	
+</head>
+<body>
+
+				<div th:fragment="breadcrumb (bcType)">
+		        	<ol class="breadcrumb" th:switch="${bcType}">
+						<li><a href="/" th:href="@{/}" th:text="#{go.home}">Home</a></li>
+						<li><a href="/acuerdo/pages/1" th:href="@{/acuerdo/pages/1}" th:text="#{acuerdo.form.list.title}">Acuerdos</a></li>
+						<li><a href="/acuerdo/1" th:href="@{/acuerdo/edit/{id}(id=${acuerdoForm.id})}"  th:text="${acuerdoForm.acuerdo}">Acuerdo</a></li>
+					</ol>
+
+		        	<ol class="breadcrumb">
+						<li th:if="${bcType} == 'clientes'"><span th:text="#{acuerdo.clientes}">Clientes</span></li>
+						<li th:unless="${bcType} == 'clientes'"><a href="/acuerdo/clientes/1.html"
+								th:href="@{/acuerdo/clientes/{id}(id=${acuerdoForm.id})}"
+								th:text="#{acuerdo.clientes}">Clientes</a></li>
+								
+						<li th:if="${bcType} == 'servicios'"><span th:text="#{acuerdo.servicios}">Servicios</span></li>
+						<li th:unless="${bcType} == 'servicios'"><a href="/acuerdo/servicios/1.html"
+								th:href="@{/acuerdo/servicios/{id}(id=${acuerdoForm.id})}"
+								th:text="#{acuerdo.servicios}">Servicios</a></li>
+								
+						<li th:if="${bcType} == 'cuotas'"><span th:text="#{acuerdo.cuotas}">Cuotas</span></li>
+						<li th:unless="${bcType} == 'cuotas'"><a href="/acuerdoccff/search/1.html"
+								th:href="@{/acuerdoccff/search?idAcuerdo={id}(id=${acuerdoForm.id})}"
+								th:text="#{acuerdo.cuotas}">Cuotas</a></li>
+								
+						<li th:if="${bcType} == 'trafico'"><span th:text="#{acuerdo.trafico}">Tráfico Estándar</span></li>
+						<li th:unless="${bcType} == 'trafico'"><a href="/acuerdo/trafico/1.html"
+								th:href="@{/acuerdo/trafico/{id}/1(id=${acuerdoForm.id})}"
+								th:text="#{acuerdo.trafico}">Tráfico Estándar</a></li>
+								
+						<li th:if="${bcType} == 'traficori'"><span th:text="#{acuerdo.traficori}">Tráfico Red Inteligente</span></li>
+						<li th:unless="${bcType} == 'traficori'"><a href="/acuerdo/traficori/1.html"
+								th:href="@{/acuerdo/traficori/{id}/1(id=${acuerdoForm.id})}"
+								th:text="#{acuerdo.traficori}">Tráfico Red Inteligente</a></li>
+								
+						<li th:if="${bcType} == 'cne'"><span th:text="#{acuerdo.cne}">Cuota NO Estandar</span></li>
+						<li th:unless="${bcType} == 'cne'"><a href="/acuerdo/cne/1.html"
+								th:href="@{/cne/search?idAcuerdo={id}(id=${acuerdoForm.id})}"
+								th:text="#{acuerdo.cne}">Cuota NO Estándar</a></li>
+								
+						<li th:if="${bcType} == 'cecos'"><span th:text="#{acuerdo.ceco}">Centros Coste</span></li>
+						<li th:unless="${bcType} == 'cecos'"><a href="/acuerdo/ceco/1.html"
+								th:href="@{/acuerdoceco/search?idAcuerdo={id}(id=${acuerdoForm.id})}"
+								th:text="#{acuerdo.ceco}">Centros de Coste</a></li>
+								
+						<li th:if="${bcType} == 'resTrf'"><span th:text="#{acuerdo.resTrf}">Res.Tráfico</span></li>
+						<li th:unless="${bcType} == 'resTrf'"><a href="/acuerdo/restrf/1.html"
+								th:href="@{/acuerdo/restrf/{id}/1(id=${acuerdoForm.id})}"
+								th:text="#{acuerdo.resTrf}">Res.Tráfico</a></li>
+					</ol>
+
+               </div>
+
+</body>
+</html>

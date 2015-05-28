@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="html/header :: head">
+<meta charset="UTF-8" />
+<title th:text="#{app.name}">AAEE Utilidades</title>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+
+<link rel="shortcut icon" th:href="@{/img/icons/favicon.ico}" />
+
+<!-- CSS to style the file input field as button and adjust the Bootstrap progress bars -->
+<link rel="stylesheet" type="text/css"
+	href="../../../css/jquery.fileupload.css"
+	th:href="@{/css/jquery.fileupload.css}" />
+<link rel="stylesheet" type="text/css"
+	href="../../../css/jquery.fileupload-ui.css"
+	th:href="@{/css/jquery.fileupload-ui.css}" />
+
+
+<!-- Bootstrap -->
+<link rel="stylesheet" type="text/css" media="screen"
+	href="../../../css/bootstrap.css" th:href="@{/css/bootstrap.css}" />
+<link rel="stylesheet" type="text/css" media="screen"
+	href="../../../css/bootstrap-sticky-footer.css"
+	th:href="@{/css/bootstrap-sticky-footer.css}" />
+
+
+<!-- app -->
+<link rel="stylesheet" type="text/css" media="screen"
+	href="../../../css/app.css" th:href="@{/css/app.css}" />
+
+<!-- dropzone -->
+<link rel="stylesheet" type="text/css" media="screen"
+	href="../../../css/dropzone.css" th:href="@{/css/dropzone.css}" />
+
+<!-- datepicker -->
+<link rel="stylesheet" type="text/css" media="screen"
+	href="../../../css/bootstrap-datepicker.css"
+	th:href="@{/css/bootstrap-datepicker.css}" />
+
+</head>
+<body>
+	<!-- Docs master nav -->
+	<div th:replace="html/header :: header">
+		<div class="navbar navbar-inverse navbar-static-top bs-docs-nav"
+			id="top" role="banner">
+			<div class="container">
+				<div class="navbar-header">
+					<a th:href="@{/index.jsp}" class="navbar-brand"
+						data-th-text="#{app.name}">Aplicación</a>
+				</div>
+				<nav class="collapse navbar-collapse bs-navbar-collapse"
+					role="navigation">
+					<ul class="nav navbar-nav">
+						<li class="active"><a th:href="@{/index.jsp}"
+							data-th-text="#{go.home}">Go Home </a></li>
+
+						<li class="dropdown"><a href="#" class="dropdown-toggle"
+							data-toggle="dropdown"> <span
+								data-th-text="#{menu.informes}">menu.informes</span> <b
+								class="caret"></b></a>
+							<ul class="dropdown-menu">
+								<li><a th:href="@{/role/pages/1}"
+									data-th-text="#{role.form.list.title}">
+										role.form.list.title </a></li>
+								<li><a th:href="@{/usuario/pages/1}"
+									data-th-text="#{usuario.form.list.title}">
+										usuario.form.list.title </a></li>
+								<li class="divider"></li>
+								<li><a th:href="@{/consulta/pages/1}"
+									data-th-text="#{consulta.form.list.title}">
+										consulta.form.list.title </a></li>
+								<li><a th:href="@{/pestanya/pages/1}"
+									data-th-text="#{pestanya.form.list.title}">
+										pestanya.form.list.title </a></li>
+								<li><a th:href="@{/informe/pages/1}"
+									data-th-text="#{informe.form.list.title}">
+										informe.form.list.title </a></li>
+								<li><a th:href="@{/regladenegocio/pages/1}"
+									data-th-text="#{regladenegocio.form.list.title}">
+										regladenegocio.form.list.title </a></li>
+							</ul></li>
+
+					</ul>
+				</nav>
+			</div>
+		</div>
+	</div>
+
+	<div id="wrap">
+		<div class="container">
+		
+	        <div><!-- inicio contenido -->
+				<form method="POST" class="form-horizontal"
+					th:object="${cneForm}"
+					 th:action="@{/cne/save.html}" >
+		
+					<div class="well">
+
+						<div class="input-group col-md-10 line">
+							<h3><span class="label label-primary" th:text="#{cne.form.new.title}" >
+							</span></h3>
+						</div>
+						
+
+		                <div class="input-group col-md-10 line">
+		                        <div class="col-sm-4 form-group form-param">
+		                            <label class="control-label" for="tipoFacturacion">Tipo Facturacion</label>
+		                    	    <select 
+		                    	    	class="col-sm-2 form-control input-sm" 
+		                    	    	id="tipoFacturacion" name="tipoFacturacion">
+		                                <option value="C">Concertada</option>   
+		                                <option value="P">Personalizada</option>   
+		                    	    </select>   
+		                        </div>
+		                        <div class="col-sm-4 form-group form-param">
+		                            <label class="control-label" for="cif">CIF</label>
+		                            <select 
+		                            	class="col-sm-2 form-control input-sm" 
+		                            	id="cif" name="cuc">
+		                            	<option 
+											th:each="tipo : ${cifs}" 
+											th:value="${tipo.cuc}"
+											th:text="${tipo.nombreClienteLargo}" >nombreClienteLargo 01</option>
+		                            	
+		                            </select>   
+		                        </div>
+		                        <div class="col-sm-4 form-group form-param">
+		                            <label class="control-label" for="servicio">Servicio</label>
+		                            <select 
+		                            	class="col-sm-2 form-control input-sm" 
+		                            	id="servicio" name="tipoDeServicio">
+		                            	<option 
+											th:each="tipo : ${servicios}" 
+											th:value="${tipo.tipoDeServicio}"
+											th:text="${tipo.servicio}" >servicio 01</option>
+									</select>
+		                        </div>
+		                        <div class="col-sm-4 input-group date form-param">
+		                            <input type="text" class="form-control input-sm" id="fecha" name="fecha" placeholder="Fecha" />
+		                            <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>   
+		                        </div>
+		                        <div class="col-sm-12 form-group form-param">
+		                            <label class="control-label" for="descConcepto">Concepto</label>
+		                            <input type="text" class="form-control input-sm" id="descConcepto" name="descConcepto" placeholder="Descripción concepto" />   
+		                        </div>
+		                        <div class="col-sm-4 form-group form-param">
+		                            <label class="control-label" for="importe">Importe</label>
+		                            <input type="number" class="form-control input-sm" id="importe" name="importe" placeholder="0.00" step="0.01" min="0.00" />   
+		                        </div>
+		                        <div class="col-sm-12 form-group form-param">
+		                            <label class="control-label" for="comentarios">Comentarios</label>
+		                            <input type="text" class="form-control input-sm" id="comentarios" name="comentarios" placeholder="Comentarios" />   
+		                        </div>
+		                        
+		                        <div class="form-group form-param">
+								    <div class="col-md-offset-4 col-md-4">
+									    <p class="text-center">
+										    <button id="btn-save" type="submit" class="btn btn-primary">
+											    Guardar
+									    	</button>
+										    <a href="" th:href="@{/cne/search?idAcuerdo={id}(id=${idacuerdo})}"
+											    id="btn-back" class="btn btn-default"> Atrás
+										    </a>
+									    </p>
+		    						</div>
+		    					</div>
+		                        
+		                </div>
+            		</div>
+					 
+
+					 <!-- Spring Security -->
+					 
+					 <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+					 <input type="hidden" id="idacuerdo" name="idacuerdo" th:value="${idacuerdo}"/>
+					 
+					 
+				</form>
+	        </div><!-- fin contenido -->
+		
+
+
+		</div><!-- .container -->
+	</div><!-- #wrap -->
+
+	<div th:replace="html/footer :: footer">
+
+		<div id="footer" th:fragment="footer">
+			<div class="container">
+				<p class="text-muted credit" data-th-text="#{app.name}">footer</p>
+
+
+
+				<!--[if lt IE 9]>
+			<script 
+				src="../../../js/jquery-1.11.2.min.js"
+				th:src="@{/js/jquery-1.11.2.min.js}"></script>
+		<![endif]-->
+
+				<!--[if gte IE 9]> 
+			<script 
+				src="../../../js/jquery-2.1.1.min.js"
+				th:src="@{/js/jquery-2.1.1.min.js}"></script>
+		<![endif]-->
+
+				<!--[if !IE]> -->
+				<script src="../../../js/jquery-2.1.1.min.js"
+					th:src="@{/js/jquery-2.1.1.min.js}"></script>
+				<!-- <![endif]-->
+
+
+				<script src="../../../js/bootstrap.js" th:src="@{/js/bootstrap.js}"></script>
+				<script src="../../../js/jquery-ui.js" th:src="@{/js/jquery-ui.js}"></script>
+				<script src="../../../js/heartcode-canvasloader-min.js"
+					th:src="@{/js/heartcode-canvasloader-min.js}"></script>
+				<script src="../../../js/bootstrap-datepicker.js"
+					th:src="@{/js/bootstrap-datepicker.js}"></script>
+				<script src="../../../js/bootstrap-datepicker.es.js"
+					th:src="@{/js/locales/bootstrap-datepicker.es.js}" charset="UTF-8"></script>
+				<script src="../../../js/bootstrap-datepicker.ca.js"
+					th:src="@{/js/locales/bootstrap-datepicker.ca.js}" charset="UTF-8"></script>
+				<script src="../../../js/app.js"
+					th:src="@{/js/app.js}" charset="UTF-8"></script>
+					
+					
+					
+					
+
+			</div>
+		</div>
+
+	</div>
+
+
+</body>
+</html>

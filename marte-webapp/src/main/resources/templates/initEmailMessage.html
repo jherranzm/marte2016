@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>Correo inicio aplicación</title>
+</head>
+<body>
+	<div style="background-color: #ccc; font-family: Arial; font-size: 14pt; padding: 10px;">
+		<h1 th:text="#{app.name}">Aplicación funcionando!</h1>
+	</div>
+	<div style="padding: 15px 15px 30px 15px; font-family: Verdana, Arial, Helvetica, sans-serif; font-size:1em; background-color: #fff; color:#333;">
+		Número de reinicios:<span data-th-text="${numReinicios}">150</span><br />
+		Número de acuerdos:<span data-th-text="${numAcuerdos}">49</span><br />
+	</div>
+	<div style="padding: 15px 15px 30px 15px; font-family: Verdana, Arial, Helvetica, sans-serif; font-size:1em; background-color: #fff; color:#333;">
+		Fecha último reinicio: <span data-th-text="${ahora}">28-12-2012</span>
+	</div>
+</body>
+</html>

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:fragment="head" >
+	<meta charset="UTF-8" />
+	<title th:text="#{app.name}">AAEE Utilidades</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+
+	<link rel="shortcut icon" th:href="@{/img/icons/favicon.ico}" />
+
+	<!-- CSS to style the file input field as button and adjust the Bootstrap progress bars -->
+	<link rel="stylesheet" type="text/css"
+		href="../../css/jquery.fileupload.css"
+		th:href="@{/css/jquery.fileupload.css}" />
+	<link rel="stylesheet" type="text/css"
+		href="../../css/jquery.fileupload-ui.css"
+		th:href="@{/css/jquery.fileupload-ui.css}" />
+	
+	
+	<!-- Bootstrap -->
+	<link rel="stylesheet" type="text/css" media="screen"
+		href="../../css/bootstrap.css" 
+		th:href="@{/css/bootstrap.css}" />
+	<link rel="stylesheet" type="text/css" media="screen"
+		href="../../css/bootstrap-sticky-footer.css" 
+		th:href="@{/css/bootstrap-sticky-footer.css}" />
+
+
+	<!-- app -->
+	<link rel="stylesheet" type="text/css" media="screen"
+		href="../../css/app.css" 
+		th:href="@{/css/app.css}" />
+
+	<!-- dropzone -->
+	<link rel="stylesheet" type="text/css" media="screen"
+		href="../../css/dropzone.css" 
+		th:href="@{/css/dropzone.css}" />
+
+	<!-- datepicker -->
+	<link rel="stylesheet" type="text/css" media="screen"
+		href="../../css/bootstrap-datepicker.css" 
+		th:href="@{/css/bootstrap-datepicker.css}" />
+	
+</head>
+<body>
+
+				<div th:fragment="search">
+					<div id="search" class="col-sm-12">
+						<form method="post" class="form-horizontal form-inline"
+							th:action="@{/acuerdoccff/search.html}"
+							th:object="${searchForm}">
+							
+							<div class="col-sm-12">
+								<div class=" col-sm-3">
+									<label for="queTipo" 
+										th:text="#{acuerdoccff.form.field.tipoDeServicio}">Tipo de Servicio</label>
+								</div>
+
+								<div class=" col-sm-2">
+									<label for="queCuota" 
+										th:text="#{acuerdoccff.form.field.conceptoFacturable}">Concepto</label>
+								</div>
+
+								<div class=" col-sm-2">
+									<label for="quePrecio" 
+										th:text="#{acuerdoccff.form.field.precioEspecial}">Precio Especial</label>
+								</div>
+
+								<div class=" col-sm-2">
+									<label for="queTipoPrecio" 
+										th:text="#{acuerdoccff.form.field.tipoPrecioEspecial}">Tipo Precio Especial</label>
+								</div>
+								
+								<div class=" col-sm-2">
+								</div>
+							</div>
+							<div class="col-sm-12">
+								<div class=" col-sm-3">
+									<select 
+										id="queTipo" name="queTipo" 
+										class="form-control input-sm" th:remove="all-but-first">
+										<option th:each="tipo : ${tipos}" 
+											th:value="${tipo.tipoDeServicio}"
+											th:text="${tipo.descTipoDeServicio}">CECO 02</option>
+										<option>option1</option>
+										<option>option2</option>
+										<option>option3</option>
+									</select>
+								</div>
+
+								<div class=" col-sm-2">
+									<input id="queCuota" name="queCuota" type="text"
+									class="form-control input-sm" 
+									value=""  />
+								</div>
+								
+								<div class=" col-sm-2">
+									<select 
+										id="quePrecio" name="quePrecio" 
+										class="form-control input-sm" th:remove="all-but-first">
+										<option th:each="precio : ${precios}" 
+											th:value="${precio}"
+											th:text="${precio}">SI</option>
+										<option>NO</option>
+										<option>REVISAR</option>
+									</select>
+								</div>
+								
+								<div class=" col-sm-2">
+									<select 
+										id="queTipoPrecio" name="queTipoPrecio" 
+										class="form-control input-sm" th:remove="all-but-first">
+										<option th:each="tipoprecio : ${tiposprecio}" 
+											th:value="${tipoprecio}"
+											th:text="${tipoprecio}">BOE</option>
+										<option>PPI</option>
+										<option>DTO</option>
+									</select>
+								</div>
+
+								<div class=" col-sm-2">
+									<button id="btn-save" type="submit" class="btn-sm btn-primary" >
+										 <span class="glyphicon glyphicon-search"></span>
+									</button>
+								</div>
+								
+								
+								<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+								<input type="hidden" name="idAcuerdo" th:value="${acuerdoForm.id}"/>
+							</div>
+						</form>
+						
+					</div>
+				</div>
+				
+</body>
+</html>

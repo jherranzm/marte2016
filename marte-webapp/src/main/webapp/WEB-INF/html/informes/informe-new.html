@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="html/header :: head">
+	<meta charset="UTF-8" />
+	<title th:text="#{app.name}">Informe-Nuevo</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	
+	
+	<link rel="shortcut icon" th:href="@{/img/icons/favicon.ico}" />
+	
+	<!-- CSS to style the file input field as button and adjust the Bootstrap progress bars -->
+	<link rel="stylesheet" type="text/css"
+		href="../../../css/jquery.fileupload.css"
+		th:href="@{/css/jquery.fileupload.css}" />
+	<link rel="stylesheet" type="text/css"
+		href="../../../css/jquery.fileupload-ui.css"
+		th:href="@{/css/jquery.fileupload-ui.css}" />
+	
+	
+	<!-- Bootstrap -->
+	<link rel="stylesheet" type="text/css" media="screen"
+		href="../../../css/bootstrap.css" th:href="@{/css/bootstrap.css}" />
+	<link rel="stylesheet" type="text/css" media="screen"
+		href="../../../css/bootstrap-sticky-footer.css"
+		th:href="@{/css/bootstrap-sticky-footer.css}" />
+	
+	
+	<!-- app -->
+	<link rel="stylesheet" type="text/css" media="screen"
+		href="../../../css/app.css" th:href="@{/css/app.css}" />
+	
+	<!-- dropzone -->
+	<link rel="stylesheet" type="text/css" media="screen"
+		href="../../../css/dropzone.css" th:href="@{/css/dropzone.css}" />
+	
+	<!-- datepicker -->
+	<link rel="stylesheet" type="text/css" media="screen"
+		href="../../../css/bootstrap-datepicker.css"
+		th:href="@{/css/bootstrap-datepicker.css}" />
+	
+</head>
+
+<body>
+	<!-- Docs master nav -->
+	<div th:replace="html/header :: header">
+		<div class="navbar navbar-inverse navbar-static-top bs-docs-nav"
+			id="top" role="banner">
+			<div class="container">
+				<div class="navbar-header">
+					<a th:href="@{/index.jsp}" class="navbar-brand"
+						data-th-text="#{app.name}">Aplicación</a>
+				</div>
+				<nav class="collapse navbar-collapse bs-navbar-collapse"
+					role="navigation">
+					<ul class="nav navbar-nav">
+						<li class="active"><a th:href="@{/index.jsp}"
+							data-th-text="#{go.home}">Go Home </a></li>
+
+						<li class="dropdown"><a href="#" class="dropdown-toggle"
+							data-toggle="dropdown"> <span
+								data-th-text="#{menu.informes}">menu.informes</span> <b
+								class="caret"></b></a>
+							<ul class="dropdown-menu">
+								<li><a th:href="@{/role/pages/1}"
+									data-th-text="#{role.form.list.title}">
+										role.form.list.title </a></li>
+								<li><a th:href="@{/usuario/pages/1}"
+									data-th-text="#{usuario.form.list.title}">
+										usuario.form.list.title </a></li>
+								<li class="divider"></li>
+								<li><a th:href="@{/informe/pages/1}"
+									data-th-text="#{informe.form.list.title}">
+										informe.form.list.title </a></li>
+								<li><a th:href="@{/pestanya/pages/1}"
+									data-th-text="#{pestanya.form.list.title}">
+										pestanya.form.list.title </a></li>
+								<li><a th:href="@{/informe/pages/1}"
+									data-th-text="#{informe.form.list.title}">
+										informe.form.list.title </a></li>
+								<li><a th:href="@{/regladenegocio/pages/1}"
+									data-th-text="#{regladenegocio.form.list.title}">
+										regladenegocio.form.list.title </a></li>
+							</ul></li>
+
+					</ul>
+				</nav>
+			</div>
+		</div>
+	</div>
+
+	<div id="wrap">
+		<div class="container">
+		
+			<div id="informe-form" class="panel panel-primary">
+		
+				<!-- cabecera -->
+				
+				<div id="informe-form-titulo" class="panel-heading">
+					<h3 class="panel-title">
+						<span th:text="#{informe.form.new.title}">informe.form.new.title</span>
+					</h3>
+				</div>
+
+	        	<!-- contenido -->
+	        	
+		        <div id="informe-form-contenido"><!-- inicio contenido -->
+		        	<form id="informe-form-new" 
+			        	method="post" class="form-horizontal"
+						th:action="@{/informe/save.html}"
+						th:object="${informeForm}">
+					
+						<!-- Botones Save & Back superiores -->
+						<div class="form-group line">
+							<div class="col-md-offset-4 col-md-4">
+								<p class="text-center">
+									<button id="btn-save-up" type="submit" class="btn btn-primary" 
+										th:text="#{informe.form.btn.save}" >Guardar
+									</button>
+								    <a th:href="@{/informe/list.html}"
+									    id="btn-back-up" class="btn btn-default"  
+									    th:text="#{informe.form.btn.back}"> Atrás
+								    </a>
+								</p>
+							</div>
+						</div>
+						
+						<div class="form-group">
+							<label for="nombre" class="col-sm-2 control-label"
+								th:text="#{informe.form.field.nombre}" >Nombre
+							</label>
+							<div class="col-sm-8">
+								<input type="text" 
+									id="nombre" name="nombre" 
+									class="form-control input-sm" 
+									placeholder="#{informe.form.field.nombre}" />
+							</div> 
+						</div>
+						
+						<div class="form-group">
+							<div class="col-sm-1">
+							</div>
+							<div class="col-sm-4">
+								<ol id="informe-new-sortableD" class="connectedSortable list-group">
+										<li th:each="pestanya : ${informeForm.disponibles}"
+										th:id="${'pestanya_' + pestanya.id}" class="list-group-item">
+										<span class="listItemLabel" th:text="${pestanya.nombre}">Nombre</span>
+										</li>
+								</ol>
+							</div> 
+							
+							<div class="list-arrows col-sm-1 text-center vertical-center">
+					            <button class="btn btn-default btn-sm move-left">
+					                <span class="glyphicon glyphicon-chevron-left"></span>
+					            </button>
+				
+					            <button class="btn btn-default btn-sm move-right">
+					                <span class="glyphicon glyphicon-chevron-right"></span>
+					            </button>
+					        </div>
+							
+							
+							<div class="col-sm-4">
+								<ol id="informe-new-sortableA" class="connectedSortable list-group"  
+									th:if="${#lists.size(informeForm.asignadas) == 0}">
+									<li id="pestanya_0" class="list-group-item">
+										<span class="listItemLabel">Add tabs here...</span>
+									</li>
+								</ol>
+								<ol id="sortableA" class="connectedSortable list-group">
+										<li th:each="pestanya : ${informeForm.asignadas}"
+										th:id="${'pestanya_' + pestanya.id}" class="list-group-item">
+										<span class="listItemLabel" th:text="${pestanya.nombre}">Nombre</span>
+										</li>
+								</ol>
+								
+								<input id="ordenadas" name="ordenadas" type="hidden" value=""/>
+							</div> 
+							<div class="col-sm-1">
+							</div>
+						</div>
+					
+					
+						<!-- Botones Save & Back inferiores -->
+						<div class="form-group line">
+							<div class="col-md-offset-4 col-md-4">
+								<p class="text-center">
+									<button id="btn-save-down" type="submit" class="btn btn-primary" 
+										th:text="#{informe.form.btn.save}" >Guardar
+									</button>
+								    <a th:href="@{/informe/list.html}"
+									    id="btn-back-down" class="btn btn-default"  
+									    th:text="#{informe.form.btn.back}"> Atrás
+								    </a>
+								</p>
+							</div>
+						</div>
+					
+						<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+					</form>
+		        	
+		        </div><!-- #informe-form-contenido -->
+			
+			</div><!-- #informe-form -->
+		
+		</div><!-- .container -->
+		
+	</div><!-- #wrap -->
+
+	<div th:replace="html/footer :: footer">
+
+		<div id="footer" th:fragment="footer">
+			<div class="container">
+				<p class="text-muted credit" data-th-text="#{app.name}">footer</p>
+
+
+
+				<!--[if lt IE 9]>
+			<script 
+				src="../../js/jquery-1.11.2.min.js"
+				th:src="@{/js/jquery-1.11.2.min.js}"></script>
+		<![endif]-->
+
+				<!--[if gte IE 9]> 
+			<script 
+				src="../../js/jquery-2.1.1.min.js"
+				th:src="@{/js/jquery-2.1.1.min.js}"></script>
+		<![endif]-->
+
+				<!--[if !IE]> -->
+				<script src="../../js/jquery-2.1.1.min.js"
+					th:src="@{/js/jquery-2.1.1.min.js}"></script>
+				<!-- <![endif]-->
+
+
+				<script src="../../js/bootstrap.js" th:src="@{/js/bootstrap.js}"></script>
+				<script src="../../js/jquery-ui.js" th:src="@{/js/jquery-ui.js}"></script>
+				<script src="../../js/heartcode-canvasloader-min.js"
+					th:src="@{/js/heartcode-canvasloader-min.js}"></script>
+				<script src="../../js/bootstrap-datepicker.js"
+					th:src="@{/js/bootstrap-datepicker.js}"></script>
+				<script src="../../js/bootstrap-datepicker.es.js"
+					th:src="@{/js/locales/bootstrap-datepicker.es.js}" charset="UTF-8"></script>
+				<script src="../../js/bootstrap-datepicker.ca.js"
+					th:src="@{/js/locales/bootstrap-datepicker.ca.js}" charset="UTF-8"></script>
+
+			</div>
+		</div>
+
+	</div>
+
+
+
+</body>
+</html>

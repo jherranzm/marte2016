@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="html/header :: head">
+	<meta charset="UTF-8" />
+	<title>Concepto Facturable</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+	<link rel="shortcut icon" th:href="@{/img/icons/favicon.ico}" />
+
+	<!-- CSS to style the file input field as button and adjust the Bootstrap progress bars -->
+	<link rel="stylesheet" type="text/css"
+		href="../../css/jquery.fileupload.css"
+		th:href="@{/css/jquery.fileupload.css}" />
+	<link rel="stylesheet" type="text/css"
+		href="../../css/jquery.fileupload-ui.css"
+		th:href="@{/css/jquery.fileupload-ui.css}" />
+	
+	<!-- Bootstrap -->
+	<link rel="stylesheet" type="text/css" media="screen"
+		href="../../css/bootstrap.css" 
+		th:href="@{/css/bootstrap.css}" />
+	<link rel="stylesheet" type="text/css" media="screen"
+		href="../../css/bootstrap-sticky-footer.css" 
+		th:href="@{/css/bootstrap-sticky-footer.css}" />
+
+	<!-- app -->
+	<link rel="stylesheet" type="text/css" media="screen"
+		href="../../css/app.css" 
+		th:href="@{/css/app.css}" />
+
+	<!-- dropzone -->
+	<link rel="stylesheet" type="text/css" media="screen"
+		href="../../css/dropzone.css" 
+		th:href="@{/css/dropzone.css}" />
+
+	<!-- datepicker -->
+	<link rel="stylesheet" type="text/css" media="screen"
+		href="../../css/bootstrap-datepicker.css" 
+		th:href="@{/css/bootstrap-datepicker.css}" />
+	
+	<title data-th-text="#{app.name}">Titulo</title>
+
+</head>
+<body>
+
+<!-- Docs master nav -->
+<div th:replace="html/header :: header">
+	<div class="navbar navbar-inverse navbar-static-top bs-docs-nav"
+	id="top" role="banner" th:fragment="header">	
+		<div class="container">
+			<div class="navbar-header">
+				<a th:href="@{/index.jsp}" class="navbar-brand" 
+					data-th-text="#{app.name}">AAEE</a>
+			</div>
+			<div class="collapse navbar-collapse bs-navbar-collapse"
+				role="navigation">
+				<ul class="nav navbar-nav">
+					<li class="active"><a
+						th:href="@{/index.jsp}"
+						data-th-text="#{go.home}">Go Home
+					</a></li>
+	
+					<li sec:authorize="hasRole('ROLE_ADMIN')" class="dropdown"><a href="#" class="dropdown-toggle"
+							data-toggle="dropdown" > 
+							<span data-th-text="#{menu.informes}">menu.informes</span>
+							<b class="caret"></b></a>
+							<ul class="dropdown-menu">
+								<li><a
+									th:href="@{/role/pages/1}" data-th-text="#{role.form.list.title}">
+										role.form.list.title
+								</a></li>
+								<li><a
+									th:href="@{/usuario/pages/1}" data-th-text="#{usuario.form.list.title}">
+										usuario.form.list.title
+								</a></li>
+								<li class="divider"></li>
+								<li><a
+									th:href="@{/consulta/pages/1}" data-th-text="#{consulta.form.list.title}">
+										consulta.form.list.title
+								</a></li>
+								<li><a
+									th:href="@{/pestanya/pages/1}" data-th-text="#{pestanya.form.list.title}">
+										pestanya.form.list.title
+								</a></li>
+								<li><a
+									th:href="@{/informe/pages/1}" data-th-text="#{informe.form.list.title}">
+										informe.form.list.title
+								</a></li>
+								<li><a
+									th:href="@{/regladenegocio/pages/1}" data-th-text="#{regladenegocio.form.list.title}">
+										regladenegocio.form.list.title
+								</a></li>
+							</ul></li>
+			
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="wrap">
+	<div class="container">
+	
+		<form method="post" class="form-horizontal"
+			th:action="@{/seg/edit/{id}(id=${cliente.id})}" 
+			th:object="${cliente}">
+
+			<div class="panel panel-default">
+				<div class="panel-body">
+
+					<div class="form-group">
+						<label for="cliente" class="col-sm-2 control-label" th:text="#{cliente.form.field.cliente}">
+							Cliente
+						</label>
+						<div class="col-sm-2">
+							<input id="cucCliente" name="cucCliente" type="text" 
+							class="form-control input-sm" 
+							th:field="${cliente.cucCliente}" 
+							value="12345678" 
+							th:disabled="disabled"
+							disabled="disabled"
+							/>
+						</div> 
+						<div class="col-sm-8">
+							<input id="cliente" name="cliente" type="text" 
+							class="form-control input-sm" 
+							th:field="${cliente.cliente}" 
+							value="LA12345678 - Nombre Cliente" 
+							th:disabled="disabled"
+							disabled="disabled"
+							/>
+						</div> 
+					</div>
+			
+					<div class="form-group">
+						<label for="clienteG" class="col-sm-2 control-label" th:text="#{cliente.form.field.clienteG}">
+							SupraCliente
+						</label>
+						<div class="col-sm-2">
+							<input id="cucClienteG" name="cucClienteG" type="text" 
+							class="form-control input-sm" 
+							th:field="${cliente.cucClienteG}" 
+							value="12345678"
+							th:disabled="disabled"
+							disabled="disabled"
+							/>
+						</div> 
+						<div class="col-sm-8">
+							<input id="clienteG" name="clienteG" type="text" 
+							class="form-control input-sm" 
+							th:field="${cliente.clienteG}" 
+							value="LA12345678 - Nombre Supra Cliente" 
+							th:disabled="disabled"
+							disabled="disabled"
+							/>
+						</div> 
+					</div>
+			
+				</div>
+			</div>
+
+			<div class="panel panel-default">
+				<div class="panel-body">
+
+					<div class="form-group">
+						<label for="segmento" class="col-sm-2 control-label" th:text="#{cliente.form.field.segmento}">
+							Segmento
+						</label>
+						<div class="col-sm-2">
+							<input id="segmento" name="segmento" type="text" 
+							class="form-control input-sm" 
+							th:field="${cliente.codSegmento}" 
+							value="00" 
+							th:disabled="disabled"
+							disabled="disabled"
+							/>
+						</div> 
+						<label for="subSegmento" class="col-sm-2 control-label" th:text="#{cliente.form.field.subsegmento}">
+							SubSegmento
+						</label>
+						<div class="col-sm-2">
+							<input id="subSegmento" name="subSegmento" type="text" 
+							class="form-control input-sm" 
+							th:field="${cliente.codSubSegmento}" 
+							value="00" 
+							th:disabled="disabled"
+							disabled="disabled"
+							/>
+						</div> 
+						<label for="codNivelDeAtencion" class="col-sm-2 control-label" th:text="#{cliente.form.field.codNivelDeAtencion}">
+							Nivel de Atención
+						</label>
+						<div class="col-sm-2">
+							<input id="codNivelDeAtencion" name="codNivelDeAtencion" type="text" 
+							class="form-control input-sm" 
+							th:field="${cliente.codNivelDeAtencion}" 
+							value="codNivelDeAtencion" 
+							th:disabled="disabled"
+							disabled="disabled"
+							/>
+						</div> 
+					</div>
+			
+					<div class="form-group">
+						<label for="gerencia" class="col-sm-2 control-label" th:text="#{cliente.form.field.gerencia}">
+							Gerencia
+						</label>
+						<div class="col-sm-10">
+							<input id="gerencia" name="gerencia" type="text" 
+							class="form-control input-sm" 
+							th:field="${cliente.gerencia}" 
+							value="00 - Nombre Gerencia" 
+							th:disabled="disabled"
+							disabled="disabled"
+							/>
+						</div> 
+					</div>
+			
+					<div class="form-group">
+						<label for="Sector" class="col-sm-2 control-label" th:text="#{cliente.form.field.sector}">
+							Sector
+						</label>
+						<div class="col-sm-4">
+							<input id="gerencia" name="gerencia" type="text" 
+							class="form-control input-sm" 
+							th:field="${cliente.sector}" 
+							value="04 - GGCC TERRITORIALIZADO" 
+							th:disabled="disabled"
+							disabled="disabled"
+							/>
+						</div> 
+
+						<label for="SubSector" class="col-sm-2 control-label" th:text="#{cliente.form.field.subsector}">
+							SubSector
+						</label>
+						<div class="col-sm-4">
+							<input id="SubSector" name="SubSector" type="text" 
+							class="form-control input-sm" 
+							th:field="${cliente.subSector}" 
+							value="0408 - TERRITORIO AAPP" 
+							th:disabled="disabled"
+							disabled="disabled"
+							/>
+						</div> 
+					</div>
+			
+				</div>
+			</div>
+
+
+			<div class="panel panel-default">
+				<div class="panel-body">
+					<div class="form-group">
+						<label for="vendedor" class="col-sm-2 control-label" th:text="#{cliente.form.field.vendedor}">
+							Vendedor
+						</label>
+						<div class="col-sm-2">
+							<input id="matVendedor" name="matVendedor" type="text" 
+							class="form-control input-sm" 
+							th:field="${cliente.matVendedor}" 
+							value="t123456" 
+							th:disabled="disabled"
+							disabled="disabled"
+							/>
+						</div> 
+						<div class="col-sm-8">
+							<input id="nomVendedor" name="nomVendedor" type="text" 
+							class="form-control input-sm" 
+							th:field="${cliente.nomVendedor}" 
+							value="Apellido1 Apellido2, Nombre" 
+							th:disabled="disabled"
+							disabled="disabled"
+							/>
+						</div> 
+					</div>
+					
+					<div class="form-group">
+						<label for="desarrollador" class="col-sm-2 control-label" th:text="#{cliente.form.field.desarrollador}">
+							Desarrollador
+						</label>
+						<div class="col-sm-2">
+							<input id="matDesarrollador" name="matDesarrollador" type="text" 
+							class="form-control input-sm" 
+							th:field="${cliente.matDesarrollador}" 
+							value="t123456" 
+							th:disabled="disabled"
+							disabled="disabled"
+							/>
+						</div> 
+						<div class="col-sm-8">
+							<input id="nomDesarrollador" name="nomDesarrollador" type="text" 
+							class="form-control input-sm" 
+							th:field="${cliente.nomDesarrollador}" 
+							value="Apellido1 Apellido2, Nombre" 
+							th:disabled="disabled"
+							disabled="disabled"
+							/>
+						</div> 
+					</div>
+					
+					<div class="form-group">
+						<label for="jventas" class="col-sm-2 control-label" th:text="#{cliente.form.field.jventas}">
+							JVentas
+						</label>
+						<div class="col-sm-2">
+							<input id="matJVentas" name="matJVentas" type="text" 
+							class="form-control input-sm" 
+							th:field="${cliente.matJVentas}" 
+							value="t123456" 
+							th:disabled="disabled"
+							disabled="disabled"
+							/>
+						</div> 
+						<div class="col-sm-8">
+							<input id="nomJVentas" name="nomJVentas" type="text" 
+							class="form-control input-sm" 
+							th:field="${cliente.nomJVentas}" 
+							value="Apellido1 Apellido2, Nombre" 
+							th:disabled="disabled"
+							disabled="disabled"
+							/>
+						</div> 
+					</div>
+					
+					<div class="form-group">
+						<label for="jarea" class="col-sm-2 control-label" th:text="#{cliente.form.field.jarea}">
+							JArea
+						</label>
+						<div class="col-sm-2">
+							<input id="matJArea" name="matJArea" type="text" 
+							class="form-control input-sm" 
+							th:field="${cliente.matJArea}" 
+							value="t123456" 
+							th:disabled="disabled"
+							disabled="disabled"
+							/>
+						</div> 
+						<div class="col-sm-8">
+							<input id="nomJArea" name="nomJArea" type="text" 
+							class="form-control input-sm" 
+							th:field="${cliente.nomJArea}" 
+							value="Apellido1 Apellido2, Nombre" 
+							th:disabled="disabled"
+							disabled="disabled"
+							/>
+						</div> 
+					</div>
+					
+					<div class="form-group">
+						<label for="gerente" class="col-sm-2 control-label" th:text="#{cliente.form.field.gerente}">
+							Gerente
+						</label>
+						<div class="col-sm-2">
+							<input id="matGerente" name="matGerente" type="text" 
+							class="form-control input-sm" 
+							th:field="${cliente.matGerente}" 
+							value="t123456" 
+							th:disabled="disabled"
+							disabled="disabled"
+							/>
+						</div> 
+						<div class="col-sm-8">
+							<input id="nomGerente" name="nomGerente" type="text" 
+							class="form-control input-sm" 
+							th:field="${cliente.nomGerente}" 
+							value="Apellido1 Apellido2, Nombre" 
+							th:disabled="disabled"
+							disabled="disabled"
+							/>
+						</div> 
+					</div>
+					
+				</div>
+			</div>
+					
+					<div class="form-group form-param">
+				    	<div class="col-md-offset-4 col-md-4">
+						    <p class="text-center">
+							    <a th:href="@{/seg/search?queBuscar={que}(que=${cliente.cucClienteG})}"
+								    id="btn-back" class="btn btn-default"  th:text="#{cliente.form.btn.back}"> Atrás
+							    </a>
+						    </p>
+  						</div>
+  					</div>
+			
+		</form>
+	
+	</div><!-- .container -->	
+</div><!-- #wrap -->	
+	
+<div th:replace="html/footer :: footer">
+
+	<div id="footer" th:fragment="footer">
+		<div class="container">
+			<p class="text-muted credit" data-th-text="#{app.name}">
+				footer
+			</p>
+
+
+	
+		<!--[if lt IE 9]>
+			<script 
+				src="../../js/jquery-1.11.2.min.js"
+				th:src="@{/js/jquery-1.11.2.min.js}"></script>
+		<![endif]-->
+		
+		<!--[if gte IE 9]> 
+			<script 
+				src="../../js/jquery-2.1.1.min.js"
+				th:src="@{/js/jquery-2.1.1.min.js}"></script>
+		<![endif]-->
+		
+		<!--[if !IE]> -->
+			<script 
+				src="../../js/jquery-2.1.1.min.js"
+				th:src="@{/js/jquery-2.1.1.min.js}"></script>
+		<!-- <![endif]-->
+		
+			
+			<script src="../../js/bootstrap.js"
+				th:src="@{/js/bootstrap.js}"></script>
+			<script src="../../js/jquery-ui.js"
+				th:src="@{/js/jquery-ui.js}"></script>
+			<script src="../../js/heartcode-canvasloader-min.js"
+				th:src="@{/js/heartcode-canvasloader-min.js}"></script>
+			<script src="../../js/bootstrap-datepicker.js"
+				th:src="@{/js/bootstrap-datepicker.js}"></script>
+			<script src="../../js/bootstrap-datepicker.es.js"
+				th:src="@{/js/locales/bootstrap-datepicker.es.js}" charset="UTF-8"></script>
+			<script src="../../js/bootstrap-datepicker.ca.js"
+				th:src="@{/js/locales/bootstrap-datepicker.ca.js}" charset="UTF-8"></script>
+			
+		</div>
+	</div>
+
+</div>
+
+
+</body>
+</html>

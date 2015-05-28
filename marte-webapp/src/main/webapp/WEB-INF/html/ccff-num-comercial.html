@@ -1,0 +1,36 @@
+
+					<div th:fragment="num-comercial" 
+						id="info-num-comercial" 
+						th:if="${#lists.size(page.content) > 0}">
+						
+						<div th:replace="html/pagination-det :: paginationbar"></div>
+
+						<div class="row">
+
+							<table
+								class="table table-hover table-striped table-bordered table-condensed">
+								<thead>
+									<tr>
+										<th th:text="#{numerocomercial.form.field.multiconexion}">Multiconexión</th>
+										<th th:text="#{numerocomercial.form.field.numeroComercial}">Número Comercial</th>
+										<th th:text="#{numerocomercial.form.field.numeroComercialAsociado}">Número Comercial Asociado</th>
+										
+										<th th:text="#{numerocomercial.form.field.fechaIniPeriodo}">Número Comercial Asociado</th>
+										<th th:text="#{numerocomercial.form.field.fechaFinPeriodo}">Número Comercial Asociado</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr th:each="numerocomercial : ${page.content}">
+										
+										<td th:text="${numerocomercial.multiconexion}">numerocomercial.precioEspecial</td>
+										<td th:text="${numerocomercial.numeroComercial}">numerocomercial.tipoPrecioEspecial</td>
+										<td th:text="${numerocomercial.numeroComercialAsociado}">numerocomercial.tipoPrecioEspecial</td>
+										
+										<td th:text="${numerocomercial.fechaIniPeriodo}">numerocomercial.tipoPrecioEspecial</td>
+										<td th:text="${numerocomercial.fechaFinPeriodo}">numerocomercial.tipoPrecioEspecial</td>
+
+									</tr>
+								</tbody>
+							</table>
+						</div><!-- .row -->
+					</div><!-- #info-num-comercial -->

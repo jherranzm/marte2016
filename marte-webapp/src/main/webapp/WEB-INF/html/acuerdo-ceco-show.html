@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="html/header :: head">
+<meta charset="UTF-8" />
+<title th:text="#{app.name}">AAEE Utilidades</title>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+
+<link rel="shortcut icon" th:href="@{/img/icons/favicon.ico}" />
+
+<!-- CSS to style the file input field as button and adjust the Bootstrap progress bars -->
+<link rel="stylesheet" type="text/css"
+	href="../../css/jquery.fileupload.css"
+	th:href="@{/css/jquery.fileupload.css}" />
+<link rel="stylesheet" type="text/css"
+	href="../../css/jquery.fileupload-ui.css"
+	th:href="@{/css/jquery.fileupload-ui.css}" />
+
+
+<!-- Bootstrap -->
+<link rel="stylesheet" type="text/css" media="screen"
+	href="../../css/bootstrap.css" th:href="@{/css/bootstrap.css}" />
+<link rel="stylesheet" type="text/css" media="screen"
+	href="../../css/bootstrap-sticky-footer.css"
+	th:href="@{/css/bootstrap-sticky-footer.css}" />
+
+
+<!-- app -->
+<link rel="stylesheet" type="text/css" media="screen"
+	href="../../css/app.css" th:href="@{/css/app.css}" />
+
+<!-- dropzone -->
+<link rel="stylesheet" type="text/css" media="screen"
+	href="../../css/dropzone.css" th:href="@{/css/dropzone.css}" />
+
+<!-- datepicker -->
+<link rel="stylesheet" type="text/css" media="screen"
+	href="../../css/bootstrap-datepicker.css"
+	th:href="@{/css/bootstrap-datepicker.css}" />
+
+</head>
+<body>
+	<!-- Docs master nav -->
+	<div th:replace="html/header :: header">
+		<div class="navbar navbar-inverse navbar-static-top bs-docs-nav"
+			id="top" role="banner">
+			<div class="container">
+				<div class="navbar-header">
+					<a th:href="@{/index.jsp}" class="navbar-brand"
+						data-th-text="#{app.name}">Aplicación</a>
+				</div>
+				<nav class="collapse navbar-collapse bs-navbar-collapse"
+					role="navigation">
+					<ul class="nav navbar-nav">
+						<li class="active"><a th:href="@{/index.jsp}"
+							data-th-text="#{go.home}">Go Home </a></li>
+
+						<li class="dropdown"><a href="#" class="dropdown-toggle"
+							data-toggle="dropdown"> <span
+								data-th-text="#{menu.informes}">menu.informes</span> <b
+								class="caret"></b></a>
+							<ul class="dropdown-menu">
+								<li><a th:href="@{/role/pages/1}"
+									data-th-text="#{role.form.list.title}">
+										role.form.list.title </a></li>
+								<li><a th:href="@{/usuario/pages/1}"
+									data-th-text="#{usuario.form.list.title}">
+										usuario.form.list.title </a></li>
+								<li class="divider"></li>
+								<li><a th:href="@{/consulta/pages/1}"
+									data-th-text="#{consulta.form.list.title}">
+										consulta.form.list.title </a></li>
+								<li><a th:href="@{/pestanya/pages/1}"
+									data-th-text="#{pestanya.form.list.title}">
+										pestanya.form.list.title </a></li>
+								<li><a th:href="@{/informe/pages/1}"
+									data-th-text="#{informe.form.list.title}">
+										informe.form.list.title </a></li>
+								<li><a th:href="@{/regladenegocio/pages/1}"
+									data-th-text="#{regladenegocio.form.list.title}">
+										regladenegocio.form.list.title </a></li>
+							</ul></li>
+
+					</ul>
+				</nav>
+			</div>
+		</div>
+	</div>
+
+	<div id="wrap">
+		<div class="container">
+
+			<div class="tab-content">
+				<div class="tab-pane active" id="cecos">
+					<div th:replace="html/breadcrumb :: breadcrumb('cecos')"></div>
+					
+					<div th:replace="html/acuerdo-ceco-search :: search"></div>
+					
+					
+					<div id="no-cecos" th:if="${#lists.size(page.content) == 0}"
+						class="alert alert-danger col-sm-12" role="alert">
+						<p>
+							<span><strong th:text="#{acuerdo.without.cecos.title}">Acuerdo
+									SIN Centros de Coste Asignados</strong></span> 
+									<span th:text="#{acuerdo.without.cecos.explanation}">Lorem ipsum dolor...</span>
+						</p>
+					</div>
+
+					<div id="info-cecos" th:if="${#lists.size(page.content) > 0}"  class="col-sm-12">
+						<div th:replace="html/pagination-url :: paginationbar"></div>
+
+						<div class="row">
+
+							<table
+								class="table table-hover table-striped table-bordered table-condensed">
+								<thead>
+									<tr>
+										<th th:text="#{acuerdoceco.form.field.tipoDeServicio}">Tipo de Servicio</th>
+
+										<th th:text="#{acuerdoceco.form.field.multiconexion}">Multiconexión</th>
+										<th th:text="#{acuerdoceco.form.field.numeroComercial}">Número Comercial</th>
+										<th th:text="#{acuerdoceco.form.field.numeroComercialAsociado}">Número Comercial Asociado</th>
+										<th th:text="#{acuerdoceco.form.field.cargo}">Cargo</th>
+
+										<th th:text="#{acuerdoceco.form.field.ceco01}">CECO 01</th>
+										<th th:text="#{acuerdoceco.form.field.ceco02}">CECO 02</th>
+										<th th:text="#{acuerdoceco.form.field.ceco03}">CECO 03</th>
+										<th th:text="#{acuerdoceco.form.field.ceco04}">CECO 04</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr th:each="ceco : ${page.content}"
+										th:class="(${ceco.ceco01} != '') ? 'success' : ''">
+										<td th:title="${ceco.descTipoDeServicio}"
+											th:text="${ceco.tipoDeServicio}">01</td>
+
+										<td th:text="${ceco.multiconexion}">08931234567</td>
+										<td th:text="${ceco.numeroComercial}">931234567</td>
+										<td th:text="${ceco.numeroComercialAsociado}">931234567</td>
+										<td th:text="${ceco.cargo}">Cargo</td>
+
+										<td th:text="${ceco.ceco01}">ceco 01</td>
+										<td th:text="${ceco.ceco02}">ceco 02</td>
+										<td th:text="${ceco.ceco03}">ceco 03</td>
+										<td th:text="${ceco.ceco04}">ceco 04</td>
+										
+										<td><a href="/acuerdoceco/edit/${ceco.id}.html"
+											th:href="@{/acuerdoceco/edit/{id}.html(id=${ceco.id})}"
+											class="btn btn-primary btn-xs"> <span
+												class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+										</a></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<!-- .row -->
+					</div>
+					<!-- #info-cecos -->
+				</div>
+				<!-- #cecos -->
+			</div>
+			<!-- .tab-content -->
+
+		</div>
+		<!-- .container -->
+	</div>
+	<!-- #wrap -->
+
+	<div th:replace="html/footer :: footer">
+
+		<div id="footer" th:fragment="footer">
+			<div class="container">
+				<p class="text-muted credit" data-th-text="#{app.name}">footer</p>
+
+
+
+				<!--[if lt IE 9]>
+			<script 
+				src="../../js/jquery-1.11.2.min.js"
+				th:src="@{/js/jquery-1.11.2.min.js}"></script>
+		<![endif]-->
+
+				<!--[if gte IE 9]> 
+			<script 
+				src="../../js/jquery-2.1.1.min.js"
+				th:src="@{/js/jquery-2.1.1.min.js}"></script>
+		<![endif]-->
+
+				<!--[if !IE]> -->
+				<script src="../../js/jquery-2.1.1.min.js"
+					th:src="@{/js/jquery-2.1.1.min.js}"></script>
+				<!-- <![endif]-->
+
+
+				<script src="../../js/bootstrap.js" th:src="@{/js/bootstrap.js}"></script>
+				<script src="../../js/jquery-ui.js" th:src="@{/js/jquery-ui.js}"></script>
+				<script src="../../js/heartcode-canvasloader-min.js"
+					th:src="@{/js/heartcode-canvasloader-min.js}"></script>
+				<script src="../../js/bootstrap-datepicker.js"
+					th:src="@{/js/bootstrap-datepicker.js}"></script>
+				<script src="../../js/bootstrap-datepicker.es.js"
+					th:src="@{/js/locales/bootstrap-datepicker.es.js}" charset="UTF-8"></script>
+				<script src="../../js/bootstrap-datepicker.ca.js"
+					th:src="@{/js/locales/bootstrap-datepicker.ca.js}" charset="UTF-8"></script>
+
+			</div>
+		</div>
+
+	</div>
+
+
+</body>
+</html>

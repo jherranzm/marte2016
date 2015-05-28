@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:fragment="head" >
+	<meta charset="UTF-8" />
+
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+
+	<link rel="shortcut icon" th:href="@{/img/icons/favicon.ico}" />
+
+	<!-- CSS to style the file input field as button and adjust the Bootstrap progress bars -->
+	<link rel="stylesheet" type="text/css"
+		href="../../css/jquery.fileupload.css"
+		th:href="@{/css/jquery.fileupload.css}" />
+	<link rel="stylesheet" type="text/css"
+		href="../../css/jquery.fileupload-ui.css"
+		th:href="@{/css/jquery.fileupload-ui.css}" />
+	
+	
+	<!-- Bootstrap -->
+	<link rel="stylesheet" type="text/css" media="screen"
+		href="../../css/bootstrap.css" 
+		th:href="@{/css/bootstrap.css}" />
+	<link rel="stylesheet" type="text/css" media="screen"
+		href="../../css/bootstrap-sticky-footer.css" 
+		th:href="@{/css/bootstrap-sticky-footer.css}" />
+
+
+	<!-- app -->
+	<link rel="stylesheet" type="text/css" media="screen"
+		href="../../css/app.css" 
+		th:href="@{/css/app.css}" />
+
+	<!-- dropzone -->
+	<link rel="stylesheet" type="text/css" media="screen"
+		href="../../css/dropzone.css" 
+		th:href="@{/css/dropzone.css}" />
+
+	<!-- datepicker -->
+	<link rel="stylesheet" type="text/css" media="screen"
+		href="../../css/bootstrap-datepicker.css" 
+		th:href="@{/css/bootstrap-datepicker.css}" />
+	
+	
+	<title data-th-text="#{app.name}">Titulo</title>
+	
+	
+
+</head>
+<body>
+	<div class="navbar navbar-inverse navbar-static-top bs-docs-nav"
+	id="top" role="banner" th:fragment="header">	
+		<div class="container">
+			<div class="navbar-header">
+				<a th:href="@{/index.jsp}" class="navbar-brand" 
+					data-th-text="#{app.name}">AAEE</a>
+			</div>
+			<div class="collapse navbar-collapse bs-navbar-collapse"
+				role="navigation">
+				<ul class="nav navbar-nav">
+					<li class="active"><a
+						th:href="@{/index.jsp}"
+						data-th-text="#{go.home}">Go Home
+					</a></li>
+	
+					<li sec:authorize="hasRole('ROLE_ADMIN')" class="dropdown"><a href="#" class="dropdown-toggle"
+							data-toggle="dropdown" > 
+							<span data-th-text="#{menu.informes}">menu.informes</span>
+							<b class="caret"></b></a>
+							<ul class="dropdown-menu">
+								<li><a
+									th:href="@{/role/pages/1}" data-th-text="#{role.form.list.title}">
+										role.form.list.title
+								</a></li>
+								<li><a
+									th:href="@{/usuario/pages/1}" data-th-text="#{usuario.form.list.title}">
+										usuario.form.list.title
+								</a></li>
+								<li class="divider"></li>
+								<li><a
+									th:href="@{/consulta/pages/1}" data-th-text="#{consulta.form.list.title}">
+										consulta.form.list.title
+								</a></li>
+								<li><a
+									th:href="@{/pestanya/pages/1}" data-th-text="#{pestanya.form.list.title}">
+										pestanya.form.list.title
+								</a></li>
+								<li><a
+									th:href="@{/informe/pages/1}" data-th-text="#{informe.form.list.title}">
+										informe.form.list.title
+								</a></li>
+								<li><a
+									th:href="@{/regladenegocio/pages/1}" data-th-text="#{regladenegocio.form.list.title}">
+										regladenegocio.form.list.title
+								</a></li>
+							</ul></li>
+			
+
+
+				<li class="dropdown"><a href="#" class="dropdown-toggle"
+					data-toggle="dropdown"> 
+					<span th:text="#{menu.utilidades}"></span>
+					<b class="caret"></b></a>
+					<ul class="dropdown-menu">
+
+							<li sec:authorize="hasRole('ROLE_ADMIN')"><a
+								href="/generaInforme/new"
+								th:href="@{/generaInforme/new}"
+								th:text="#{genera.informe.form.list.title}"
+								>genera.informe.form.list.title</a></li>
+							<li sec:authorize="hasRole('ROLE_ADMIN')"><a
+								href="/generaInforme/apply"
+								th:href="@{/generaInforme/apply}"
+								th:text="#{genera.informe.form.apply.title}"
+								>genera.informe.form.apply.title</a></li>
+							<li sec:authorize="hasRole('ROLE_ADMIN')" class="divider"></li>
+							<li sec:authorize="hasRole('ROLE_ADMIN')"><a
+								href="/escenario/muploadescenariofiles-form.html"
+								th:href="@{/escenario/muploadescenariofiles-form.html}"
+								th:text="#{escenario.form.list.title}"
+								>escenario.form.list.title</a></li>
+							<li sec:authorize="hasRole('ROLE_ADMIN')"><a
+								href="/escenario/copy-escenario-form.html"
+								th:href="@{/escenario/copy-escenario-form.html}"
+								th:text="#{escenario.form.new.title}"
+								>escenario.form.new.title</a></li>
+							<li  sec:authorize="hasRole('ROLE_ADMIN')" class="divider"></li>
+
+
+						<li><a
+							href="/ii/muploadiifiles-form.html"
+							th:href="@{/ii/muploadhzfiles-form.html}"
+							th:text="#{ii.form.list.title}"
+							>ii.form.list.title</a></li>
+						<li><a
+							href="/hz/muploadhzfiles-form.html"
+							th:href="@{/hz/muploadhzfiles-form.html}"
+							th:text="#{hz.form.list.title}"
+							>hz.form.list.title</a></li>
+
+						<li sec:authorize="hasRole('ROLE_ADMIN')" class="divider"></li>
+						<li sec:authorize="hasRole('ROLE_ADMIN')"><a
+							href="/977r/mupload977rfiles-form.html"
+							th:href="@{/segmentacion}"
+							th:text="#{segmentacion.form.new.title}"
+							>segmentacion.form.new.title</a></li>
+							
+						<li sec:authorize="hasRole('ROLE_ADMIN')" class="divider"></li>
+						<li sec:authorize="hasRole('ROLE_ADMIN')"><a
+							href="/segmentacion"
+							th:href="@{/segmentacion}"
+							th:text="#{segmentacion.form.new.title}"
+							>segmentacion.form.new.title</a></li>
+
+					</ul></li>
+
+				<li><a href="#about" th:href="@{/}" th:text="#{go.about}">go.about</a></li>
+				<li><a href="#contact" th:href="@{/}" th:text="#{go.contact}">go.contact</a></li>
+
+				</ul>
+				
+				<ul class="nav navbar-nav navbar-right">
+
+					<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">
+						<img th:src="@{/img/icons/lang_es.png}" />
+						<b class="caret"></b></a>
+						<ul class="dropdown-menu">
+	
+							<li><a href="?lang=en"><img
+									th:src="@{/img/icons/lang_en.png}" /></a>
+							</li>
+							<li><a href="?lang=es"><img
+									th:src="@{/img/icons/lang_es.png}" /></a>
+							</li>
+							<li><a href="?lang=ca"><img
+									th:src="@{/img/icons/lang_ca.png}" /></a>
+							</li>
+						</ul>
+					</li>
+					
+					<li class="btn-vertical-align-middle" sec:authorize="isAuthenticated()">
+					
+							<form class="form-inline"
+								th:action="@{/logout}" method="POST">
+								<div>&nbsp;</div>
+								<button type="submit" class="btn btn-xs btn-vertical-align-middle">
+									<span class="glyphicon glyphicon-off"></span> 
+<!-- 									<sec:authentication property="principal.username" /> -->
+									<span sec:authentication="principal.username" >Usuario</span>
+								</button>
+								<input type="hidden" th:name="${_csrf.parameterName}"
+									th:value="${_csrf.token}" />
+							</form>
+					</li>
+				</ul>
+				
+				
+			</div>
+		</div>
+	</div>
+	
+</body>
+</html>

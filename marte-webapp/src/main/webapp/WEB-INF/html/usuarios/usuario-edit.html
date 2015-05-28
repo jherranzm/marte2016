@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="html/header :: head">
+<meta charset="UTF-8" />
+<title th:text="#{app.name}">Usuario-Edit</title>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+
+<link rel="shortcut icon" th:href="@{/img/icons/favicon.ico}" />
+
+<!-- CSS to style the file input field as button and adjust the Bootstrap progress bars -->
+<link rel="stylesheet" type="text/css"
+	href="../../../css/jquery.fileupload.css"
+	th:href="@{/css/jquery.fileupload.css}" />
+<link rel="stylesheet" type="text/css"
+	href="../../../css/jquery.fileupload-ui.css"
+	th:href="@{/css/jquery.fileupload-ui.css}" />
+
+
+<!-- Bootstrap -->
+<link rel="stylesheet" type="text/css" media="screen"
+	href="../../../css/bootstrap.css" th:href="@{/css/bootstrap.css}" />
+<link rel="stylesheet" type="text/css" media="screen"
+	href="../../../css/bootstrap-sticky-footer.css"
+	th:href="@{/css/bootstrap-sticky-footer.css}" />
+
+
+<!-- app -->
+<link rel="stylesheet" type="text/css" media="screen"
+	href="../../../css/app.css" th:href="@{/css/app.css}" />
+
+<!-- dropzone -->
+<link rel="stylesheet" type="text/css" media="screen"
+	href="../../../css/dropzone.css" th:href="@{/css/dropzone.css}" />
+
+<!-- datepicker -->
+<link rel="stylesheet" type="text/css" media="screen"
+	href="../../../css/bootstrap-datepicker.css"
+	th:href="@{/css/bootstrap-datepicker.css}" />
+
+</head>
+<body>
+	<!-- Docs master nav -->
+	<div th:replace="html/header :: header">
+		<div class="navbar navbar-inverse navbar-static-top bs-docs-nav"
+			id="top" role="banner">
+			<div class="container">
+				<div class="navbar-header">
+					<a th:href="@{/index.jsp}" class="navbar-brand"
+						data-th-text="#{app.name}">Aplicación</a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+		
+	<div id="wrap">
+		<div class="container">
+	
+			<div id="usuario-mensajeError">
+					<div th:if="${mensajeError != null}"  class="col-sm-12 alert alert-error">
+						<span th:text="${mensajeError}"></span>
+					</div>
+			</div>
+	
+			<div id="usuario-saved">
+				<div class="row">
+					<div id="usuario-saved-id" class="span6">
+					</div>
+					<div id="usuario-saved-nombre" class="span6">
+					</div>
+				</div>
+			</div>
+	
+	
+			<div id="usuario-form" class="panel panel-primary">
+			
+				<!-- cabecera -->
+				
+	 	       <div id="usuario-form-titulo" class="panel-heading">
+		          <h3 class="panel-title" th:text="#{usuario.form.new.title}">Nuevo Usuario
+		          </h3>
+	 	       </div>
+	        
+	        	<!-- contenido -->
+	        	
+		        <div id="usuario-form-contenido"><!-- inicio contenido -->
+					<form 
+						id="usuario-form-edit" 
+						method="POST" 
+						th:object="${usuarioForm}"
+						class="form-horizontal"
+						th:action="@{/usuario/edit/{id}.html(id=${usuarioForm.id})}">
+			
+						<div class="form-group">
+							<label for="username" 
+								class="col-sm-2 control-label"
+								th:text="#{usuario.form.field.username}" >Usuario
+							</label>
+							<div class="col-sm-8">
+								<input id="username" name="username" type="text" 
+								class="form-control" 
+								th:placeholder="#{usuario.form.field.username}" 
+								th:value="${usuarioForm.username}" />
+							</div> 
+						</div>
+			
+						<div class="form-group">
+							<label for="nombre" class="col-sm-2 control-label" 
+								th:text="#{usuario.form.field.nombre}" >Nombre
+							</label>
+							<div class="col-sm-10">
+								<input id="nombre" name="nombre" type="text" 
+								class="form-control" 
+								th:placeholder="#{usuario.form.field.nombre}" th:value="${usuarioForm.nombre}" />
+							</div> 
+						</div>
+			
+						<div class="form-group">
+							<label for="apellido1" class="col-sm-2 control-label" 
+								th:text="#{usuario.form.field.apellido1}" >Primer Apellido
+							</label>
+							<div class="col-sm-10">
+								<input id="apellido1" name="apellido1" type="text" 
+								class="form-control" 
+								th:placeholder="#{usuario.form.field.apellido1}" th:value="${usuarioForm.apellido1}" />
+							</div> 
+						</div>
+			
+						<div class="form-group">
+							<label for="apellido2" class="col-sm-2 control-label" 
+								th:text="#{usuario.form.field.apellido2}" >Segundo Apellido
+							</label>
+							<div class="col-sm-10">
+								<input id="apellido2" name="apellido2" type="text" 
+								class="form-control" 
+								th:placeholder="#{usuario.form.field.apellido2}" th:value="${usuarioForm.apellido2}" />
+							</div> 
+						</div>
+						
+						<div class="form-group">
+							<label for="email" class="col-sm-2 control-label" 
+								th:text="#{usuario.form.field.email}" >e-mail
+							</label>
+							<div class="col-sm-10">
+								<input id="email" name="email" type="text" 
+								class="form-control" 
+								th:placeholder="#{usuario.form.field.email}" th:value="${usuarioForm.email}" />
+							</div> 
+						</div>
+						
+						<div class="form-group">
+							<label for="enabled" class="col-sm-2 control-label" 
+								th:text="#{usuario.form.field.enabled}" >Activo
+							</label>
+							<div class="col-sm-10">
+								<input type="checkbox" th:field="*{enabled}" />
+							</div> 
+						</div>
+						
+			
+						<div class="form-group">
+							<label for="roles" class="col-sm-2 control-label" 
+								th:text="#{usuario.form.field.roles}" >
+							</label> 
+							<div class="col-sm-10">
+								<div th:each="rolDisp : ${rolesDisponibles}">
+									<input type="checkbox" th:field="*{roles}" th:value="${rolDisp.id}" />
+									<label th:text="${rolDisp.nombre}"></label><br/>
+								</div>
+							</div> 
+						</div>
+	
+						<!-- Botones Save & Back -->
+						<div class="form-group">
+							<div class="col-md-offset-4 col-md-4">
+								<p class="text-center">
+									<button id="btn-save" type="submit" class="btn btn-primary"
+										th:text="#{usuario.form.btn.save}" >
+									</button>
+									<a th:href="@{/usuario/pages/1}"
+										id="btn-back" class="btn btn-default"> 
+										<span th:text="#{usuario.form.btn.back}" />
+									</a>
+								</p>
+							</div>
+						</div>
+	
+						 
+						 <!-- Spring Security -->
+						 
+						 <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+						 
+						 
+					</form>
+		        </div><!-- fin contenido -->
+	
+	    	  </div>
+		</div>
+	</div><!-- #wrap -->
+</body>
+</html>

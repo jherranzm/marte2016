@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:fragment="head" >
+	<meta charset="UTF-8" />
+
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+
+	<link rel="shortcut icon" th:href="@{/img/icons/favicon.ico}" />
+
+	<!-- CSS to style the file input field as button and adjust the Bootstrap progress bars -->
+	<link rel="stylesheet" type="text/css"
+		href="../../css/jquery.fileupload.css"
+		th:href="@{/css/jquery.fileupload.css}" />
+	<link rel="stylesheet" type="text/css"
+		href="../../css/jquery.fileupload-ui.css"
+		th:href="@{/css/jquery.fileupload-ui.css}" />
+	
+	
+	<!-- Bootstrap -->
+	<link rel="stylesheet" type="text/css" media="screen"
+		href="../../css/bootstrap.css" 
+		th:href="@{/css/bootstrap.css}" />
+	<link rel="stylesheet" type="text/css" media="screen"
+		href="../../css/bootstrap-sticky-footer.css" 
+		th:href="@{/css/bootstrap-sticky-footer.css}" />
+
+
+	<!-- app -->
+	<link rel="stylesheet" type="text/css" media="screen"
+		href="../../css/app.css" 
+		th:href="@{/css/app.css}" />
+
+	<!-- dropzone -->
+	<link rel="stylesheet" type="text/css" media="screen"
+		href="../../css/dropzone.css" 
+		th:href="@{/css/dropzone.css}" />
+
+	<!-- datepicker -->
+	<link rel="stylesheet" type="text/css" media="screen"
+		href="../../css/bootstrap-datepicker.css" 
+		th:href="@{/css/bootstrap-datepicker.css}" />
+	
+	
+	<title data-th-text="#{app.name}">Titulo</title>
+	
+	
+
+</head>
+<body>
+	<!-- Pagination Bar -->
+	<div th:fragment="paginationbar">
+	
+		<div class="row">
+			<div class="col-sm-1">
+				<a th:if="${pagina} == 'cne'" href="" 
+					 class="btn btn-primary btn-sm"
+					th:href="@{/cne/new}" ><span class="glyphicon glyphicon-plus"></span></a>
+			</div>
+			<div class="col-sm-11">
+				<a th:if="${not #strings.isEmpty(urlfileName)}"
+					href="" 
+					class="btn btn-warning btn-sm"
+					th:href="@{/getFile/file/{n}/{e}(n=${urlfileName}, e=${urlfileExt})}"
+					><span th:text="${urlfileName}">Fichero</span><span class="glyphicon glyphicon-download-alt">&nbsp;</span></a>
+			</div>
+		</div>
+		 <div class="col-sm-6">
+		 	<div class="row">
+		  	<div  class="pagination pagination-sm form-inline">
+				<button th:each="label : ${labels}" type="button" class="btn btn-info btn-sm">
+					<span th:text="${label}">Texto</span>
+					<span class="glyphicon glyphicon-ok-circle" aria-hidden="true" ></span>
+				</button>
+				<a th:if="${#lists.size(labels) > 0}"  
+					href="" 
+					th:href="@{/seg/getFile?queBuscar={n}(n=${queBuscar})}"
+					role="button" class="btn btn-success btn-sm">
+					<span>Exportar a Excel</span>
+					<span class="glyphicon glyphicon-export" aria-hidden="true" ></span>
+				</a>
+		  	</div>
+		 	</div>
+		 </div>
+	  <div class="col-sm-2">
+	  	<div class="row">
+	  		<ul class="pagination pagination-sm pull-left">
+	  			<li th:class="disabled"><span th:text="#{pagination.page}">Página</span></li>
+	  			<li th:class="disabled"><span th:text="${page.number}">1</span></li>
+	  			<li th:class="disabled"><span th:text="#{pagination.of}">de</span></li>
+	  			<li th:class="disabled"><span th:text="${page.totalPages}">100</span></li>
+	  		</ul>
+		</div>
+	  </div>
+	  <div class="col-sm-4">
+	  	<div class="row">
+		    <ul class="pagination pagination-sm pull-right">
+		      <li th:class="${page.firstPage}? 'disabled' : ''">
+		        <span th:if="${page.firstPage}">&lt;&lt;</span>
+		        <a class="show-det" th:if="${not page.firstPage}" 
+		        	th:href="@{${page.url}(page=1,size=${page.size})}">&lt;&lt;</a>
+		      </li>
+		      
+		      <li th:class="${page.hasPreviousPage}? '' : 'disabled'">
+		        <span th:if="${not page.hasPreviousPage}">&lt;</span>
+		        <a class="show-det" th:if="${page.hasPreviousPage}" 
+		        	th:href="@{${page.url}(page=${page.number-1},size=${page.size})}" title="Go to previous page">&lt;</a>
+		      </li>
+		      
+		      <li th:each="item : ${page.items}" th:class="${item.current}? 'active' : ''">
+		        <span th:if="${item.current}" th:text="${item.number}">1</span>
+		        <a class="show-det" th:if="${not item.current}" 
+		        	th:href="@{${page.url}(page=${item.number},size=${page.size})}"><span th:text="${item.number}">1</span></a>
+		      </li>
+		      
+		      <li th:class="${page.hasNextPage}? '' : 'disabled'">
+		        <span th:if="${not page.hasNextPage}">&gt;</span>
+		        <a class="show-det" th:if="${page.hasNextPage}" 
+		        	th:href="@{${page.url}(page=${page.number+1},size=${page.size})}" title="Go to next page">&gt;</a>
+		      </li>
+		      
+		      <li th:class="${page.lastPage}? 'disabled' : ''">
+		        <span th:if="${page.lastPage}">&gt;&gt;</span>
+		        <a class="show-det" th:if="${not page.lastPage}" 
+		        	th:href="@{${page.url}(page=${page.totalPages},size=${page.size})}">&gt;&gt;</a>
+		      </li>
+		    </ul>
+	  	</div>
+	  </div>
+	</div>
+	
+</body>
+</html>

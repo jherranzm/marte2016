@@ -1,0 +1,35 @@
+body {
+	/* 60px to make the container go all the way to the bottom of the topbar */
+	/*   padding-top: 60px;  */
+}
+
+.btn-vertical-align-middle{
+	vertical-align: middle;
+}
+
+.webapp-margin{
+	padding : 15px;
+}
+	
+li .ui-state-default{
+	list-style : none;
+	background-color: #ccc;
+}
+
+.line{
+    padding : 10px;
+}
+
+.vcenter {
+    display: inline-block;
+    vertical-align: middle;
+    float: none;
+}
+
+.vertical-center {
+  min-height: 30%;  /* Fallback for browsers do NOT support vh unit */
+  min-height: 30vh; /* These two lines are counted as one :-)       */
+
+  display: flex;
+  align-items: center;
+}
