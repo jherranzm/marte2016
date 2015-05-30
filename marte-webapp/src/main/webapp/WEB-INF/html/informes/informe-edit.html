@@ -1,5 +1,8 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html 
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
 <head th:replace="html/header :: head">
 	<meta charset="UTF-8" />
 	<title th:text="#{app.name}">Informe-Edit</title>
@@ -178,10 +181,12 @@
 									</a>
 								</div>
 								<ol id="informe-new-sortableA" class="connectedSortable list-group">
-										<a href="#" th:each="pestanya : ${informeForm.asignadas}"
-										th:id="${'pestanya_' + pestanya.id}" class="list-group-item">
-										<span class="listItemLabel" th:text="${pestanya.nombre}">Nombre</span>
-										</a>
+								
+										<li 
+											th:each="pestanya : ${informeForm.asignadas}"
+											th:id="${'pestanya_' + pestanya.id}" class="list-group-item">
+											<span class="listItemLabel" th:text="${pestanya.nombre}">Nombre</span>
+										</li>
 								</ol>
 								
 								<input id="ordenadas" name="ordenadas" type="hidden" value=""/>

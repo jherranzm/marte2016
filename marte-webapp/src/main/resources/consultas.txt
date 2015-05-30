@@ -1,0 +1,32 @@
+CALL 977r.977r_SP_ADDINCLUDE_ALL
+	CALL 977r.977r_ADDINCLUDE_ALL
+	
+CALL 977r.977r_SP_APPLY_COND_ALL
+	CALL 977r.977r_APPLY_COND_ALL
+		CALL 977r.977r_CUOTAS_APPLY_COND
+			CALL 977r.977r_CUOTAS_APPLY_COND_v20140306
+				UPDATE 977r.tbl_ccf_acap_ext v inner join 977r.tconceptosfacturables cond where cond.precio_especial = "SI"
+				UPDATE 977r.tbl_ccf_acap_ext v inner join 977r.tconceptosfacturables cond where cond.precio_especial = "NO"
+		CALL 977r.977r_TRAFICO_APPLY_COND
+			CALL 977r.977r_TRAFICO_APPLY_COND_v20120202
+				CALL 977r.977r_TRAFICO_APPLY_COND_GENERICAS_v20120207
+					UPDATE 977r.tbl_trf_cursado_acap_ext v left join ttrafico trf
+					977r.977r_TIENE_PRECIO_ESPECIAL_UNICO
+						CALL 977r.977r_TRAFICOINT_APPLY_COND_UNICO_v20120202
+					977r.977r_TIENE_PRECIO_ESPECIAL_POR_NIVEL
+						CALL 977r.977r_TRAFICOINT_APPLY_COND_POR_NIVEL_v20120202
+						CALL 977r.977r_TRAFICOINT_ADD_TRFINT_DETALLADO_v20120202
+						CALL 977r.977r_TRAFICOINT_NODETALLADO_DTO_v20120203
+						CALL 977r.977r_TRAFICO_ADD_TRAFICOINT_v20120202
+					977r.977r_TIENE_PRECIO_ESPECIAL_POR_PAIS
+						CALL 977r.977r_TRAFICOINT_APPLY_COND_POR_PAIS_v20120203
+						CALL 977r.977r_TRAFICOINT_NODETALLADO_DTO_v20120203
+						CALL 977r.977r_TRAFICO_ADD_TRAFICOINT_v20120202
+		CALL 977r.977r_TRAFICORI_APPLY_COND
+		CALL 977r.977r_Reasignar_Por_Multiconexion_v20130211
+			UPDATE 977r.tbl_xxx v LEFT JOIN 977r.tbl_reasignacion a on v.Multiconexion = a.Multiconexion
+			update 977r.tbl_xxx v LEFT JOIN 977r.tcuc_cliente t     on v.cif_reasignado = t.cliente_cif
+		CALL 977r.977r_Reasignar_Por_Numero_Comercial_v20140308
+			UPDATE 977r.tbl_xxx v LEFT JOIN 977r.tbl_reasignacion a on v.numero_comercial = a.numero_comercial
+			update 977r.tbl_xxx v LEFT JOIN 977r.tcuc_cliente t     on v.cif_reasignado = t.cliente_cif
+		
