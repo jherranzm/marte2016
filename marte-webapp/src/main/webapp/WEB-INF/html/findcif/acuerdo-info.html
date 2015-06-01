@@ -5,7 +5,7 @@
 
 	<head th:replace="html/header :: head">
 		<meta charset="UTF-8" />
-		<title th:text="#{app.name}">Acuerdos-ByCIF-List</title>
+		<title th:text="#{app.name}">acuerdo-info</title>
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		
 		
@@ -94,14 +94,15 @@
 		<div class="container">
 			<div class="tab-content">
 				<div th:fragment="acuerdo-info">
-					<div id="acuerdo-info">
+					<div id="acuerdo-info" class="well well-sm">
 						<div class="row form-group form-inline">
 							<div class="col-sm-3">
 								<div class="input-group input-group-sm">
 									<span 
 										class="input-group-addon danger" 
 										th:class="${acuerdo.baja == true ? 'input-group-addon danger' : 'input-group-addon primary'}" 
-										id="input-group-addon-01">IDAcuerdo</span>
+										id="input-group-addon-01"
+										th:text="#{acuerdo.form.field.id}">IDAcuerdo</span>
 									<input type="text" 
 										class="form-control" 
 										readonly="readonly"
@@ -112,8 +113,9 @@
 							<div class="col-sm-3">
 								<div class="input-group input-group-sm">
 									<span 
-										class="input-group-addon" 
-										id="input-group-addon-tipo-acuerdo">Tipo Acuerdo</span>
+										class="input-group-addon primary" 
+										id="input-group-addon-tipo-acuerdo"
+										th:text="#{acuerdo.form.field.tipoAcuerdo}">Tipo Acuerdo</span>
 									<input type="text" 
 										class="form-control" 
 										readonly="readonly"
@@ -123,7 +125,10 @@
 							</div>
 							<div class="col-sm-3">
 								<div class="input-group input-group-sm">
-									<span class="input-group-addon" id="input-group-addon-negocio">Negocio</span>
+									<span 
+										class="input-group-addon primary" 
+										id="input-group-addon-negocio"
+										th:text="#{acuerdo.form.field.negocio}">Negocio</span>
 									<input type="text" 
 										class="form-control" 
 										readonly="readonly"
@@ -133,7 +138,10 @@
 							</div>
 							<div th:if="${acuerdo.baja == true}" class="col-sm-3 has-error">
 								<div class="input-group input-group-sm">
-									<span class="input-group-addon" id="input-group-addon-negocio">Fecha Baja</span>
+									<span 
+										class="input-group-addon" 
+										id="input-group-addon-negocio"
+										th:text="#{acuerdo.form.field.fechaBaja}">Fecha Baja</span>
 									<input type="text" 
 										class="form-control" 
 										disabled="disabled"
@@ -145,7 +153,10 @@
 						<div class="row form-group form-inline">
 							<div class="col-sm-2">
 								<div class="input-group input-group-sm">
-									<span class="input-group-addon" id="input-group-addon-02">TipoDoc</span>
+									<span 
+										class="input-group-addon primary" 
+										id="input-group-addon-tipoDoc"
+										th:text="#{acuerdo.form.field.tipoDoc}">TipoDoc</span>
 									<input type="text" 
 										class="form-control" 
 										readonly="readonly"
@@ -155,7 +166,10 @@
 							</div>
 							<div class="col-sm-3">
 								<div class="input-group input-group-sm">
-									<span class="input-group-addon" id="input-group-addon-03">CIF</span>
+									<span 
+										class="input-group-addon primary" 
+										id="input-group-addon-cif"
+										th:text="#{acuerdo.form.field.cif}">CIF</span>
 									<input type="text" 
 										class="form-control" 
 										readonly="readonly"
@@ -165,7 +179,10 @@
 							</div>
 							<div class="col-sm-7">
 								<div class="input-group input-group-sm">
-									<span class="input-group-addon" id="input-group-addon-04">Empresa</span>
+									<span 
+										class="input-group-addon primary" 
+										id="input-group-addon-nombre"
+										th:text="#{acuerdo.form.field.nombre}">Empresa</span>
 									<input type="text" 
 										class="form-control" 
 										readonly="readonly"
@@ -175,9 +192,12 @@
 							</div>
 						</div><!-- .row form-group form-inline -->
 						<div class="row form-group form-inline">
-							<div class="col-sm-3">
+							<div class="col-sm-4">
 								<div class="input-group input-group-sm">
-									<span class="input-group-addon" id="input-group-addon-acuerdoFX">Acuerdo FX</span>
+									<span 
+										class="input-group-addon primary" 
+										id="input-group-addon-acuerdoFX"
+										th:text="#{acuerdo.form.field.acuerdofx}">Acuerdo FX</span>
 									<input type="text" 
 										class="form-control" 
 										readonly="readonly"
@@ -185,9 +205,11 @@
 										placeholder="LA12345678  012015" />
 								</div>
 							</div>
-							<div class="col-sm-5">
+							<div class="col-sm-4">
 								<div class="input-group input-group-sm">
-									<span class="input-group-addon" id="input-group-addon-normal"></span>
+									<span 
+										class="input-group-addon primary" 
+										id="input-group-addon-normal"></span>
 									<input type="text" 
 										class="form-control" 
 										readonly="readonly"
@@ -197,7 +219,9 @@
 							</div>
 							<div class="col-sm-4">
 								<div class="input-group input-group-sm">
-									<span class="input-group-addon" id="input-group-addon-importeFijo"></span>
+									<span 
+										class="input-group-addon primary" 
+										id="input-group-addon-autoajustable"></span>
 									<input type="text" 
 										class="form-control" 
 										readonly="readonly"
@@ -209,33 +233,36 @@
 						<div class="row form-group form-inline">
 							<div class="col-sm-3">
 								<div class="input-group input-group-sm">
-									<span class="input-group-addon" id="input-group-addon-importeFijoMT">Importe Fijo MT</span>
+									<span 
+										class="input-group-addon primary" 
+										id="input-group-addon-importeFijoMT"
+										th:text="#{acuerdo.form.field.importe-fijo-mt}">Importe Fijo MT</span>
 									<input type="number" 
 										class="form-control" 
 										readonly="readonly"
 										th:value="${acuerdo.importeFijoMT}"
-										min="0"
-										max="99999.99"
-										step="0.01"
 										placeholder="1234.55" />
 								</div>
 							</div>
 							<div class="col-sm-3">
 								<div class="input-group input-group-sm">
-									<span class="input-group-addon" id="input-group-addon-descuentoPlanaMT">Campo P MT</span>
+									<span 
+										class="input-group-addon primary" 
+										id="input-group-addon-descuentoPlanaMT"
+										th:text="#{acuerdo.form.field.descuento-plana-mt}">Campo P MT</span>
 									<input type="number" 
 										class="form-control" 
 										readonly="readonly"
-										min="0"
-										max="100"
-										step="1"
 										th:value="${acuerdo.descuentoPlanaMT}"
 										placeholder="100" />
 								</div>
 							</div>
 							<div th:if="${acuerdo.nuevoMercado == 'True'}" class="col-sm-3">
 								<div class="input-group input-group-sm">
-									<span class="input-group-addon" id="input-group-addon-importeFijoNM">Importe Fijo NM</span>
+									<span 
+										class="input-group-addon primary" 
+										id="input-group-addon-importeFijoNM"
+										th:text="#{acuerdo.form.field.importe-fijo-nm}">Importe Fijo NM</span>
 									<input type="number" 
 										class="form-control" 
 										readonly="readonly"
@@ -248,7 +275,10 @@
 							</div>
 							<div th:if="${acuerdo.nuevoMercado == 'True'}" class="col-sm-3">
 								<div class="input-group input-group-sm">
-									<span class="input-group-addon" id="input-group-addon-descuentoPlanaNM">Campo P NM</span>
+									<span 
+										class="input-group-addon primary" 
+										id="input-group-addon-descuentoPlanaNM"
+										th:text="#{acuerdo.form.field.descuento-plana-nm}">Campo P NM</span>
 									<input type="number" 
 										class="form-control" 
 										readonly="readonly"
