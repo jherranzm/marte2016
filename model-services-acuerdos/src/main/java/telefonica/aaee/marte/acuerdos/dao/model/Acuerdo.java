@@ -1,17 +1,21 @@
-package telefonica.aaee.marte.marte.dao.model;
+package telefonica.aaee.marte.acuerdos.dao.model;
 
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 
 /**
@@ -19,19 +23,20 @@ import javax.persistence.TemporalType;
  * 
  */
 @Entity
-@Table(name="vacuerdos")
+@Table(name="vacuerdos", schema="acuerdos")
 public class Acuerdo implements Serializable {
 	private static final long serialVersionUID = 1L;
+
+
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	private String IDAcuerdo;
 
 	private String acuerdoNumero;
 
 	private float descuentoPlanaMT;
 
 	private float descuentoPlanaNM;
-
-	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private String IDAcuerdo;
 
 	private double importeFijoMT;
 
@@ -70,6 +75,17 @@ public class Acuerdo implements Serializable {
 	
 	@Column(name="TipoAcuerdo")
 	private String tipoAcuerdo;
+	
+	@Column(name="DescTipoAcuerdo")
+	private String descTipoAcuerdo;
+	
+	@Transient
+	public String acuerdoFX;
+	
+	//bi-directional many-to-one association to TramitacionAPI
+	@OneToMany(mappedBy="acuerdo", cascade={CascadeType.ALL})
+	private List<TramitacionAPI> tramitaciones;
+	
 
 	public Acuerdo() {
 	}
@@ -233,6 +249,24 @@ public class Acuerdo implements Serializable {
 	public void setTipoAcuerdo(String tipoAcuerdo) {
 		this.tipoAcuerdo = tipoAcuerdo;
 	}
+	
+	public String getDescTipoAcuerdo() {
+		return descTipoAcuerdo;
+	}
+	
+	public void setDescTipoAcuerdo(String descTipoAcuerdo) {
+		this.descTipoAcuerdo = descTipoAcuerdo;
+	}
+	
+	public String getAcuerdoFX() {
+		return String.format("%s%s  %s", this.tipoDoc, this.cif, this.acuerdoNumero);
+	}
+
+	public void setAcuerdoFX(String acuerdoFX) {
+		this.acuerdoFX = acuerdoFX;
+	}
+
+
 
 	@Override
 	public String toString() {
@@ -277,6 +311,8 @@ public class Acuerdo implements Serializable {
 		builder.append(causaBaja);
 		builder.append(", tipoAcuerdo=");
 		builder.append(tipoAcuerdo);
+		builder.append(", descTipoAcuerdo=");
+		builder.append(descTipoAcuerdo);
 		builder.append("]");
 		return builder.toString();
 	}

@@ -1,4 +1,4 @@
-package telefonica.aaee.marte.marte.dao.service;
+package telefonica.aaee.marte.acuerdos.dao.service;
 
 import java.util.List;
 
@@ -15,11 +15,11 @@ import org.springframework.data.jpa.repository.support.JpaMetamodelEntityInforma
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.stereotype.Service;
 
-import telefonica.aaee.marte.marte.dao.model.Acuerdo;
-import telefonica.aaee.marte.marte.dao.specifications.AcuerdoSpecifications;
+import telefonica.aaee.marte.acuerdos.dao.model.Acuerdo;
+import telefonica.aaee.marte.acuerdos.dao.specifications.AcuerdoSpecifications;
 
 @Service
-public class AcuerdoService extends GenericMarteService {
+public class AcuerdoService extends GenericAcuerdosService {
 
 	private SimpleJpaRepository<Acuerdo, String> repo;
 
@@ -78,7 +78,7 @@ public class AcuerdoService extends GenericMarteService {
 		return repo.findAll(AcuerdoSpecifications.searchByTipoAcuerdoActivos(tipoAcuerdo), request);
 	}
 
-	public Acuerdo findByIDAcuerdo(String IDAcuerdo, int i) {
+	public Acuerdo findByIDAcuerdo(String IDAcuerdo) {
 		return repo.findOne(IDAcuerdo);
 	}
 

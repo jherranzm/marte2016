@@ -18,8 +18,10 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import telefonica.aaee.marte.acuerdos.dao.model.Acuerdo;
 import telefonica.aaee.marte.acuerdos.dao.model.EstadoTramitacion;
 import telefonica.aaee.marte.acuerdos.dao.model.TramitacionAPI;
+import telefonica.aaee.marte.acuerdos.dao.service.AcuerdoService;
 import telefonica.aaee.marte.acuerdos.dao.service.CodAPIService;
 import telefonica.aaee.marte.acuerdos.dao.service.EstadoTramitacionService;
 import telefonica.aaee.marte.acuerdos.dao.service.TramitacionAPIService;
@@ -42,6 +44,9 @@ public class TramitacionAPITest {
 	
 	@Autowired
 	private TramitacionAPIService tramitacionAPIService;
+	
+	@Autowired
+	private AcuerdoService acuerdoService;
 	
 	@Autowired
 	private EstadoTramitacionService estadoTramitacionService;
@@ -73,7 +78,9 @@ public class TramitacionAPITest {
 		
 		boolean ret = false;
 		
-		Page<TramitacionAPI> page = tramitacionAPIService.findByIDAcuerdo("T000045850", 1);
+		Acuerdo acuerdo = acuerdoService.findByIDAcuerdo("T000045850");
+		
+		Page<TramitacionAPI> page = tramitacionAPIService.findByIDAcuerdo(acuerdo, 1);
 		
 		int total = page.getContent().size();
 		logger.info(String.format("Número de elementos en la página : [%d]", total));

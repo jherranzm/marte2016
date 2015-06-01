@@ -29,6 +29,7 @@ import org.springframework.data.jpa.repository.support.JpaMetamodelEntityInforma
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.stereotype.Service;
 
+import telefonica.aaee.marte.acuerdos.dao.model.Acuerdo;
 import telefonica.aaee.marte.acuerdos.dao.model.CodAPI;
 import telefonica.aaee.marte.acuerdos.dao.model.EstadoTramitacion;
 import telefonica.aaee.marte.acuerdos.dao.model.TramitacionAPI;
@@ -87,13 +88,13 @@ public class TramitacionAPIService extends GenericAcuerdosService {
 		return repo.findAll(TramitacionAPISpecifications.searchByCif(cif), request);
 	}
 
-	public Page<TramitacionAPI> findByIDAcuerdo(String idAcuerdo, Integer pageNumber){
+	public Page<TramitacionAPI> findByIDAcuerdo(Acuerdo acuerdo, Integer pageNumber){
 		PageRequest request = new PageRequest(pageNumber - 1, PAGE_SIZE,
 				new Sort(
-						new Order(Direction.ASC, "id")
+						new Order(Direction.DESC, "id")
 						)
 				);
-		return repo.findAll(TramitacionAPISpecifications.searchByIDAcuerdo(idAcuerdo), request);
+		return repo.findAll(TramitacionAPISpecifications.searchByIDAcuerdo(acuerdo), request);
 	}
 	
 	public Page<TramitacionAPI> findByCodAPI(String codAPI, Integer pageNumber) {

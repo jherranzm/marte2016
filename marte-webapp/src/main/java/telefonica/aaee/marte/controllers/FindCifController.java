@@ -16,8 +16,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import telefonica.aaee.marte.marte.dao.model.Acuerdo;
-import telefonica.aaee.marte.marte.dao.service.AcuerdoService;
+import telefonica.aaee.marte.acuerdos.dao.model.Acuerdo;
+import telefonica.aaee.marte.acuerdos.dao.model.TramitacionAPI;
+import telefonica.aaee.marte.acuerdos.dao.service.AcuerdoService;
+import telefonica.aaee.marte.acuerdos.dao.service.TramitacionAPIService;
 import telefonica.aaee.marte.model.pagination.PageWrapper;
 import eu.bitwalker.useragentutils.UserAgent;
 
@@ -25,7 +27,8 @@ import eu.bitwalker.useragentutils.UserAgent;
 @RequestMapping("/findcif")
 public class FindCifController extends BasicController {
 
-	private static final String ACUERDO_SHOW = "html/findcif/acuerdo-show";
+	private static final String SHOW_ACUERDO = "html/findcif/acuerdo-show";
+	private static final String SHOW_ACUERDO_TRAM = "html/findcif/show-acuerdo-tram";
 	private static final String FIND_CIF_FORM = "html/findcif/findCif-form";
 	private static final String RESULT_PAGE = "html/findcif/findCif-list";
 
@@ -33,6 +36,9 @@ public class FindCifController extends BasicController {
 	
 	@Autowired
 	private AcuerdoService acuerdoService;
+	
+	@Autowired
+	private TramitacionAPIService tramitacionAPIService;
 	
 	@RequestMapping(value="/find", method=RequestMethod.GET)
 	public ModelAndView findCifGet(
@@ -73,7 +79,6 @@ public class FindCifController extends BasicController {
 	
 	@RequestMapping(value="/show/{idAcuerdo}", method=RequestMethod.GET)
 	public ModelAndView showAcuerdo(
-//			@RequestParam String idAcuerdo
 			@PathVariable String idAcuerdo
 			) {
 
@@ -84,18 +89,69 @@ public class FindCifController extends BasicController {
 		if("".equals(idAcuerdo)){
 			errores.add("El Acuerdo viene sin informar.");
 			modelAndView.setViewName(FIND_CIF_FORM);
+			modelAndView.addObject("errores", errores);
 			return modelAndView;
 		}
 		Acuerdo acuerdo = acuerdoService.findById(idAcuerdo);
 		if(acuerdo == null){
 			errores.add("El Acuerdo NO existe en el sistema.");
 			modelAndView.setViewName(FIND_CIF_FORM);
+			modelAndView.addObject("errores", errores);
 			return modelAndView;
 		}
 		modelAndView.addObject("acuerdo", acuerdo);
-		modelAndView.setViewName(ACUERDO_SHOW);
+		modelAndView.setViewName(SHOW_ACUERDO);
+		
+		// Tramitaciones
+		Page<TramitacionAPI> tramitaciones = tramitacionAPIService.findByIDAcuerdo(acuerdo, 1);
+		logger.info(String.format("Número de tramitaciones : [%s][%d]", idAcuerdo, tramitaciones.getContent().size()));
+		modelAndView.addObject("page", new PageWrapper<TramitacionAPI>(tramitaciones, this.getUrl("")));
+		modelAndView.addObject("labels", this.getLabels(""));
+		
         return modelAndView;  
 	}
+	
+	@RequestMapping(value="/show/{idAcuerdo}/{idTramitacion}", method=RequestMethod.GET)
+	public ModelAndView showAcuerdo(
+			@PathVariable String idAcuerdo,
+			@PathVariable Long idTramitacion
+			) {
+		List<String> errores = new ArrayList<String>();
+		idAcuerdo = (idAcuerdo == null) ? "" : idAcuerdo;
+		idTramitacion = (idTramitacion == null) ? 0 : idTramitacion;
+
+		ModelAndView modelAndView = new ModelAndView();
+		if("".equals(idAcuerdo)){
+			errores.add("El Acuerdo viene sin informar.");
+			modelAndView.setViewName(FIND_CIF_FORM);
+			modelAndView.addObject("errores", errores);
+			return modelAndView;
+		}
+		Acuerdo acuerdo = acuerdoService.findById(idAcuerdo);
+		if(acuerdo == null){
+			errores.add(String.format("El Acuerdo [%s] NO existe en el sistema.", idAcuerdo));
+			modelAndView.setViewName(FIND_CIF_FORM);
+			modelAndView.addObject("errores", errores);
+			return modelAndView;
+		}
+		logger.info(acuerdo);
+		modelAndView.addObject("acuerdo", acuerdo);
+		
+		TramitacionAPI tramitacion = tramitacionAPIService.findById(idTramitacion);
+		if(tramitacion == null){
+			errores.add(String.format("La Tramitación [%d] NO existe en el sistema.", idTramitacion));
+			modelAndView.setViewName(FIND_CIF_FORM);
+			modelAndView.addObject("errores", errores);
+			return modelAndView;
+		}
+		logger.info(tramitacion);
+		modelAndView.addObject("tramitacion", tramitacion);
+		modelAndView.setViewName(SHOW_ACUERDO_TRAM);
+		
+        return modelAndView;  
+		
+	}
+	
 	
 	
 	private String getUrl(String queBuscar) {

@@ -9,6 +9,7 @@ import javax.persistence.criteria.Root;
 
 import org.springframework.data.jpa.domain.Specification;
 
+import telefonica.aaee.marte.acuerdos.dao.model.Acuerdo;
 import telefonica.aaee.marte.acuerdos.dao.model.EstadoTramitacion;
 import telefonica.aaee.marte.acuerdos.dao.model.TramitacionAPI;
 
@@ -30,7 +31,7 @@ public class TramitacionAPISpecifications {
      }
 
 	public static Specification<TramitacionAPI> searchByIDAcuerdo(
-			final String idAcuerdo) {
+			final Acuerdo acuerdo) {
         return new Specification<TramitacionAPI>() {
 
             public Predicate toPredicate(
@@ -39,8 +40,8 @@ public class TramitacionAPISpecifications {
          		   , CriteriaBuilder criteriaBuilder)
             {
                 return criteriaBuilder.equal(
-             		   root.<String>get("idAcuerdo")
-             		   	, idAcuerdo );
+             		   root.<Acuerdo>get("acuerdo")
+             		   	, acuerdo );
             }
         };
 	}

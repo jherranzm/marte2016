@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html 
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+	<head th:replace="html/header :: head">
+		<meta charset="UTF-8" />
+		<title th:text="#{app.name}">Acuerdos-ByCIF-List</title>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		
+		
+		<link rel="shortcut icon" th:href="@{/img/icons/favicon.ico}" />
+		
+		<!-- CSS to style the file input field as button and adjust the Bootstrap progress bars -->
+		<link rel="stylesheet" type="text/css"
+			href="../../../css/jquery.fileupload.css"
+			th:href="@{/css/jquery.fileupload.css}" />
+		<link rel="stylesheet" type="text/css"
+			href="../../../css/jquery.fileupload-ui.css"
+			th:href="@{/css/jquery.fileupload-ui.css}" />
+		
+		
+		<!-- Bootstrap -->
+		<link rel="stylesheet" type="text/css" media="screen"
+			href="../../../css/bootstrap.css" th:href="@{/css/bootstrap.css}" />
+		<link rel="stylesheet" type="text/css" media="screen"
+			href="../../../css/bootstrap-sticky-footer.css"
+			th:href="@{/css/bootstrap-sticky-footer.css}" />
+		
+		
+		<!-- app -->
+		<link rel="stylesheet" type="text/css" media="screen"
+			href="../../../css/app.css" th:href="@{/css/app.css}" />
+		
+		<!-- dropzone -->
+		<link rel="stylesheet" type="text/css" media="screen"
+			href="../../../css/dropzone.css" th:href="@{/css/dropzone.css}" />
+		
+		<!-- datepicker -->
+		<link rel="stylesheet" type="text/css" media="screen"
+			href="../../../css/bootstrap-datepicker.css"
+			th:href="@{/css/bootstrap-datepicker.css}" />
+	
+	</head>
+<body>
+	<!-- Docs master nav -->
+	<div th:replace="html/header :: header">
+		<div class="navbar navbar-inverse navbar-static-top bs-docs-nav"
+			id="top" role="banner">
+			<div class="container">
+				<div class="navbar-header">
+					<a th:href="@{/index.jsp}" class="navbar-brand"
+						data-th-text="#{app.name}">Aplicación</a>
+				</div>
+				<nav class="collapse navbar-collapse bs-navbar-collapse"
+					role="navigation">
+					<ul class="nav navbar-nav">
+						<li class="active"><a th:href="@{/index.jsp}"
+							data-th-text="#{go.home}">Go Home </a></li>
+
+						<li class="dropdown"><a href="#" class="dropdown-toggle"
+							data-toggle="dropdown"> <span
+								data-th-text="#{menu.informes}">menu.informes</span> <b
+								class="caret"></b></a>
+							<ul class="dropdown-menu">
+								<li><a th:href="@{/role/pages/1}"
+									data-th-text="#{role.form.list.title}">
+										role.form.list.title </a></li>
+								<li><a th:href="@{/usuario/pages/1}"
+									data-th-text="#{usuario.form.list.title}">
+										usuario.form.list.title </a></li>
+								<li class="divider"></li>
+								<li><a th:href="@{/usuario/pages/1}"
+									data-th-text="#{usuario.form.list.title}">
+										usuario.form.list.title </a></li>
+								<li><a th:href="@{/pestanya/pages/1}"
+									data-th-text="#{pestanya.form.list.title}">
+										pestanya.form.list.title </a></li>
+								<li><a th:href="@{/informe/pages/1}"
+									data-th-text="#{informe.form.list.title}">
+										informe.form.list.title </a></li>
+								<li><a th:href="@{/regladenegocio/pages/1}"
+									data-th-text="#{regladenegocio.form.list.title}">
+										regladenegocio.form.list.title </a></li>
+							</ul></li>
+
+					</ul>
+				</nav>
+			</div>
+		</div>
+	</div>
+
+	<div id="wrap">
+		<div class="container">
+			<div class="tab-content">
+				<div th:replace="html/findcif/acuerdo-info :: acuerdo-info"></div>
+			</div>
+			
+			<ol class="breadcrumb">
+			  <li><a href="#" th:href="@{/findcif/show/{id}(id=${acuerdo.IDAcuerdo})}">
+			  	<span th:text="${acuerdo.IDAcuerdo}">Acuerdo</span></a></li>
+			  <li class="active"><span th:text="${tramitacion.id}">Tramitación</span></li>
+			</ol>
+
+			<div id="detalle-tramitacion" class="well">
+				<h4><span th:text="#{tram.form.detail.title}">Detalle tramitación</span></h4>
+				<!-- ID / CodAPI / Estado -->
+				<div id="tramitacion-id-codapi-estado" class="row form-group form-inline">
+					<div class="col-sm-3">
+						<div class="input-group input-group-sm">
+							<span 
+								class="input-group-addon" 
+								id="input-group-addon-tram-id">ID</span>
+							<input type="text" 
+								class="form-control" 
+								readonly="readonly"
+								th:value="${tramitacion.id}"
+								placeholder="T1234567" />
+						</div>
+					</div>
+					<div class="col-sm-3">
+						<div class="input-group input-group-sm">
+							<span 
+								class="input-group-addon" 
+								id="input-group-addon-tram-codapi">Petición</span>
+							<input type="text" 
+								class="form-control" 
+								readonly="readonly"
+								th:value="${tramitacion.codAPI}"
+								placeholder="T1234567" />
+						</div>
+					</div>
+					<div class="col-sm-3">
+						<div th:switch="${tramitacion.marteEstadoTramitacion.estado}">
+							<div th:case="TRAMITADA" class="input-group input-group-sm has-success has-feedback">
+								<span 
+									class="input-group-addon" 
+									id="input-group-addon-tram-estado"
+									th:text="#{tram.form.field.estado}">Estado</span>
+								<input type="text" 
+									class="form-control" 
+									readonly="readonly"
+									th:value="${tramitacion.marteEstadoTramitacion.descripcion}"
+									placeholder="T1234567" />
+								<span 
+									class="input-group-addon">
+									<span class="glyphicon glyphicon-ok"></span></span>
+							</div>
+							<div th:case="RECHAZADA" class="input-group input-group-sm has-error has-feedback">
+								<span 
+									class="input-group-addon" 
+									id="input-group-addon-tram-estado"
+									th:text="#{tram.form.field.estado}">Estado</span>
+								<input type="text" 
+									class="form-control" 
+									readonly="readonly"
+									th:value="${tramitacion.marteEstadoTramitacion.descripcion}"
+									placeholder="T1234567" />
+								<span 
+									class="input-group-addon">
+									<span class="glyphicon glyphicon-remove"></span></span>
+							</div>
+							<div th:case="PENDIENTE" class="input-group input-group-sm has-warning has-feedback">
+								<span 
+									class="input-group-addon" 
+									id="input-group-addon-tram-estado"
+									th:text="#{tram.form.field.estado}">Estado</span>
+								<input type="text" 
+									class="form-control" 
+									readonly="readonly"
+									th:value="${tramitacion.marteEstadoTramitacion.descripcion}"
+									placeholder="T1234567" />
+								<span 
+									class="input-group-addon">
+									<span class="glyphicon glyphicon-cloud"></span></span>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div id="tramitacion-peticionario-fechas" class="row form-group form-inline">
+					<div class="col-sm-3">
+						<div class="input-group input-group-sm">
+							<span 
+								class="input-group-addon" 
+								id="input-group-addon-tram-peticionario"
+								th:text="#{tram.form.field.peticionario}">Peticionario</span>
+							<input type="text" 
+								class="form-control" 
+								readonly="readonly"
+								th:value="${tramitacion.matPeticionario}"
+								placeholder="T1234567" />
+						</div>
+					</div>
+					<div class="col-sm-3">
+						<div class="input-group input-group-sm">
+							<span 
+								class="input-group-addon" 
+								id="input-group-addon-tram-fecha-peticion"
+								th:text="#{tram.form.field.fechaPeticion}">Fecha Petición</span>
+							<input type="text" 
+								class="form-control" 
+								readonly="readonly"
+								th:value="${ (tramitacion.fechaPeticion != null) ? #dates.format(tramitacion.fechaPeticion, 'dd-MM-yyyy') : ''}"
+								placeholder="31/12/2500" />
+						</div>
+					</div>
+					<div class="col-sm-3">
+						<div class="input-group input-group-sm">
+							<span 
+								class="input-group-addon" 
+								id="input-group-addon-tram-fecha-prevista"
+								th:text="#{tram.form.field.fechaTramPrevista}">Fecha Prevista</span>
+							<input type="text" 
+								class="form-control" 
+								readonly="readonly"
+								th:value="${tramitacion.fechaTramPrevista != null ? #dates.format(tramitacion.fechaTramPrevista, 'dd-MM-yyyy') : ''}"
+								placeholder="31/12/2500" />
+						</div>
+					</div>
+					<div class="col-sm-3">
+						<div class="input-group input-group-sm">
+							<span 
+								class="input-group-addon" 
+								id="input-group-addon-tram-fecha-tramitacion"
+								th:text="#{tram.form.field.fechaTramAPI}">Fecha Tramitacion</span>
+							<input type="text" 
+								class="form-control" 
+								readonly="readonly"
+								th:value="${ tramitacion.fechaTramAPI != null ? #dates.format(tramitacion.fechaTramAPI, 'dd-MM-yyyy') : ''}"
+								placeholder="31/12/2500" />
+						</div>
+					</div>
+				</div><!-- .row -->
+				<div id="tramitacion-codapi-baja" th:if="${tramitacion.codAPI == 'Baja'}" class="row form-group form-inline">
+					<div class="col-sm-6">
+						<div class="input-group input-group-sm">
+							<span 
+								class="input-group-addon" 
+								id="input-group-addon-tram-motivo-baja-fx"
+								th:text="#{tram.form.field.motivo-baja-fx}">Motivo Baja FX</span>
+							<input type="text" 
+								class="form-control" 
+								readonly="readonly"
+								th:value="${tramitacion.motivoBajaMARTE.descMotivoBajaFX}"
+								placeholder="Motivo Baja FX" />
+						</div>
+					</div>
+					<div class="col-sm-6">
+						<div class="input-group input-group-sm">
+							<span 
+								class="input-group-addon" 
+								id="input-group-addon-tram-motivo-baja-marte"
+								th:text="#{tram.form.field.motivo-baja-marte}">Motivo Baja Marte</span>
+							<input type="text" 
+								class="form-control" 
+								readonly="readonly"
+								th:value="${ tramitacion.motivoBajaMARTE.descMotivoBajaMARTE}"
+								placeholder="Motivo Baja Marte" />
+						</div>
+					</div>
+				</div><!-- .row -->
+				<div id="tramitacion-codapi-importeMT" 
+					th:if="${tramitacion.codAPI == 'Importe'}" class="row form-group form-inline">
+					<div class="col-sm-3">
+						<div class="input-group input-group-sm">
+							<span 
+								class="input-group-addon" 
+								id="input-group-addon-tram-importeFijoMT"
+								th:text="#{tram.form.field.importeFijoMTAnterior}">importeFijoMT_Anterior</span>
+							<input type="number" 
+								class="form-control" 
+								readonly="readonly"
+								th:value="${tramitacion.importeFijoMTAnterior}"
+								placeholder="9999.99" />
+						</div>
+					</div>
+					<div class="col-sm-3">
+						<div class="input-group input-group-sm">
+							<span 
+								class="input-group-addon" 
+								id="input-group-addon-tram-importeFijoMT"
+								th:text="#{tram.form.field.importeFijoMT}">importeFijoMT</span>
+							<input type="number" 
+								class="form-control" 
+								readonly="readonly"
+								th:value="${tramitacion.importeFijoMT}"
+								placeholder="9999.99" />
+							<span 
+								class="input-group-addon">
+								<span th:if="${tramitacion.importeFijoMT != null and tramitacion.importeFijoMTAnterior != null and tramitacion.importeFijoMT &gt; tramitacion.importeFijoMTAnterior}" class="glyphicon glyphicon-arrow-up"></span>
+								<span th:if="${tramitacion.importeFijoMT != null and tramitacion.importeFijoMTAnterior != null and tramitacion.importeFijoMT == tramitacion.importeFijoMTAnterior}" class="glyphicon glyphicon-repeat"></span>
+								<span th:if="${tramitacion.importeFijoMT != null and tramitacion.importeFijoMTAnterior != null and tramitacion.importeFijoMT &lt; tramitacion.importeFijoMTAnterior}" class="glyphicon glyphicon-arrow-down"></span>
+								</span>
+								
+						</div>
+					</div>
+				</div><!-- .row -->
+				<div id="tramitacion-codapi-importeNM" 
+					th:if="${tramitacion.codAPI == 'Importe'}" class="row form-group form-inline">
+					<div class="col-sm-3">
+						<div class="input-group input-group-sm">
+							<span 
+								class="input-group-addon" 
+								id="input-group-addon-tram-importeFijoNM"
+								th:text="#{tram.form.field.importeFijoNMAnterior}">importeFijoNM_Anterior</span>
+							<input type="number" 
+								class="form-control" 
+								readonly="readonly"
+								th:value="${tramitacion.importeFijoNMAnterior}"
+								placeholder="9999.99" />
+						</div>
+					</div>
+					<div class="col-sm-3">
+						<div class="input-group input-group-sm">
+							<span 
+								class="input-group-addon" 
+								id="input-group-addon-tram-importeFijoNM"
+								th:text="#{tram.form.field.importeFijoNM}">importeFijoNM</span>
+							<input type="number" 
+								class="form-control" 
+								readonly="readonly"
+								th:value="${tramitacion.importeFijoNM}"
+								placeholder="9999.99" />
+							<span 
+								class="input-group-addon">
+								<span th:if="${tramitacion.importeFijoNM != null and tramitacion.importeFijoNMAnterior != null and tramitacion.importeFijoNM &gt; tramitacion.importeFijoNMAnterior}" class="glyphicon glyphicon-arrow-up"></span>
+								<span th:if="${tramitacion.importeFijoNM != null and tramitacion.importeFijoNMAnterior != null and tramitacion.importeFijoNM == tramitacion.importeFijoNMAnterior}" class="glyphicon glyphicon-repeat"></span>
+								<span th:if="${tramitacion.importeFijoNM != null and tramitacion.importeFijoNMAnterior != null and tramitacion.importeFijoNM &lt; tramitacion.importeFijoNMAnterior}" class="glyphicon glyphicon-arrow-down"></span>
+								</span>
+						</div>
+					</div>
+				</div><!-- .row -->
+				<div id="tramitacion-codapi-campoPMT" 
+					th:if="${tramitacion.codAPI == 'CampoP'}" class="row form-group form-inline">
+					<div class="col-sm-3">
+						<div class="input-group input-group-sm">
+							<span 
+								class="input-group-addon" 
+								id="input-group-addon-tram-descuentoPlanaMTAnterior"
+								th:text="#{tram.form.field.descuentoPlanaMTAnterior}">descuentoPlanaMT</span>
+							<input type="number" 
+								class="form-control" 
+								readonly="readonly"
+								th:value="${tramitacion.descuentoPlanaMTAnterior}"
+								placeholder="9999.99" />
+						</div>
+					</div>
+					<div class="col-sm-3">
+						<div class="input-group input-group-sm">
+							<span 
+								class="input-group-addon" 
+								id="input-group-addon-tram-descuentoPlanaMT"
+								th:text="#{tram.form.field.descuentoPlanaMT}">descuentoPlanaMT</span>
+							<input type="number" 
+								class="form-control" 
+								readonly="readonly"
+								th:value="${tramitacion.descuentoPlanaMT}"
+								placeholder="9999.99" />
+							<span 
+								class="input-group-addon">
+								<span th:if="${tramitacion.descuentoPlanaMT != null and tramitacion.descuentoPlanaMTAnterior != null and tramitacion.descuentoPlanaMT &gt; tramitacion.descuentoPlanaMTAnterior}" class="glyphicon glyphicon-arrow-up"></span>
+								<span th:if="${tramitacion.descuentoPlanaMT != null and tramitacion.descuentoPlanaMTAnterior != null and tramitacion.descuentoPlanaMT == tramitacion.descuentoPlanaMTAnterior}" class="glyphicon glyphicon-repeat"></span>
+								<span th:if="${tramitacion.descuentoPlanaMT != null and tramitacion.descuentoPlanaMTAnterior != null and tramitacion.descuentoPlanaMT &lt; tramitacion.descuentoPlanaMTAnterior}" class="glyphicon glyphicon-arrow-down"></span>
+								</span>
+						</div>
+					</div>
+				</div><!-- .row -->
+				<div id="tramitacion-codapi-campoPNM" 
+					th:if="${tramitacion.codAPI == 'CampoP'}" class="row form-group form-inline">
+					<div class="col-sm-3">
+						<div class="input-group input-group-sm">
+							<span 
+								class="input-group-addon" 
+								id="input-group-addon-tram-descuentoPlanaNMAnterior"
+								th:text="#{tram.form.field.descuentoPlanaNMAnterior}">descuentoPlanaNM</span>
+							<input type="number" 
+								class="form-control" 
+								readonly="readonly"
+								th:value="${tramitacion.descuentoPlanaNMAnterior}"
+								placeholder="9999.99" />
+						</div>
+					</div>
+					<div class="col-sm-3">
+						<div class="input-group input-group-sm">
+							<span 
+								class="input-group-addon" 
+								id="input-group-addon-tram-descuentoPlanaNM"
+								th:text="#{tram.form.field.descuentoPlanaNM}">descuentoPlanaNM</span>
+							<input type="number" 
+								class="form-control" 
+								readonly="readonly"
+								th:value="${tramitacion.descuentoPlanaNM}"
+								placeholder="9999.99" />
+							<span 
+								class="input-group-addon">
+								<span th:if="${tramitacion.descuentoPlanaNM != null and tramitacion.descuentoPlanaNMAnterior != null and tramitacion.descuentoPlanaNM &gt; tramitacion.descuentoPlanaNMAnterior}" class="glyphicon glyphicon-arrow-up"></span>
+								<span th:if="${tramitacion.descuentoPlanaNM != null and tramitacion.descuentoPlanaNMAnterior != null and tramitacion.descuentoPlanaNM == tramitacion.descuentoPlanaNMAnterior}" class="glyphicon glyphicon-repeat"></span>
+								<span th:if="${tramitacion.descuentoPlanaNM != null and tramitacion.descuentoPlanaNMAnterior != null and tramitacion.descuentoPlanaNM &lt; tramitacion.descuentoPlanaNMAnterior}" class="glyphicon glyphicon-arrow-down"></span>
+								</span>
+						</div>
+					</div>
+				</div><!-- .row -->
+				<div id="tramitacion-peticion" class="row form-group form-inline">
+					<div class="col-sm-12">
+						<h4><span th:text="#{tram.form.field.peticion}">Petición</span></h4>
+						<textarea 
+							class="form-control input-sm span12" 
+							readonly="readonly"
+							th:text="${tramitacion.peticionTramitacion}"
+							rows = "5"
+							cols = "120"
+							placeholder="Lorem ipsum dolor" ></textarea>
+					</div>
+				</div><!-- .row -->
+			</div><!-- #detalle-tramitacion -->
+
+		</div><!-- .container -->
+	</div><!-- #wrap -->
+	
+</body>
+</html>

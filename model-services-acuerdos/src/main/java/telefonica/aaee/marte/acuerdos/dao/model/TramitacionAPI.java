@@ -119,7 +119,10 @@ public class TramitacionAPI implements Serializable {
 	@JoinColumn(name="id_motivo_baja_MARTE")
 	private MotivoBaja motivoBajaMARTE;
 
-	private String idAcuerdo;
+	//bi-directional many-to-one association to Acuerdo
+	@ManyToOne
+	@JoinColumn(name="idAcuerdo")
+	private Acuerdo acuerdo;
 
 	private int idTareaGAE;
 
@@ -408,12 +411,12 @@ public class TramitacionAPI implements Serializable {
 		this.finVigencia = finVigencia;
 	}
 
-	public String getIdAcuerdo() {
-		return this.idAcuerdo;
+	public Acuerdo getAcuerdo() {
+		return this.acuerdo;
 	}
 
-	public void setIdAcuerdo(String idAcuerdo) {
-		this.idAcuerdo = idAcuerdo;
+	public void setAcuerdo(Acuerdo acuerdo) {
+		this.acuerdo = acuerdo;
 	}
 
 	public int getIdTareaGAE() {
@@ -624,19 +627,19 @@ public class TramitacionAPI implements Serializable {
 		builder.append(", estadoTram=");
 		builder.append(marteEstadoTramitacion);
 		builder.append(", fechaPeticion=");
-		builder.append(sdf.format(fechaPeticion));
+		builder.append(fechaPeticion == null ? "" : sdf.format(fechaPeticion));
 		builder.append(", fechaTramPrevista=");
-		builder.append(sdf.format(fechaTramPrevista));
+		builder.append(fechaTramPrevista == null ? "" : sdf.format(fechaTramPrevista));
 		builder.append(", fechaTramAPI=");
-		builder.append(sdf.format(fechaTramAPI));
+		builder.append(fechaTramAPI == null ? "" : sdf.format(fechaTramAPI));
 		builder.append(", fechaGAE=");
-		builder.append(sdf.format(fechaGAE));
+		builder.append(fechaGAE == null ? "" : sdf.format(fechaGAE));
 		builder.append(", fechaCorreo=");
-		builder.append(sdf.format(fechaCorreo));
+		builder.append(fechaCorreo == null ? "" : sdf.format(fechaCorreo));
 		builder.append(", finVigencia=");
-		builder.append(sdf.format(finVigencia));
-		builder.append(", idAcuerdo=");
-		builder.append(idAcuerdo);
+		builder.append(finVigencia == null ? "" : sdf.format(finVigencia));
+		builder.append(", Acuerdo=");
+		builder.append(acuerdo);
 		builder.append(", idTareaGAE=");
 		builder.append(idTareaGAE);
 		builder.append(", matJArea=");

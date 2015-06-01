@@ -63,19 +63,12 @@
 		</div>
 		 <div class="col-sm-6">
 		 	<div class="row">
-		  	<div  class="pagination pagination-sm form-inline">
-				<button th:each="label : ${labels}" type="button" class="btn btn-info btn-sm">
-					<span th:text="${label}">Texto</span>
-					<span class="glyphicon glyphicon-ok-circle" aria-hidden="true" ></span>
-				</button>
-				<a th:if="${#lists.size(labels) > 0}"  
-					href="" 
-					th:href="@{/seg/getFile?queBuscar={n}(n=${queBuscar})}"
-					role="button" class="btn btn-success btn-sm">
-					<span>Exportar a Excel</span>
-					<span class="glyphicon glyphicon-export" aria-hidden="true" ></span>
-				</a>
-		  	</div>
+			  	<div  class="pagination pagination-sm form-inline">
+					<button th:each="label : ${labels}" type="button" class="btn btn-info btn-sm">
+						<span th:text="${label}">Texto</span>
+						<span class="glyphicon glyphicon-ok-circle" aria-hidden="true" ></span>
+					</button>
+			  	</div>
 		 	</div>
 		 </div>
 	  <div class="col-sm-2">

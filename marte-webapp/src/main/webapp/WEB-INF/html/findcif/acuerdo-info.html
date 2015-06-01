@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html 
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+	<head th:replace="html/header :: head">
+		<meta charset="UTF-8" />
+		<title th:text="#{app.name}">Acuerdos-ByCIF-List</title>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		
+		
+		<link rel="shortcut icon" th:href="@{/img/icons/favicon.ico}" />
+		
+		<!-- CSS to style the file input field as button and adjust the Bootstrap progress bars -->
+		<link rel="stylesheet" type="text/css"
+			href="../../../css/jquery.fileupload.css"
+			th:href="@{/css/jquery.fileupload.css}" />
+		<link rel="stylesheet" type="text/css"
+			href="../../../css/jquery.fileupload-ui.css"
+			th:href="@{/css/jquery.fileupload-ui.css}" />
+		
+		
+		<!-- Bootstrap -->
+		<link rel="stylesheet" type="text/css" media="screen"
+			href="../../../css/bootstrap.css" th:href="@{/css/bootstrap.css}" />
+		<link rel="stylesheet" type="text/css" media="screen"
+			href="../../../css/bootstrap-sticky-footer.css"
+			th:href="@{/css/bootstrap-sticky-footer.css}" />
+		
+		
+		<!-- app -->
+		<link rel="stylesheet" type="text/css" media="screen"
+			href="../../../css/app.css" th:href="@{/css/app.css}" />
+		
+		<!-- dropzone -->
+		<link rel="stylesheet" type="text/css" media="screen"
+			href="../../../css/dropzone.css" th:href="@{/css/dropzone.css}" />
+		
+		<!-- datepicker -->
+		<link rel="stylesheet" type="text/css" media="screen"
+			href="../../../css/bootstrap-datepicker.css"
+			th:href="@{/css/bootstrap-datepicker.css}" />
+	
+	</head>
+<body>
+	<!-- Docs master nav -->
+	<div th:replace="html/header :: header">
+		<div class="navbar navbar-inverse navbar-static-top bs-docs-nav"
+			id="top" role="banner">
+			<div class="container">
+				<div class="navbar-header">
+					<a th:href="@{/index.jsp}" class="navbar-brand"
+						data-th-text="#{app.name}">Aplicación</a>
+				</div>
+				<nav class="collapse navbar-collapse bs-navbar-collapse"
+					role="navigation">
+					<ul class="nav navbar-nav">
+						<li class="active"><a th:href="@{/index.jsp}"
+							data-th-text="#{go.home}">Go Home </a></li>
+
+						<li class="dropdown"><a href="#" class="dropdown-toggle"
+							data-toggle="dropdown"> <span
+								data-th-text="#{menu.informes}">menu.informes</span> <b
+								class="caret"></b></a>
+							<ul class="dropdown-menu">
+								<li><a th:href="@{/role/pages/1}"
+									data-th-text="#{role.form.list.title}">
+										role.form.list.title </a></li>
+								<li><a th:href="@{/usuario/pages/1}"
+									data-th-text="#{usuario.form.list.title}">
+										usuario.form.list.title </a></li>
+								<li class="divider"></li>
+								<li><a th:href="@{/usuario/pages/1}"
+									data-th-text="#{usuario.form.list.title}">
+										usuario.form.list.title </a></li>
+								<li><a th:href="@{/pestanya/pages/1}"
+									data-th-text="#{pestanya.form.list.title}">
+										pestanya.form.list.title </a></li>
+								<li><a th:href="@{/informe/pages/1}"
+									data-th-text="#{informe.form.list.title}">
+										informe.form.list.title </a></li>
+								<li><a th:href="@{/regladenegocio/pages/1}"
+									data-th-text="#{regladenegocio.form.list.title}">
+										regladenegocio.form.list.title </a></li>
+							</ul></li>
+
+					</ul>
+				</nav>
+			</div>
+		</div>
+	</div>
+
+	<div id="wrap">
+		<div class="container">
+			<div class="tab-content">
+				<div th:fragment="acuerdo-info">
+					<div id="acuerdo-info">
+						<div class="row form-group form-inline">
+							<div class="col-sm-3">
+								<div class="input-group input-group-sm">
+									<span 
+										class="input-group-addon danger" 
+										th:class="${acuerdo.baja == true ? 'input-group-addon danger' : 'input-group-addon primary'}" 
+										id="input-group-addon-01">IDAcuerdo</span>
+									<input type="text" 
+										class="form-control" 
+										readonly="readonly"
+										th:value="${acuerdo.IDAcuerdo}"
+										placeholder="T1234567" />
+								</div>
+							</div>
+							<div class="col-sm-3">
+								<div class="input-group input-group-sm">
+									<span 
+										class="input-group-addon" 
+										id="input-group-addon-tipo-acuerdo">Tipo Acuerdo</span>
+									<input type="text" 
+										class="form-control" 
+										readonly="readonly"
+										th:value="${acuerdo.descTipoAcuerdo}"
+										placeholder="Plana Empresas" />
+								</div>
+							</div>
+							<div class="col-sm-3">
+								<div class="input-group input-group-sm">
+									<span class="input-group-addon" id="input-group-addon-negocio">Negocio</span>
+									<input type="text" 
+										class="form-control" 
+										readonly="readonly"
+										th:value="${acuerdo.nuevoMercado == 'True' ? 'Nuevo Negocio' : 'Negocio Tradicional'}"
+										placeholder="Nuevo Negocio" />
+								</div>
+							</div>
+							<div th:if="${acuerdo.baja == true}" class="col-sm-3 has-error">
+								<div class="input-group input-group-sm">
+									<span class="input-group-addon" id="input-group-addon-negocio">Fecha Baja</span>
+									<input type="text" 
+										class="form-control" 
+										disabled="disabled"
+										th:value="${acuerdo.fechaBaja != null ? #dates.format(acuerdo.fechaBaja, 'dd-MM-yyyy') : 'Sin informar'}"
+										placeholder="31/12/2500" />
+								</div>
+							</div>
+						</div><!-- .row form-group form-inline -->
+						<div class="row form-group form-inline">
+							<div class="col-sm-2">
+								<div class="input-group input-group-sm">
+									<span class="input-group-addon" id="input-group-addon-02">TipoDoc</span>
+									<input type="text" 
+										class="form-control" 
+										readonly="readonly"
+										th:value="${acuerdo.tipoDoc}"
+										placeholder="L" />
+								</div>
+							</div>
+							<div class="col-sm-3">
+								<div class="input-group input-group-sm">
+									<span class="input-group-addon" id="input-group-addon-03">CIF</span>
+									<input type="text" 
+										class="form-control" 
+										readonly="readonly"
+										th:value="${acuerdo.cif}"
+										placeholder="A12345678" />
+								</div>
+							</div>
+							<div class="col-sm-7">
+								<div class="input-group input-group-sm">
+									<span class="input-group-addon" id="input-group-addon-04">Empresa</span>
+									<input type="text" 
+										class="form-control" 
+										readonly="readonly"
+										th:value="${acuerdo.nombre}"
+										placeholder="NombreEmpresa" />
+								</div>
+							</div>
+						</div><!-- .row form-group form-inline -->
+						<div class="row form-group form-inline">
+							<div class="col-sm-3">
+								<div class="input-group input-group-sm">
+									<span class="input-group-addon" id="input-group-addon-acuerdoFX">Acuerdo FX</span>
+									<input type="text" 
+										class="form-control" 
+										readonly="readonly"
+										th:value="${acuerdo.acuerdoFX}"
+										placeholder="LA12345678  012015" />
+								</div>
+							</div>
+							<div class="col-sm-5">
+								<div class="input-group input-group-sm">
+									<span class="input-group-addon" id="input-group-addon-normal"></span>
+									<input type="text" 
+										class="form-control" 
+										readonly="readonly"
+										th:value="${acuerdo.planaSimplificada == 'True' ? 'Simplificada' : 'Normal'}"
+										placeholder="Normal/Simplificada" />
+								</div>
+							</div>
+							<div class="col-sm-4">
+								<div class="input-group input-group-sm">
+									<span class="input-group-addon" id="input-group-addon-importeFijo"></span>
+									<input type="text" 
+										class="form-control" 
+										readonly="readonly"
+										th:value="${acuerdo.planaAutoajustable == 'True' ? 'Autoajustable' : 'Importe Fijo'}"
+										placeholder="Importe Fijo/Autoajustable" />
+								</div>
+							</div>
+						</div><!-- .row form-group form-inline -->
+						<div class="row form-group form-inline">
+							<div class="col-sm-3">
+								<div class="input-group input-group-sm">
+									<span class="input-group-addon" id="input-group-addon-importeFijoMT">Importe Fijo MT</span>
+									<input type="number" 
+										class="form-control" 
+										readonly="readonly"
+										th:value="${acuerdo.importeFijoMT}"
+										min="0"
+										max="99999.99"
+										step="0.01"
+										placeholder="1234.55" />
+								</div>
+							</div>
+							<div class="col-sm-3">
+								<div class="input-group input-group-sm">
+									<span class="input-group-addon" id="input-group-addon-descuentoPlanaMT">Campo P MT</span>
+									<input type="number" 
+										class="form-control" 
+										readonly="readonly"
+										min="0"
+										max="100"
+										step="1"
+										th:value="${acuerdo.descuentoPlanaMT}"
+										placeholder="100" />
+								</div>
+							</div>
+							<div th:if="${acuerdo.nuevoMercado == 'True'}" class="col-sm-3">
+								<div class="input-group input-group-sm">
+									<span class="input-group-addon" id="input-group-addon-importeFijoNM">Importe Fijo NM</span>
+									<input type="number" 
+										class="form-control" 
+										readonly="readonly"
+										min="0"
+										max="99999.99"
+										step="0.01"
+										th:value="${acuerdo.importeFijoNM}"
+										placeholder="12345.00" />
+								</div>
+							</div>
+							<div th:if="${acuerdo.nuevoMercado == 'True'}" class="col-sm-3">
+								<div class="input-group input-group-sm">
+									<span class="input-group-addon" id="input-group-addon-descuentoPlanaNM">Campo P NM</span>
+									<input type="number" 
+										class="form-control" 
+										readonly="readonly"
+										min="0"
+										max="100"
+										step="1"
+										th:value="${acuerdo.descuentoPlanaNM}"
+										placeholder="99" />
+								</div>
+							</div>
+						</div><!-- .row form-group form-inline -->
+					</div>
+				</div>
+			</div>
+
+
+		</div><!-- .container -->
+	</div><!-- #wrap -->
+	
+</body>
+</html>

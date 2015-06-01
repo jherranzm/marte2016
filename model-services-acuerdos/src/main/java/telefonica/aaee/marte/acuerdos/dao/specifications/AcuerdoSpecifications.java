@@ -1,4 +1,4 @@
-package telefonica.aaee.marte.marte.dao.specifications;
+package telefonica.aaee.marte.acuerdos.dao.specifications;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -7,7 +7,7 @@ import javax.persistence.criteria.Root;
 
 import org.springframework.data.jpa.domain.Specification;
 
-import telefonica.aaee.marte.marte.dao.model.Acuerdo;
+import telefonica.aaee.marte.acuerdos.dao.model.Acuerdo;
 
 public class AcuerdoSpecifications {
 	public static Specification<Acuerdo> searchByCif(final String cif) {

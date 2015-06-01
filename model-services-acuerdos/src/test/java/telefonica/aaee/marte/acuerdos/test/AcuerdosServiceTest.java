@@ -1,4 +1,4 @@
-package telefonica.aaee.marte.marte.test.acuerdos;
+package telefonica.aaee.marte.acuerdos.test;
 
 import static org.junit.Assert.assertTrue;
 
@@ -12,15 +12,15 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import telefonica.aaee.marte.marte.dao.model.Acuerdo;
-import telefonica.aaee.marte.marte.dao.service.AcuerdoService;
-import telefonica.aaee.marte.marte.test.config.JPAMarteTestConfig;
-import telefonica.aaee.marte.marte.test.config.MarteServicesTestConfig;
+import telefonica.aaee.marte.acuerdos.dao.model.Acuerdo;
+import telefonica.aaee.marte.acuerdos.dao.service.AcuerdoService;
+import telefonica.aaee.marte.acuerdos.test.config.AcuerdosServicesTestConfig;
+import telefonica.aaee.marte.acuerdos.test.config.JPAAcuerdosTestConfig;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes={MarteServicesTestConfig.class, JPAMarteTestConfig.class})
+@ContextConfiguration(classes={AcuerdosServicesTestConfig.class, JPAAcuerdosTestConfig.class})
 @Transactional
-public class MarteServiceTest {
+public class AcuerdosServiceTest {
 
 	protected final Log logger = LogFactory.getLog(getClass());
 
@@ -112,7 +112,7 @@ public class MarteServiceTest {
 		
 		boolean ret = false;
 		
-		Acuerdo acuerdo = acuerdoService.findByIDAcuerdo("T010028275", 1);
+		Acuerdo acuerdo = acuerdoService.findByIDAcuerdo("T010028275");
 		
 		ret = acuerdo!= null;
 		assertTrue(ret);
@@ -129,7 +129,7 @@ public class MarteServiceTest {
 		
 		boolean ret = false;
 		
-		Acuerdo acuerdo = acuerdoService.findByIDAcuerdo("T020028275", 1);
+		Acuerdo acuerdo = acuerdoService.findByIDAcuerdo("T020028275");
 		
 		ret = (acuerdo == null);
 		assertTrue(ret);
