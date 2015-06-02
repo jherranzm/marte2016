@@ -260,7 +260,7 @@
 					</div>
 				</div><!-- .row -->
 				<div id="tramitacion-codapi-importeMT" 
-					th:if="${tramitacion.codAPI == 'Importe'}" class="row form-group form-inline">
+					th:if="${tramitacion.codAPI == 'Importe' or tramitacion.codAPI == 'Cambio Tipo NM'}" class="row form-group form-inline">
 					<div class="col-sm-3">
 						<div class="input-group input-group-sm">
 							<span 
@@ -296,7 +296,7 @@
 					</div>
 				</div><!-- .row -->
 				<div id="tramitacion-codapi-importeNM" 
-					th:if="${tramitacion.codAPI == 'Importe'}" class="row form-group form-inline">
+					th:if="${tramitacion.codAPI == 'Importe' or tramitacion.codAPI == 'Cambio Tipo NM'}" class="row form-group form-inline">
 					<div class="col-sm-3">
 						<div class="input-group input-group-sm">
 							<span 
@@ -331,7 +331,7 @@
 					</div>
 				</div><!-- .row -->
 				<div id="tramitacion-codapi-campoPMT" 
-					th:if="${tramitacion.codAPI == 'CampoP'}" class="row form-group form-inline">
+					th:if="${tramitacion.codAPI == 'CampoP' or tramitacion.codAPI == 'Cambio Tipo NM'}" class="row form-group form-inline">
 					<div class="col-sm-3">
 						<div class="input-group input-group-sm">
 							<span 
@@ -364,9 +364,22 @@
 								</span>
 						</div>
 					</div>
+					<div class="col-sm-3">
+						<div class="input-group input-group-sm">
+							<span 
+								class="input-group-addon" 
+								id="input-group-addon-tram-autorizacion-mt"
+								th:text="#{tram.form.field.autorizacion}">HORUS</span>
+							<input type="text" 
+								class="form-control" 
+								readonly="readonly"
+								th:value="${tramitacion.autorizacion}"
+								placeholder="P123456" />
+						</div>
+					</div>
 				</div><!-- .row -->
 				<div id="tramitacion-codapi-campoPNM" 
-					th:if="${tramitacion.codAPI == 'CampoP'}" class="row form-group form-inline">
+					th:if="${tramitacion.codAPI == 'CampoP' or tramitacion.codAPI == 'Cambio Tipo NM'}" class="row form-group form-inline">
 					<div class="col-sm-3">
 						<div class="input-group input-group-sm">
 							<span 
@@ -397,6 +410,19 @@
 								<span th:if="${tramitacion.descuentoPlanaNM != null and tramitacion.descuentoPlanaNMAnterior != null and tramitacion.descuentoPlanaNM == tramitacion.descuentoPlanaNMAnterior}" class="glyphicon glyphicon-repeat"></span>
 								<span th:if="${tramitacion.descuentoPlanaNM != null and tramitacion.descuentoPlanaNMAnterior != null and tramitacion.descuentoPlanaNM &lt; tramitacion.descuentoPlanaNMAnterior}" class="glyphicon glyphicon-arrow-down"></span>
 								</span>
+						</div>
+					</div>
+					<div class="col-sm-3">
+						<div class="input-group input-group-sm">
+							<span 
+								class="input-group-addon" 
+								id="input-group-addon-tram-autorizacion-nm"
+								th:text="#{tram.form.field.autorizacion}">HORUS</span>
+							<input type="text" 
+								class="form-control" 
+								readonly="readonly"
+								th:value="${tramitacion.autorizacion}"
+								placeholder="P123456" />
 						</div>
 					</div>
 				</div><!-- .row -->
