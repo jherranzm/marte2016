@@ -77,7 +77,11 @@ public class TramitacionAPI implements Serializable {
 	@Column(name="cmbImporteTemporal")
 	private String cambioImporteTemporal;
 
-	private String codAPI;
+	//bi-directional many-to-one association to EstadoTramitacion
+	// el nombre de la columna es el de la tabla local
+	@ManyToOne
+	@JoinColumn(name="CodAPI")
+	private CodAPI codAPI;
 
 	@Column(name="CodApi_Orig")
 	private String codAPIOrig;
@@ -91,6 +95,7 @@ public class TramitacionAPI implements Serializable {
 	private String email;
 
 	//bi-directional many-to-one association to EstadoTramitacion
+	// el nombre de la columna es el de la tabla local
 	@ManyToOne
 	@JoinColumn(name="EstadoTram")
 	private EstadoTramitacion marteEstadoTramitacion;
@@ -132,7 +137,10 @@ public class TramitacionAPI implements Serializable {
 	@Column(name="MATCIAL")
 	private String matComercial;
 
-	private String matPeticionario;
+	//bi-directional many-to-one association to Acuerdo
+	@ManyToOne
+	@JoinColumn(name="matPeticionario")
+	private MarteUsuario matPeticionario;
 
 	@Column(name="Motivo_Baja")
 	private short motivoBaja;
@@ -322,11 +330,11 @@ public class TramitacionAPI implements Serializable {
 		this.cambioImporteTemporal = cambioImporteTemporal;
 	}
 
-	public String getCodAPI() {
+	public CodAPI getCodAPI() {
 		return this.codAPI;
 	}
 
-	public void setCodAPI(String codAPI) {
+	public void setCodAPI(CodAPI codAPI) {
 		this.codAPI = codAPI;
 	}
 
@@ -443,11 +451,11 @@ public class TramitacionAPI implements Serializable {
 		this.matComercial = matComercial;
 	}
 
-	public String getMatPeticionario() {
+	public MarteUsuario getMatPeticionario() {
 		return this.matPeticionario;
 	}
 
-	public void setMatPeticionario(String matPeticionario) {
+	public void setMatPeticionario(MarteUsuario matPeticionario) {
 		this.matPeticionario = matPeticionario;
 	}
 

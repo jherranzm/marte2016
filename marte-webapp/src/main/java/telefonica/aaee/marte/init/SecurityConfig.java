@@ -21,6 +21,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.thymeleaf.spring4.SpringTemplateEngine;
 
 import telefonica.aaee.dao.maestras.service.UsuarioUserDetailsService;
+import telefonica.aaee.marte.process.ConversorUsuario;
 import telefonica.aaee.marte.process.MailUtil;
 
 @Configuration
@@ -44,6 +45,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Autowired
 	private MailUtil mailUtil;
+	
+	@Autowired
+	private ConversorUsuario cu;
 	
 	protected final Log logger = LogFactory.getLog(getClass());
 
@@ -95,6 +99,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		http.exceptionHandling().accessDeniedPage("/login?error");
 		
 		logger.info(String.format("RAND : [%s]",RandomStringUtils.randomAlphabetic(3).toUpperCase()));
+		
+		cu.conversorUsuarios();
+		
+		logger.info(String.format("Conversión finalizada!",""));
+		
 		
 	}
 	

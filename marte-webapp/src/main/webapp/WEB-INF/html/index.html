@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html 
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 
 <head th:replace="html/header :: head">
 	<meta charset="UTF-8" />
@@ -45,66 +47,17 @@
 </head>
 
 <body>
-<!-- Docs master nav -->
-<div th:replace="html/header :: header">
-	<div class="navbar navbar-inverse navbar-static-top bs-docs-nav"
-	id="top" role="banner">	
-		<div class="container">
-			<div class="navbar-header">
-				<a th:href="@{/index.jsp}" class="navbar-brand" 
-					data-th-text="#{app.name}">Aplicación</a>
-			</div>
-			<nav class="collapse navbar-collapse bs-navbar-collapse"
-				role="navigation">
-				<ul class="nav navbar-nav">
-					<li class="active"><a
-						th:href="@{/index.jsp}"
-						data-th-text="#{go.home}">Go Home
-					</a></li>
-	
-					<li class="dropdown"><a href="#" class="dropdown-toggle"
-							data-toggle="dropdown" > 
-							<span data-th-text="#{menu.informes}">menu.informes</span>
-							<b class="caret"></b></a>
-							<ul class="dropdown-menu">
-								<li><a
-									th:href="@{/role/pages/1}" data-th-text="#{role.form.list.title}">
-										role.form.list.title
-								</a></li>
-								<li><a
-									th:href="@{/usuario/pages/1}" data-th-text="#{usuario.form.list.title}">
-										usuario.form.list.title
-								</a></li>
-								<li class="divider"></li>
-								<li><a
-									th:href="@{/consulta/pages/1}" data-th-text="#{consulta.form.list.title}">
-										consulta.form.list.title
-								</a></li>
-								<li><a
-									th:href="@{/pestanya/pages/1}" data-th-text="#{pestanya.form.list.title}">
-										pestanya.form.list.title
-								</a></li>
-								<li><a
-									th:href="@{/informe/pages/1}" data-th-text="#{informe.form.list.title}">
-										informe.form.list.title
-								</a></li>
-								<li><a
-									th:href="@{/regladenegocio/pages/1}" data-th-text="#{regladenegocio.form.list.title}">
-										regladenegocio.form.list.title
-								</a></li>
-							</ul></li>
-			
-				</ul>
-			</nav>
-		</div>
-	</div>
-</div>
+	<!-- Docs master nav -->
+	<div th:replace="html/header :: header"></div>
 
 	<div id="wrap">
 
 		<div class="container">
 		
 			<div id="left" class="col-md-10">
+			
+				<div th:replace="html/findcif/findCif-search :: search"></div>
+			
 				<div id="info-condiciones-fechas" class="col-md-12">
 				
 					<div class="well">
@@ -127,15 +80,11 @@
 						<p>NOTA: Considerar siempre el margen de un día para proceder a la tramitación y la influencia de las festividades del calendario.</p>
 					</div>
 				
-					<div>
-						<a th:href="@{/findcif/find}" class="btn btn-primary btn-sm">Buscar Acuerdos...</a>
-					</div>
 				</div>
 			</div>
 			<div id="right" class="col-md-2">
-				<div id="userConnected">
-				
-						
+				<div id="userConnected" sec:authorize="isAuthenticated()">
+					<span sec:authentication="principal.username" >Usuario</span>
 				</div><!-- #userConnected -->
 			</div>
 			

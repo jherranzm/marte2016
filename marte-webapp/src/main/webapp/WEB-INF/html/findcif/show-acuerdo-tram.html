@@ -118,7 +118,7 @@
 								placeholder="T1234567" />
 						</div>
 					</div>
-					<div class="col-sm-3">
+					<div class="col-sm-4">
 						<div class="input-group input-group-sm">
 							<span 
 								class="input-group-addon" 
@@ -126,7 +126,7 @@
 							<input type="text" 
 								class="form-control" 
 								readonly="readonly"
-								th:value="${tramitacion.codAPI}"
+								th:value="${tramitacion.codAPI.descripcion}"
 								placeholder="T1234567" />
 						</div>
 					</div>
@@ -187,7 +187,7 @@
 							<input type="text" 
 								class="form-control" 
 								readonly="readonly"
-								th:value="${tramitacion.matPeticionario}"
+								th:value="${tramitacion.matPeticionario.nombre}"
 								placeholder="T1234567" />
 						</div>
 					</div>
@@ -226,12 +226,12 @@
 							<input type="text" 
 								class="form-control" 
 								readonly="readonly"
-								th:value="${ tramitacion.fechaTramAPI != null ? #dates.format(tramitacion.fechaTramAPI, 'dd-MM-yyyy') : ''}"
-								placeholder="31/12/2500" />
+								th:value="${ (tramitacion.fechaTramAPI != null and #dates.format(tramitacion.fechaTramAPI, 'dd-MM-yyyy') != '31-12-2500') ? #dates.format(tramitacion.fechaTramAPI, 'dd-MM-yyyy') : '---'}"
+								 />
 						</div>
 					</div>
 				</div><!-- .row -->
-				<div id="tramitacion-codapi-baja" th:if="${tramitacion.codAPI == 'Baja'}" class="row form-group form-inline">
+				<div id="tramitacion-codapi-baja" th:if="${tramitacion.codAPI.codApi == 'Baja'}" class="row form-group form-inline">
 					<div class="col-sm-6">
 						<div class="input-group input-group-sm">
 							<span 
@@ -260,7 +260,7 @@
 					</div>
 				</div><!-- .row -->
 				<div id="tramitacion-codapi-importeMT" 
-					th:if="${tramitacion.codAPI == 'Importe' or tramitacion.codAPI == 'Cambio Tipo NM'}" class="row form-group form-inline">
+					th:if="${tramitacion.codAPI.codApi == 'Importe' or tramitacion.codAPI.codApi == 'Cambio Tipo NM'}" class="row form-group form-inline">
 					<div class="col-sm-3">
 						<div class="input-group input-group-sm">
 							<span 
@@ -296,7 +296,7 @@
 					</div>
 				</div><!-- .row -->
 				<div id="tramitacion-codapi-importeNM" 
-					th:if="${tramitacion.codAPI == 'Importe' or tramitacion.codAPI == 'Cambio Tipo NM'}" class="row form-group form-inline">
+					th:if="${tramitacion.codAPI.codApi == 'Importe' or tramitacion.codAPI.codApi == 'Cambio Tipo NM'}" class="row form-group form-inline">
 					<div class="col-sm-3">
 						<div class="input-group input-group-sm">
 							<span 
@@ -331,7 +331,7 @@
 					</div>
 				</div><!-- .row -->
 				<div id="tramitacion-codapi-campoPMT" 
-					th:if="${tramitacion.codAPI == 'CampoP' or tramitacion.codAPI == 'Cambio Tipo NM'}" class="row form-group form-inline">
+					th:if="${tramitacion.codAPI.codApi == 'CampoP' or tramitacion.codAPI.codApi == 'Cambio Tipo NM'}" class="row form-group form-inline">
 					<div class="col-sm-3">
 						<div class="input-group input-group-sm">
 							<span 
@@ -379,7 +379,7 @@
 					</div>
 				</div><!-- .row -->
 				<div id="tramitacion-codapi-campoPNM" 
-					th:if="${tramitacion.codAPI == 'CampoP' or tramitacion.codAPI == 'Cambio Tipo NM'}" class="row form-group form-inline">
+					th:if="${tramitacion.codAPI.codApi == 'CampoP' or tramitacion.codAPI.codApi == 'Cambio Tipo NM'}" class="row form-group form-inline">
 					<div class="col-sm-3">
 						<div class="input-group input-group-sm">
 							<span 
@@ -426,6 +426,22 @@
 						</div>
 					</div>
 				</div><!-- .row -->
+				<div id="tramitacion-soporte" 
+					th:if="${tramitacion.codAPI.codApi == 'Soporte'}" class="row form-group form-inline">
+					<div class="col-sm-6">
+						<div class="input-group input-group-sm">
+							<span 
+								class="input-group-addon" 
+								id="input-group-addon-tram-email"
+								th:text="#{tram.form.field.email}">email</span>
+							<input type="text" 
+								class="form-control" 
+								readonly="readonly"
+								th:value="${tramitacion.email}"
+								 />
+						</div>
+					</div>
+				</div><!-- .row -->
 				<div id="tramitacion-peticion" class="row form-group form-inline">
 					<div class="col-sm-12">
 						<h4><span th:text="#{tram.form.field.peticion}">Petición</span></h4>
@@ -442,6 +458,55 @@
 
 		</div><!-- .container -->
 	</div><!-- #wrap -->
+	
+	
+		<div th:replace="html/footer :: footer">
+		
+			<div id="footer" th:fragment="footer">
+				<div class="container">
+					<p class="text-muted credit" data-th-text="#{app.name}">
+						footer
+					</p>
+		
+		
+			
+				<!--[if lt IE 9]>
+					<script 
+						src="../../../js/jquery-1.11.2.min.js"
+						th:src="@{/js/jquery-1.11.2.min.js}"></script>
+				<![endif]-->
+				
+				<!--[if gte IE 9]> 
+					<script 
+						src="../../../js/jquery-2.1.1.min.js"
+						th:src="@{/js/jquery-2.1.1.min.js}"></script>
+				<![endif]-->
+				
+				<!--[if !IE]> -->
+					<script 
+						src="../../../js/jquery-2.1.1.min.js"
+						th:src="@{/js/jquery-2.1.1.min.js}"></script>
+				<!-- <![endif]-->
+				
+					
+					<script src="../../../js/bootstrap.js"
+						th:src="@{/js/bootstrap.js}"></script>
+					<script src="../../../js/jquery-ui.js"
+						th:src="@{/js/jquery-ui.js}"></script>
+					<script src="../../../js/heartcode-canvasloader-min.js"
+						th:src="@{/js/heartcode-canvasloader-min.js}"></script>
+					<script src="../../../js/bootstrap-datepicker.js"
+						th:src="@{/js/bootstrap-datepicker.js}"></script>
+					<script src="../../../js/bootstrap-datepicker.es.js"
+						th:src="@{/js/locales/bootstrap-datepicker.es.js}" charset="UTF-8"></script>
+					<script src="../../../js/bootstrap-datepicker.ca.js"
+						th:src="@{/js/locales/bootstrap-datepicker.ca.js}" charset="UTF-8"></script>
+					
+				</div>
+			</div>
+		
+		</div>
+	
 	
 </body>
 </html>
