@@ -382,11 +382,10 @@
 
 		<!-- Browser detection -->
 		<dependency>
-   			<groupId>eu.bitwalker</groupId>
-   			<artifactId>UserAgentUtils</artifactId>
-   			<version>1.15</version>
-		</dependency>
-		
+		   <groupId>eu.bitwalker</groupId>
+		   <artifactId>UserAgentUtils</artifactId>
+		   <version>1.15</version>
+		</dependency>		
 		
 	</dependencies>
 	<build>

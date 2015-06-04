@@ -37,9 +37,9 @@ public class JPAAcuerdosConfig
 	protected final Log logger = LogFactory.getLog(getClass());
 	
 	private static final String DRIVER = "db.driver";
-	private static final String URL = "db.url.acuerdos";
-    private static final String USERNAME = "db.username.acuerdos";
-    private static final String PASSWORD = "db.password.acuerdos";
+	private static final String URL = "db.url.marte.acuerdos";
+    private static final String USERNAME = "db.username.marte.acuerdos";
+    private static final String PASSWORD = "db.password.marte.acuerdos";
 
 	@Resource
     private Environment environment;
@@ -48,6 +48,12 @@ public class JPAAcuerdosConfig
 	@Bean(name = "acuerdosDataSource")
 	   public DataSource dataSource(){
 	      DriverManagerDataSource dataSource = new DriverManagerDataSource();
+
+	      logger.info(String.format("DRIVER : [%s]", environment.getRequiredProperty(DRIVER)));
+	      logger.info(String.format("URL    : [%s]", environment.getRequiredProperty(URL)));
+	      logger.info(String.format("USER   : [%s]", environment.getRequiredProperty(USERNAME)));
+	      logger.info(String.format("PASS   : [%s]", environment.getRequiredProperty(PASSWORD)));
+	      
 	      dataSource.setDriverClassName(environment.getRequiredProperty(DRIVER));
 	      dataSource.setUrl(environment.getRequiredProperty(URL));
 	      dataSource.setUsername( environment.getRequiredProperty(USERNAME) );

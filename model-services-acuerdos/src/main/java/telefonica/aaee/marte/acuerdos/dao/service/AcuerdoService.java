@@ -5,6 +5,8 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -21,6 +23,8 @@ import telefonica.aaee.marte.acuerdos.dao.specifications.AcuerdoSpecifications;
 @Service
 public class AcuerdoService extends GenericAcuerdosService {
 
+	protected final Log logger = LogFactory.getLog(getClass());
+
 	private SimpleJpaRepository<Acuerdo, String> repo;
 
 	public AcuerdoService() {
@@ -35,6 +39,8 @@ public class AcuerdoService extends GenericAcuerdosService {
 		JpaEntityInformation<Acuerdo, String> entityInfo = new JpaMetamodelEntityInformation<Acuerdo, String>(
 				Acuerdo.class, em.getMetamodel());
 		repo = new SimpleJpaRepository<Acuerdo, String>(entityInfo, em);
+		
+		//logger.info(String.format("\n\n\n\n\n\nNúmero de acuerdos: [%d]", repo.findAll().size()));
 
 	}
 	

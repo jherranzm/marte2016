@@ -30,7 +30,7 @@ import telefonica.aaee.util.Constantes;
         basePackages = {"telefonica.aaee.marte.marte"}
         )
 @ComponentScan("telefonica.aaee.marte.marte") //Specifies which package to scan
-@PropertySource("file:${catalina.home}/conf/application.properties")
+@PropertySource("file:${catalina.home}/conf/marte.properties")
 public class JPAMarteConfig 
 	{
 
@@ -48,6 +48,12 @@ public class JPAMarteConfig
 	@Bean(name = "marteDataSource")
 	   public DataSource dataSource(){
 	      DriverManagerDataSource dataSource = new DriverManagerDataSource();
+
+	      logger.info(String.format("DRIVER : [%s]", environment.getRequiredProperty(DRIVER)));
+	      logger.info(String.format("URL    : [%s]", environment.getRequiredProperty(URL)));
+	      logger.info(String.format("USER   : [%s]", environment.getRequiredProperty(USERNAME)));
+	      logger.info(String.format("PASS   : [%s]", environment.getRequiredProperty(PASSWORD)));
+	      
 	      dataSource.setDriverClassName(environment.getRequiredProperty(DRIVER));
 	      dataSource.setUrl(environment.getRequiredProperty(URL));
 	      dataSource.setUsername( environment.getRequiredProperty(USERNAME) );

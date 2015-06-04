@@ -17,6 +17,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import eu.bitwalker.useragentutils.UserAgent;
 
+
 @Controller
 @RequestMapping("/")
 public class MainController extends BasicController {

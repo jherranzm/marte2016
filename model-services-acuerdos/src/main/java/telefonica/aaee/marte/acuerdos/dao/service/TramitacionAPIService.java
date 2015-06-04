@@ -64,6 +64,7 @@ public class TramitacionAPIService extends GenericAcuerdosService {
 				TramitacionAPI.class, em.getMetamodel());
 		repo = new SimpleJpaRepository<TramitacionAPI, Long>(entityInfo, em);
 
+//		logger.info(String.format("\n\n\n\n\n\nNúmero de tramitaciones: [%d]", repo.findAll().size()));
 	}
 	
 	

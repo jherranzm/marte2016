@@ -35,26 +35,14 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandl
 		"telefonica.aaee.dao.config" // project:model-services-977r
 		, "telefonica.aaee.dao.maestras" // project:model-services-maestras
 
-		, "telefonica.aaee.segmentacion" // project:process-segmentacion
-		, "telefonica.aaee.escenarios" // project:process-escenarios
-
-		, "telefonica.aaee.capture977r.process" // project:process-capture977r
-		, "telefonica.aaee.excel.export" // project:process-genera-excel
-
-		, "telefonica.aaee.informes" // project:informes-webapp
-		, "telefonica.aaee.marte" // project:informes-altaplanas
+		, "telefonica.aaee.marte.marte" // project:model-services-marte
+		, "telefonica.aaee.marte.acuerdos" // project:model-services-acuerdos
 		
-		, "telefonica.aaee.prefijos" // project:informes-altaplanas
-
-		, "telefonica.aaee.queues" // project:queue-manager
-		
-		, "telefonica.aaee.dao.operations" // project:informes-altaplanas
-		
-		, "telefonica.aaee.scheduler.config" // project:job-scheduler
+		, "telefonica.aaee.marte" // project:marte-webapp
 })
 @EnableWebMvc
 @PropertySource("file:${catalina.home}/conf/marte.properties")
-public class InformesConfig extends WebMvcConfigurationSupport {
+public class Marte2016Config extends WebMvcConfigurationSupport {
 
 	protected final Log logger = LogFactory.getLog(getClass());
 

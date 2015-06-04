@@ -28,7 +28,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
         basePackages = {"telefonica.aaee.marte.marte.dao"}
         )
 @ComponentScan("telefonica.aaee.marte.marte.dao") //Specifies which package to scan
-@PropertySource("file:/usr/local/apache-tomcat-7.0.53/conf/application.properties")
+@PropertySource("file:/usr/local/apache-tomcat-7.0.53/conf/marte.properties")
 public class JPAMarteTestConfig {
 
 	protected final Log logger = LogFactory.getLog(getClass());

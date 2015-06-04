@@ -29,7 +29,7 @@ public class WebInitializer implements WebApplicationInitializer {
 		AnnotationConfigWebApplicationContext ctx = new AnnotationConfigWebApplicationContext();
 		ctx.setServletContext(servletContext);
 		ctx.register(
-				InformesConfig.class
+				Marte2016Config.class
 				, ThymeleafConfig.class
 				, StaticConfig.class
 				, SecurityConfig.class

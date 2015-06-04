@@ -3,15 +3,13 @@ package telefonica.aaee.marte.acuerdos.dao.model;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -24,6 +22,7 @@ import javax.persistence.Transient;
  */
 @Entity
 @Table(name="vacuerdos", schema="acuerdos")
+@NamedQuery(name="Acuerdo.findAll", query="SELECT m FROM Acuerdo m")
 public class Acuerdo implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -82,11 +81,6 @@ public class Acuerdo implements Serializable {
 	@Transient
 	public String acuerdoFX;
 	
-	//bi-directional many-to-one association to TramitacionAPI
-	@OneToMany(mappedBy="acuerdo", cascade={CascadeType.ALL})
-	private List<TramitacionAPI> tramitaciones;
-	
-
 	public Acuerdo() {
 	}
 

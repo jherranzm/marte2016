@@ -40,7 +40,7 @@ public class ConversorUsuario {
 		
 		for(MarteUsuario usuarioAntiguo : usuariosMarteAntiguo){
 			
-			logger.info(usuarioAntiguo.toString());
+			//logger.info(usuarioAntiguo.toString());
 			
 			Role roleUsuario = roleService.findByNombre("ROLE_USER").get(0);
 			
