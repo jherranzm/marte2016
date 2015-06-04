@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html 
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+	<head th:replace="html/header :: head">
+		<meta charset="UTF-8" />
+		<title th:text="#{app.name}">acuerdo-info</title>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		
+		
+		<link rel="shortcut icon" th:href="@{/img/icons/favicon.ico}" />
+		
+		<!-- CSS to style the file input field as button and adjust the Bootstrap progress bars -->
+		<link rel="stylesheet" type="text/css"
+			href="../../../css/jquery.fileupload.css"
+			th:href="@{/css/jquery.fileupload.css}" />
+		<link rel="stylesheet" type="text/css"
+			href="../../../css/jquery.fileupload-ui.css"
+			th:href="@{/css/jquery.fileupload-ui.css}" />
+		
+		
+		<!-- Bootstrap -->
+		<link rel="stylesheet" type="text/css" media="screen"
+			href="../../../css/bootstrap.css" th:href="@{/css/bootstrap.css}" />
+		<link rel="stylesheet" type="text/css" media="screen"
+			href="../../../css/bootstrap-sticky-footer.css"
+			th:href="@{/css/bootstrap-sticky-footer.css}" />
+		
+		
+		<!-- app -->
+		<link rel="stylesheet" type="text/css" media="screen"
+			href="../../../css/app.css" th:href="@{/css/app.css}" />
+		
+		<!-- dropzone -->
+		<link rel="stylesheet" type="text/css" media="screen"
+			href="../../../css/dropzone.css" th:href="@{/css/dropzone.css}" />
+		
+		<!-- datepicker -->
+		<link rel="stylesheet" type="text/css" media="screen"
+			href="../../../css/bootstrap-datepicker.css"
+			th:href="@{/css/bootstrap-datepicker.css}" />
+	
+	</head>
+<body>
+	<!-- Docs master nav -->
+	<div th:replace="html/header :: header">
+		<div class="navbar navbar-inverse navbar-static-top bs-docs-nav"
+			id="top" role="banner">
+			<div class="container">
+				<div class="navbar-header">
+					<a th:href="@{/index.jsp}" class="navbar-brand"
+						data-th-text="#{app.name}">Aplicación</a>
+				</div>
+				<nav class="collapse navbar-collapse bs-navbar-collapse"
+					role="navigation">
+					<ul class="nav navbar-nav">
+						<li class="active"><a th:href="@{/index.jsp}"
+							data-th-text="#{go.home}">Go Home </a></li>
+
+						<li class="dropdown"><a href="#" class="dropdown-toggle"
+							data-toggle="dropdown"> <span
+								data-th-text="#{menu.informes}">menu.informes</span> <b
+								class="caret"></b></a>
+							<ul class="dropdown-menu">
+								<li><a th:href="@{/role/pages/1}"
+									data-th-text="#{role.form.list.title}">
+										role.form.list.title </a></li>
+								<li><a th:href="@{/usuario/pages/1}"
+									data-th-text="#{usuario.form.list.title}">
+										usuario.form.list.title </a></li>
+								<li class="divider"></li>
+								<li><a th:href="@{/usuario/pages/1}"
+									data-th-text="#{usuario.form.list.title}">
+										usuario.form.list.title </a></li>
+								<li><a th:href="@{/pestanya/pages/1}"
+									data-th-text="#{pestanya.form.list.title}">
+										pestanya.form.list.title </a></li>
+								<li><a th:href="@{/informe/pages/1}"
+									data-th-text="#{informe.form.list.title}">
+										informe.form.list.title </a></li>
+								<li><a th:href="@{/regladenegocio/pages/1}"
+									data-th-text="#{regladenegocio.form.list.title}">
+										regladenegocio.form.list.title </a></li>
+							</ul></li>
+
+					</ul>
+				</nav>
+			</div>
+		</div>
+	</div>
+
+	<div id="wrap">
+		<div class="container">
+			<div class="tab-content">
+				<div th:fragment="tram-baja-form">
+                    <div id="informacionBajaNoSolicitableViaMARTE" class="alert alert-danger" role="alert">
+                        <strong>Este acuerdo está pendiente de regularizar</strong>, por lo que la petición de BAJA se ha de solicitar en la WEB de REGULARIZACIÓN PLANAS.
+                    </div>
+                    <div id="formBajaAcuerdo_Aclaraciones" class="alert alert-info" role="alert">
+                        <strong>Una baja provoca la regularización.</strong> 
+                        Si la BAJA se produce entre Enero y Mayo y tiene pendiente el ejercicio anterior, 
+                        se regularizará aplicando condiciones. 
+                        Para el periodo vigente, no se aplican condiciones.
+                    </div>
+                    <div id="formBajaAcuerdo_Bonificacion_EnDiciembre" 
+                       class="alert alert-info" role="alert">
+                        <p>Para las <strong>Bajas solicitadas en Diciembre</strong> les corresponde la 
+                        aplicación de los descuentos pactados en la Regularización, por 
+                        cumplirse el periodo natural comprometido:</p>
+                        <ol>
+                            <li>La Regularización será <strong>automática</strong> siempre que el cliente 
+                            no tenga ajustes pendientes de aplicar. En el caso de tramitar 
+                            la baja antes del día 15 del mes, la Regularización se emitirá 
+                            el día 28 de este mismo mes. En el caso de tramitar la baja 
+                            después del día 15, la Regularización se emitirá el día 28 de 
+                            Enero.</li>
+                            <li>La Regularización será <strong>manual</strong> en el caso de que el cliente 
+                            tenga ajustes pendientes de aplicar. Ésta se emitirá antes de 
+                            finalizar el mes de Enero.</li>
+                        </ol>
+                        <input type="hidden" name="Bonificacion" value="Si" id="hiddenBonificacionAutomatica" />
+                    </div>
+					<div id="acuerdo-info" class="well well-sm">
+						<div class="row form-group form-inline">
+							<div class="col-sm-8">
+								<div>
+									<label for="motivoBajaMARTE">Causa BAJA</label>
+		                            <select 
+		                            	class="form-control input-sm" 
+		                            	id="motivoBajaMARTE" name="motivoBajaMARTE">
+		                            	<option 
+											th:each="causa : ${causas}" 
+											th:value="${causa.idMotivoBajaMARTE}"
+											th:text="${causa.descMotivoBajaMARTE}" >descMotivoBajaMARTE</option>
+		                            	
+		                            </select>   
+								</div>
+							</div>
+						</div><!-- .row form-group form-inline -->
+					</div>
+				</div>
+			</div>
+
+
+		</div><!-- .container -->
+	</div><!-- #wrap -->
+	
+</body>
+</html>
