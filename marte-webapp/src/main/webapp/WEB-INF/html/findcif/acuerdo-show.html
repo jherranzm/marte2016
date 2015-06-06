@@ -5,7 +5,7 @@
 
 	<head th:replace="html/header :: head">
 		<meta charset="UTF-8" />
-		<title th:text="#{app.name}">Acuerdos-ByCIF-List</title>
+		<title th:text="#{app.name}">acuerdo-show</title>
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		
 		
@@ -92,56 +92,94 @@
 
 	<div id="wrap">
 		<div class="container">
-			<div class="tab-content">
+			<div class="panel">
 				<div th:replace="html/findcif/acuerdo-info :: acuerdo-info"></div>
-			</div><!-- .tab-content -->
+			</div><!-- .panel -->
+			
+			<div id="pestanyes">
+				<ul id="acuerdo-show-tabs" class="nav nav-tabs" data-tabs="tabs">
+					<li class="active"><a href="#listado-tramitaciones" data-toggle="tab">Tramitaciones</a></li>
+					<li><a href="#listado-facturas" data-toggle="tab">Facturas</a></li>
+					<li><a href="#tram-mod-adm" data-toggle="tab">Cambios Administrativos</a></li>
+					<li><a href="#tram-mod-cond" data-toggle="tab">Modificación Condiciones</a></li>
+					<li><a href="#tram-acuerdo-baja" data-toggle="tab">Baja Acuerdo</a></li>
+					<li><a href="#tram-mod-otros" data-toggle="tab">Otros</a></li>
+					<li><a href="#info-regus" data-toggle="tab">Info.Regus</a></li>
+				</ul>
+				<div id="pestanyes-content" class="tab-content">
+					<div id="listado-tramitaciones" th:if="${#lists.size(page.content) > 0}"  class="tab-pane active">
+						<div th:replace="html/pagination-url :: paginationbar"></div>
+						<div class="row">
+							<table
+								class="table table-hover table-striped table-bordered table-condensed">
+								<thead>
+									<tr>
+										<th th:text="#{tram.form.field.id}">ID</th>
+										<th th:text="#{tram.form.field.codAPI}">CodAPI</th>
+										<th th:text="#{tram.form.field.fechaPeticion}">Fecha Petición</th>
+										<th th:text="#{tram.form.field.fechaTramPrevista}">Fecha Prevista</th>
+										<th th:text="#{tram.form.field.fechaTramAPI}">Fecha Tramitación</th>
+										<th th:text="#{tram.form.field.peticionario}">Peticionario</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr th:each="tram : ${page.content}"
+										th:class="(${tram.marteEstadoTramitacion.estado} == 'TRAMITADA') ? 'success' : ((${tram.marteEstadoTramitacion.estado} == 'RECHAZADA') ? 'danger' : '')">
+										<td><a th:href="@{/findcif/show/{a}/{b}(a=${tram.acuerdo.IDAcuerdo},b=${tram.id})}"><span th:text="${tram.id}"></span></a></td>
+										<td th:text="${tram.codAPI.codApi}">CodAPI</td>
+										<td><span 
+												th:if="${tram.fechaPeticion != null}" 
+												th:text="${#dates.format(tram.fechaPeticion, 'dd-MM-yyyy')}">fechaPeticion
+											</span>
+										</td>
+										<td><span 
+												th:if="${tram.fechaTramPrevista != null}" 
+												th:text="${#dates.format(tram.fechaTramPrevista, 'dd-MM-yyyy')}">fechaTramPrevista
+											</span>
+										</td>
+										<td><span 
+												th:if="${tram.fechaTramAPI != null}" 
+												th:text="${#dates.format(tram.fechaTramAPI, 'dd-MM-yyyy')}">fechaTramAPI
+											</span>
+										</td>
+										<td><span 
+												th:alt="${tram.matPeticionario}"
+												th:text="|${tram.matPeticionario.nombre} ${tram.matPeticionario.apellido1}|">peticionario
+											</span>
+										</td>
+										
+									</tr>
+								</tbody>
+							</table>
+						</div><!-- .row -->
+					</div><!-- #listado-tramitaciones -->
+					
+					<div id="listado-facturas" class="tab-pane">
+						<div class="well well-sm">Listado Facturas</div>
+					</div>
+					
+					<div id="tram-mod-adm" class="tab-pane">
+						<div class="well well-sm">Cambios Administrativos</div>
+					</div>
+					
+					<div id="tram-mod-cond" class="tab-pane">
+						<div class="well well-sm">Modificación Condiciones</div>
+					</div>
+					
+					<div id="tram-acuerdo-baja" class="tab-pane">
+						<div th:replace="html/findcif/tram-baja-form :: tram-baja-form"></div>
+					</div>
+					
+					<div id="tram-mod-otros" class="tab-pane">
+						<div class="well well-sm">Otros</div>
+					</div>
+					
+					<div id="info-regus" class="tab-pane">
+						<div class="well well-sm">Info.Regus</div>
+					</div>
+				</div>
+			</div>
 
-			<div id="listado-tramitaciones" th:if="${#lists.size(page.content) > 0}"  class="col-sm-12">
-				<div th:replace="html/pagination-url :: paginationbar"></div>
-				<div class="row">
-					<table
-						class="table table-hover table-striped table-bordered table-condensed">
-						<thead>
-							<tr>
-								<th th:text="#{tram.form.field.id}">ID</th>
-								<th th:text="#{tram.form.field.codAPI}">CodAPI</th>
-								<th th:text="#{tram.form.field.fechaPeticion}">Fecha Petición</th>
-								<th th:text="#{tram.form.field.fechaTramPrevista}">Fecha Prevista</th>
-								<th th:text="#{tram.form.field.fechaTramAPI}">Fecha Tramitación</th>
-								<th th:text="#{tram.form.field.peticionario}">Peticionario</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr th:each="tram : ${page.content}"
-								th:class="(${tram.marteEstadoTramitacion.estado} == 'TRAMITADA') ? 'success' : ((${tram.marteEstadoTramitacion.estado} == 'RECHAZADA') ? 'danger' : '')">
-								<td><a th:href="@{/findcif/show/{a}/{b}(a=${tram.acuerdo.IDAcuerdo},b=${tram.id})}"><span th:text="${tram.id}"></span></a></td>
-								<td th:text="${tram.codAPI.codApi}">CodAPI</td>
-								<td><span 
-										th:if="${tram.fechaPeticion != null}" 
-										th:text="${#dates.format(tram.fechaPeticion, 'dd-MM-yyyy')}">fechaPeticion
-									</span>
-								</td>
-								<td><span 
-										th:if="${tram.fechaTramPrevista != null}" 
-										th:text="${#dates.format(tram.fechaTramPrevista, 'dd-MM-yyyy')}">fechaTramPrevista
-									</span>
-								</td>
-								<td><span 
-										th:if="${tram.fechaTramAPI != null}" 
-										th:text="${#dates.format(tram.fechaTramAPI, 'dd-MM-yyyy')}">fechaTramAPI
-									</span>
-								</td>
-								<td><span 
-										th:alt="${tram.matPeticionario}"
-										th:text="|${tram.matPeticionario.nombre} ${tram.matPeticionario.apellido1}|">peticionario
-									</span>
-								</td>
-								
-							</tr>
-						</tbody>
-					</table>
-				</div><!-- .row -->
-			</div><!-- #listado-tramitaciones -->
 
 		</div><!-- .container -->
 	</div><!-- #wrap -->

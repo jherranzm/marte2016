@@ -15,40 +15,36 @@ import org.springframework.data.jpa.repository.support.JpaMetamodelEntityInforma
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.stereotype.Service;
 
-import telefonica.aaee.marte.acuerdos.dao.model.SituacionPlana;
+import telefonica.aaee.marte.acuerdos.dao.model.MotivoBaja;
 
 @Service
-public class SituacionPlanaService extends GenericAcuerdosService {
+public class MotivoBajaService extends GenericAcuerdosService {
 
 	protected final Log logger = LogFactory.getLog(getClass());
 
-	private SimpleJpaRepository<SituacionPlana, String> repo;
+	private SimpleJpaRepository<MotivoBaja, Long> repo;
 
-	public SituacionPlanaService() {
+	public MotivoBajaService() {
 	}
 
-	public SituacionPlanaService(EntityManager em) {
+	public MotivoBajaService(EntityManager em) {
 		this.em = em;
 	}
 
 	@PostConstruct
 	public void init() {
-		JpaEntityInformation<SituacionPlana, String> entityInfo = new 
-				JpaMetamodelEntityInformation<SituacionPlana, String>(
-						SituacionPlana.class, em.getMetamodel());
-		repo = new SimpleJpaRepository<SituacionPlana, String>(entityInfo, em);
+		JpaEntityInformation<MotivoBaja, Long> entityInfo = new 
+				JpaMetamodelEntityInformation<MotivoBaja, Long>(
+						MotivoBaja.class, em.getMetamodel());
+		repo = new SimpleJpaRepository<MotivoBaja, Long>(entityInfo, em);
 
 	}
 	
 	
-	public List<SituacionPlana> findAll(){
+	public List<MotivoBaja> findAll(){
 		return repo.findAll(new Sort(
-				new Order(Direction.ASC, "acuerdofx")
+				new Order(Direction.ASC, "idMotivoBajaMARTE")
 				)
 		);
-	}
-	
-	public SituacionPlana findByIDAcuerdo(String idAcuerdo){
-		return repo.findOne(idAcuerdo);
 	}
 }

@@ -17,9 +17,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import telefonica.aaee.marte.acuerdos.dao.model.Acuerdo;
+import telefonica.aaee.marte.acuerdos.dao.model.SituacionPlana;
+import telefonica.aaee.marte.acuerdos.dao.model.SituacionPlanaEstado;
 import telefonica.aaee.marte.acuerdos.dao.model.TramitacionAPI;
 import telefonica.aaee.marte.acuerdos.dao.service.AcuerdoService;
+import telefonica.aaee.marte.acuerdos.dao.service.MotivoBajaService;
+import telefonica.aaee.marte.acuerdos.dao.service.SituacionPlanaService;
 import telefonica.aaee.marte.acuerdos.dao.service.TramitacionAPIService;
+import telefonica.aaee.marte.form.TramitacionBajaForm;
 import telefonica.aaee.marte.model.pagination.PageWrapper;
 import eu.bitwalker.useragentutils.UserAgent;
 
@@ -39,6 +44,12 @@ public class FindCifController extends BasicController {
 	
 	@Autowired
 	private TramitacionAPIService tramitacionAPIService;
+	
+	@Autowired
+	private MotivoBajaService motivoBajaService;
+	
+	@Autowired
+	private SituacionPlanaService situacionPlanaService;
 	
 	@RequestMapping(value="/find", method=RequestMethod.GET)
 	public ModelAndView findCifGet(
@@ -107,6 +118,26 @@ public class FindCifController extends BasicController {
 		logger.info(String.format("Número de tramitaciones : [%s][%d]", idAcuerdo, tramitaciones.getContent().size()));
 		modelAndView.addObject("page", new PageWrapper<TramitacionAPI>(tramitaciones, this.getUrl("")));
 		modelAndView.addObject("labels", this.getLabels(""));
+		
+		TramitacionBajaForm tramBajaForm = new TramitacionBajaForm();
+		tramBajaForm.setIdAcuerdo(acuerdo.getIDAcuerdo());
+
+		logger.info(String.format("[%s]", tramBajaForm.toString()));
+		
+		modelAndView.addObject("tramBajaForm", tramBajaForm);
+		modelAndView.addObject("causas", motivoBajaService.findAll());
+
+		SituacionPlana sp = situacionPlanaService.findByIDAcuerdo(acuerdo.getIDAcuerdo());
+		if(sp == null){
+			SituacionPlanaEstado spe = new SituacionPlanaEstado();
+			spe.setEstado(null);
+			sp = new SituacionPlana();
+			sp.setSituacionPlanaEstado(spe);
+		}
+		logger.info(String.format("[%s]", sp));
+		modelAndView.addObject("sp", sp);
+		
+		
 		
         return modelAndView;  
 	}

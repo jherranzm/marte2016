@@ -2,16 +2,13 @@ package telefonica.aaee.marte.acuerdos.dao.model;
 
 
 import java.io.Serializable;
-import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 
@@ -40,9 +37,6 @@ public class MotivoBaja implements Serializable {
 	@Column(name="id_motivo_Baja_FX")
 	private Long idMotivoBajaFX;
 
-	//bi-directional many-to-one association to TramitacionAPI
-	@OneToMany(mappedBy="motivoBajaMARTE", cascade={CascadeType.ALL})
-	private List<TramitacionAPI> tramitacionapis;
 
 	public MotivoBaja() {
 	}
@@ -79,27 +73,6 @@ public class MotivoBaja implements Serializable {
 		this.idMotivoBajaFX = idMotivoBajaFX;
 	}
 
-	public List<TramitacionAPI> getTramitacionapis() {
-		return this.tramitacionapis;
-	}
-
-	public void setTramitacionapis(List<TramitacionAPI> tramitacionapis) {
-		this.tramitacionapis = tramitacionapis;
-	}
-
-	public TramitacionAPI addTramitacionapi(TramitacionAPI tramitacionapi) {
-		getTramitacionapis().add(tramitacionapi);
-		tramitacionapi.setMotivoBajaMARTE(this);
-
-		return tramitacionapi;
-	}
-
-	public TramitacionAPI removeTramitacionapi(TramitacionAPI tramitacionapi) {
-		getTramitacionapis().remove(tramitacionapi);
-		tramitacionapi.setMotivoBajaMARTE(null);
-
-		return tramitacionapi;
-	}
 
 	@Override
 	public int hashCode() {

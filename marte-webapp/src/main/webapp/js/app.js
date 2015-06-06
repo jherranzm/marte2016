@@ -125,6 +125,9 @@ $(function() {
 	
 	username.on('change', getNewPassword);
 	
+	var acuerdoShowTabs = $('acuerdo-show-tabs');
+	acuerdoShowTabs.tab();
+	
 });
 
 var getNewPassword = function (){

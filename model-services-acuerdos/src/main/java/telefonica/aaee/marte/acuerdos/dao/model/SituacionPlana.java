@@ -185,7 +185,7 @@ public class SituacionPlana implements Serializable {
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 		builder.append("SituacionPlana [acuerdo=");
-		builder.append(acuerdo);
+		builder.append(acuerdo.getIDAcuerdo());
 		builder.append(", situacionPlanaEstado=");
 		builder.append(situacionPlanaEstado);
 		builder.append(", acuerdofx=");
