@@ -1,5 +1,10 @@
 package telefonica.aaee.marte.form;
 
+import java.util.Calendar;
+import java.util.Date;
+
+import telefonica.aaee.marte.helpers.CalculoFechas;
+
 public class TramitacionBajaForm {
 	
 	private String idAcuerdo;
@@ -7,10 +12,22 @@ public class TramitacionBajaForm {
 	private String nuevocif;
 	private String horus;
 	private String peticionTramitacion;
+	private Date fechaTramPrevista;
+	private Date fechaPeticion;
+	private String bonificacion;
 	
 	
 	public TramitacionBajaForm() {
 		super();
+		this.idAcuerdo = "";
+		this.nuevocif = "";
+		this.horus = "";
+		this.peticionTramitacion = "";
+		this.motivoBajaMARTE = -1;
+		java.util.Date ahora = Calendar.getInstance().getTime();
+		this.fechaTramPrevista = CalculoFechas.primerDiaHabil(ahora, false);
+		this.setFechaPeticion(ahora);
+		this.setBonificacion("NO");
 	}
 
 
@@ -64,15 +81,54 @@ public class TramitacionBajaForm {
 	}
 
 
+	public Date getFechaTramPrevista() {
+		return fechaTramPrevista;
+	}
+
+
+	public void setFechaTramPrevista(Date fechaTramPrevista) {
+		this.fechaTramPrevista = fechaTramPrevista;
+	}
+
+
+	public Date getFechaPeticion() {
+		return fechaPeticion;
+	}
+
+
+	public void setFechaPeticion(Date fechaPeticion) {
+		this.fechaPeticion = fechaPeticion;
+	}
+
+
+	public String getBonificacion() {
+		return bonificacion;
+	}
+
+
+	public void setBonificacion(String bonificacion) {
+		this.bonificacion = bonificacion;
+	}
+
+
 	@Override
 	public String toString() {
-		return "TramitacionBajaForm [idAcuerdo=" + idAcuerdo
-				+ ", motivoBajaMARTE=" + motivoBajaMARTE + ", nuevocif="
-				+ nuevocif + ", horus=" + horus + ", peticionTramitacion="
-				+ peticionTramitacion + "]";
+		StringBuilder builder = new StringBuilder();
+		builder.append("TramitacionBajaForm [idAcuerdo=").append(idAcuerdo)
+				.append(", motivoBajaMARTE=").append(motivoBajaMARTE)
+				.append(", nuevocif=").append(nuevocif).append(", horus=")
+				.append(horus).append(", peticionTramitacion=")
+				.append(peticionTramitacion).append(", fechaTramPrevista=")
+				.append(fechaTramPrevista).append(", fechaPeticion=")
+				.append(fechaPeticion).append(", bonificacion=")
+				.append(bonificacion).append("]");
+		return builder.toString();
 	}
-	
-	
+
+
+
+
+
 	
 
 }

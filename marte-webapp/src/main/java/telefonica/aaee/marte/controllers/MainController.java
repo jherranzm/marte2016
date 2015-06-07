@@ -9,6 +9,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,6 +24,11 @@ import eu.bitwalker.useragentutils.UserAgent;
 public class MainController extends BasicController {
 
 	protected final Log logger = LogFactory.getLog(getClass());
+	
+	@RequestMapping(value = "/login", method = RequestMethod.GET)
+    public String pageLogin(Model model) {
+         return "html/login";
+    }
 	
 	@RequestMapping(value="/index")
 	public ModelAndView home(
@@ -48,25 +54,6 @@ public class MainController extends BasicController {
 		return model2;
 	}
 
-	@RequestMapping(value="/thy")
-	public String thy() {
-		
-		logger.info("/thy");
-		
-		return "html/thy";
-	}
-	
-	@RequestMapping(value="/thy2")
-	public ModelAndView thy2() {
-		
-		logger.info("/thy2");
-		ModelAndView model2 = new ModelAndView();
-		model2.setViewName("html/thy2");
-		model2.addObject("numReinicios", 31523);
-		
-		return model2;
-	}
-	
 	public ModelAndView resolveException(
 			HttpServletRequest arg0, 
 			HttpServletResponse arg1, 

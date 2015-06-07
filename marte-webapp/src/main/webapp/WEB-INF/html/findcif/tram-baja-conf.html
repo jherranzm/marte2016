@@ -93,72 +93,16 @@
 	<div id="wrap">
 		<div class="container">
 			<div class="tab-content">
-				<div th:fragment="tram-baja-form">
-				
-					<div>
-						<div class="row form-group form-inline">
-							<div class="col-sm-5">
-								<div class="input-group input-group-sm">
-									<span 
-										class="input-group-addon primary" 
-										id="input-group-addon-tipoDoc"
-										th:text="#{acuerdo.form.field.acuerdofx}">Acuerdo FX</span>
-									<input type="text" 
-										class="form-control" 
-										readonly="readonly"
-										th:value="${acuerdo.acuerdoFX}"
-										placeholder="L" />
-								</div>
-							</div>
-							<div class="col-sm-7">
-								<div class="input-group input-group-sm">
-									<span 
-										class="input-group-addon primary" 
-										id="input-group-addon-nombre"
-										th:text="#{acuerdo.form.field.nombre}">Empresa</span>
-									<input type="text" 
-										class="form-control" 
-										readonly="readonly"
-										th:value="${acuerdo.nombre}"
-										placeholder="NombreEmpresa" />
-								</div>
-							</div>
-						</div><!-- .row form-group form-inline -->
-					</div>
+				<div th:fragment="tram-baja-conf">
 				
 					<form 
-						id="tram-baja-form-step-1" 
+						id="tram-baja-form-step-2" 
 						method="POST" 
 						th:object="${tramBajaForm}"
 						class="form-horizontal"
-						th:action="@{/findcif/baja/1}">
+						th:action="@{/findcif/baja/2}">
 				
 							<div id="tram-baja-step-1" class="col-md-offset-1 col-md-10">
-			                    <div id="tram-baja-aclaraciones" 
-			                    	class="alert alert-info" role="alert">
-			                        <strong>Una baja provoca la regularización.</strong> 
-			                        Si la BAJA se produce entre Enero y Mayo y tiene pendiente el ejercicio anterior, 
-			                        se regularizará aplicando condiciones. 
-			                        Para el periodo vigente, no se aplican condiciones.
-			                    </div>
-			                    <div id="tram-baja-bonificacion-diciembre"
-			                    	th:if="${#dates.month(tramBajaForm.fechaPeticion) == 12}" 
-			                       class="alert alert-info" role="alert">
-			                        <p>Para las <strong>Bajas solicitadas en Diciembre</strong> les corresponde la 
-			                        aplicación de los descuentos pactados en la Regularización, por 
-			                        cumplirse el periodo natural comprometido:</p>
-			                        <ol>
-			                            <li>La Regularización será <strong>automática</strong> siempre que el cliente 
-			                            no tenga ajustes pendientes de aplicar. En el caso de tramitar 
-			                            la baja antes del día 15 del mes, la Regularización se emitirá 
-			                            el día 28 de este mismo mes. En el caso de tramitar la baja 
-			                            después del día 15, la Regularización se emitirá el día 28 de 
-			                            Enero.</li>
-			                            <li>La Regularización será <strong>manual</strong> en el caso de que el cliente 
-			                            tenga ajustes pendientes de aplicar. Ésta se emitirá antes de 
-			                            finalizar el mes de Enero.</li>
-			                        </ol>
-			                    </div>
 								<div id="tramitacion-baja-motivo" 	
 									class="row form-group form-inline">
 									<div class="col-sm-6">
@@ -166,6 +110,7 @@
 											<label for="motivoBajaMARTE">Causa BAJA</label>
 				                            <select 
 				                            	class="form-control input-sm" 
+				                            	disabled="disabled"
 				                            	id="motivoBajaMARTE" name="motivoBajaMARTE">
 				                            	<option 
 													th:each="causa : ${causas}" 
@@ -182,6 +127,7 @@
 												th:text="#{tram.form.field.nuevocif}">Nuevo CIF</span>
 											<input 
 												type="text" class="form-control" 
+												disabled="disabled"
 												th:field="${tramBajaForm.nuevocif}" />
 										</div>
 									</div>
@@ -195,6 +141,7 @@
 											<input 
 												type="text" 
 												class="form-control"
+												disabled="disabled"
 												th:field="${tramBajaForm.horus}" />
 										</div>
 									</div>
@@ -220,6 +167,7 @@
 										<textarea 
 											class="form-control input-sm span12" 
 											th:field="${tramBajaForm.peticionTramitacion}"
+											disabled="disabled"
 											rows = "5"
 											cols = "120"
 											placeholder="Observaciones..." ></textarea>
@@ -236,13 +184,17 @@
 							<div class="form-group">
 								<div class="col-md-offset-4 col-md-4">
 									<p class="text-center">
-										<button id="btn-save" type="submit" class="btn btn-primary"
-											th:text="#{tram.form.btn.save}" >
-										</button>
-										<a th:href="@{/findcif/show/{idAcuerdo}(idAcuerdo=${tramBajaForm.idAcuerdo})}"
-											id="btn-back" class="btn btn-default"> 
+										<a th:href="@{/findcif/baja/1}"
+											id="btn-back" class="btn btn-warning"> 
 											<span th:text="#{tram.form.btn.back}"></span>
 										</a>
+										<a th:href="@{/findcif/show/{idAcuerdo}(idAcuerdo=${tramBajaForm.idAcuerdo})}"
+											id="btn-back" class="btn btn-default"> 
+											<span th:text="#{tram.form.btn.cancel}"></span>
+										</a>
+										<button id="btn-save" type="submit" class="btn btn-primary"
+											th:text="#{tram.form.btn.confirm}" >
+										</button>
 									</p>
 								</div>
 							</div>
@@ -255,6 +207,7 @@
 	</div><!-- #wrap -->
 	
 	<div th:replace="html/footer :: footer"></div>
+	
 	
 </body>
 </html>

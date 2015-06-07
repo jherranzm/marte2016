@@ -47,4 +47,9 @@ public class MotivoBajaService extends GenericAcuerdosService {
 				)
 		);
 	}
+
+	public MotivoBaja findById(
+			long motivoBajaMARTE) {
+		return repo.findOne(motivoBajaMARTE);
+	}
 }

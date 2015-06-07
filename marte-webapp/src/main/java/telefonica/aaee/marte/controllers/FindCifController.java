@@ -1,7 +1,9 @@
 package telefonica.aaee.marte.controllers;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -10,17 +12,21 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import telefonica.aaee.marte.acuerdos.dao.model.Acuerdo;
+import telefonica.aaee.marte.acuerdos.dao.model.MotivoBaja;
 import telefonica.aaee.marte.acuerdos.dao.model.SituacionPlana;
 import telefonica.aaee.marte.acuerdos.dao.model.SituacionPlanaEstado;
 import telefonica.aaee.marte.acuerdos.dao.model.TramitacionAPI;
 import telefonica.aaee.marte.acuerdos.dao.service.AcuerdoService;
+import telefonica.aaee.marte.acuerdos.dao.service.CodAPIService;
 import telefonica.aaee.marte.acuerdos.dao.service.MotivoBajaService;
 import telefonica.aaee.marte.acuerdos.dao.service.SituacionPlanaService;
 import telefonica.aaee.marte.acuerdos.dao.service.TramitacionAPIService;
@@ -36,6 +42,9 @@ public class FindCifController extends BasicController {
 	private static final String SHOW_ACUERDO_TRAM = "html/findcif/show-acuerdo-tram";
 	private static final String FIND_CIF_FORM = "html/findcif/findCif-form";
 	private static final String RESULT_PAGE = "html/findcif/findCif-list";
+	
+	private static final String TRAM_BAJA_FORM = "html/findcif/tram-baja-form";
+	private static final String TRAM_BAJA_CONF = "html/findcif/tram-baja-conf";
 
 	protected final Log logger = LogFactory.getLog(getClass());
 	
@@ -50,6 +59,9 @@ public class FindCifController extends BasicController {
 	
 	@Autowired
 	private SituacionPlanaService situacionPlanaService;
+	
+	@Autowired
+	private CodAPIService codAPIService;
 	
 	@RequestMapping(value="/find", method=RequestMethod.GET)
 	public ModelAndView findCifGet(
@@ -121,12 +133,70 @@ public class FindCifController extends BasicController {
 		
 		TramitacionBajaForm tramBajaForm = new TramitacionBajaForm();
 		tramBajaForm.setIdAcuerdo(acuerdo.getIDAcuerdo());
+		Calendar cal = Calendar.getInstance();
+		if(cal.get(Calendar.MONTH) == Calendar.DECEMBER){
+			tramBajaForm.setBonificacion("SI");
+		}
 
 		logger.info(String.format("[%s]", tramBajaForm.toString()));
 		
 		modelAndView.addObject("tramBajaForm", tramBajaForm);
 		modelAndView.addObject("causas", motivoBajaService.findAll());
+		modelAndView.addObject("bonificaciones", new String[]{ "SI", "NO"});
 
+		addSituacionPlanaToMAV(modelAndView, acuerdo);
+		
+		
+		
+        return modelAndView;  
+	}
+	
+	@RequestMapping(value="/baja/{idAcuerdo}", method=RequestMethod.GET)
+	public ModelAndView showFormBajaAcuerdo(
+			@ModelAttribute TramitacionBajaForm form,
+			@PathVariable String idAcuerdo
+			) {
+		List<String> errores = new ArrayList<String>();
+		idAcuerdo = (idAcuerdo == null) ? "" : idAcuerdo;
+
+		ModelAndView modelAndView = new ModelAndView();
+		if("".equals(idAcuerdo)){
+			errores.add("El Acuerdo viene sin informar.");
+			modelAndView.setViewName(FIND_CIF_FORM);
+			modelAndView.addObject("errores", errores);
+			return modelAndView;
+		}
+		Acuerdo acuerdo = acuerdoService.findById(idAcuerdo);
+		if(acuerdo == null){
+			errores.add("El Acuerdo NO existe en el sistema.");
+			modelAndView.setViewName(FIND_CIF_FORM);
+			modelAndView.addObject("errores", errores);
+			return modelAndView;
+		}
+		modelAndView.addObject("acuerdo", acuerdo);
+		modelAndView.setViewName(TRAM_BAJA_FORM);
+		
+		if(form == null){
+			form = new TramitacionBajaForm();
+			form.setIdAcuerdo(acuerdo.getIDAcuerdo());
+			Calendar cal = Calendar.getInstance();
+			if(cal.get(Calendar.MONTH) == Calendar.DECEMBER){
+				form.setBonificacion("SI");
+			}
+
+		}
+		logger.info(String.format("[%s]", form.toString()));
+		modelAndView.addObject("tramBajaForm", form);
+		modelAndView.addObject("causas", motivoBajaService.findAll());
+		modelAndView.addObject("bonificaciones", new String[]{ "SI", "NO"});
+		
+		addSituacionPlanaToMAV(modelAndView, acuerdo);
+
+		return modelAndView; 
+	}
+
+	private void addSituacionPlanaToMAV(ModelAndView modelAndView,
+			Acuerdo acuerdo) {
 		SituacionPlana sp = situacionPlanaService.findByIDAcuerdo(acuerdo.getIDAcuerdo());
 		if(sp == null){
 			SituacionPlanaEstado spe = new SituacionPlanaEstado();
@@ -136,10 +206,62 @@ public class FindCifController extends BasicController {
 		}
 		logger.info(String.format("[%s]", sp));
 		modelAndView.addObject("sp", sp);
+	}
+	
+	@RequestMapping(value="/baja/1", method=RequestMethod.POST)
+	public ModelAndView bajaAcuerdo(
+			@ModelAttribute TramitacionBajaForm form,
+			HttpServletRequest request,  
+            final RedirectAttributes redirectAttributes, 
+            Locale locale
+			) {
 		
+		logger.info(String.format("***********************************", ""));
+		logger.info(String.format("**    BAJA               **********", ""));
+		logger.info(String.format("***********************************", ""));
+		for(String param : java.util.Collections.list(request.getAttributeNames())){
+			logger.info(String.format("REQUEST : [%s][%s]", param, request.getAttribute(param)));
+		}
+		logger.info(String.format("FORM : [%s]", form.toString()));
+		logger.info(String.format("***********************************", ""));
 		
+		Acuerdo acuerdo = acuerdoService.findById(form.getIdAcuerdo());
+		MotivoBaja motivoBaja = motivoBajaService.findById(form.getMotivoBajaMARTE());
+
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName(TRAM_BAJA_CONF);
+		modelAndView.addObject("tramBajaForm", form);
+		modelAndView.addObject("acuerdo", acuerdo);
+		modelAndView.addObject("motivoBaja", motivoBaja);
+		modelAndView.addObject("causas", motivoBajaService.findAll());
+		return modelAndView;
+	}
 		
-        return modelAndView;  
+	@RequestMapping(value="/baja/2", method=RequestMethod.POST)
+	public ModelAndView bajaAcuerdoConfirmada(
+			@ModelAttribute TramitacionBajaForm form,
+			HttpServletRequest request,  
+			final RedirectAttributes redirectAttributes, 
+			Locale locale
+			) {
+		
+		logger.info(String.format("***********************************", ""));
+		logger.info(String.format("**    BAJA               **********", ""));
+		logger.info(String.format("***********************************", ""));
+		for(String param : java.util.Collections.list(request.getAttributeNames())){
+			logger.info(String.format("REQUEST : [%s][%s]", param, request.getAttribute(param)));
+		}
+		logger.info(String.format("FORM : [%s]", form.toString()));
+		logger.info(String.format("***********************************", ""));
+		
+//		TramitacionAPI tramAPI = new TramitacionAPI();
+//		CodAPI codAIBaja = codAPIService.findByCodAPI("Baja");
+//		tramAPI.setCodAPI(codAPIBaja);
+//		TramitacionAPI tram = tramitacionAPIService.save(tramAPI);
+		
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName(FIND_CIF_FORM);
+		return modelAndView;
 	}
 	
 	@RequestMapping(value="/show/{idAcuerdo}/{idTramitacion}", method=RequestMethod.GET)
@@ -168,6 +290,8 @@ public class FindCifController extends BasicController {
 		logger.info(acuerdo);
 		modelAndView.addObject("acuerdo", acuerdo);
 		
+		addSituacionPlanaToMAV(modelAndView, acuerdo);
+
 		TramitacionAPI tramitacion = tramitacionAPIService.findById(idTramitacion);
 		if(tramitacion == null){
 			errores.add(String.format("La Tramitación [%d] NO existe en el sistema.", idTramitacion));

@@ -290,6 +290,23 @@
 								</div>
 							</div>
 						</div><!-- .row form-group form-inline -->
+						<div class="row form-group form-inline">
+		                    <div th:if="${sp.situacionPlanaEstado == null}" 
+		                    	id="informacionBajaNoSolicitableViaMARTE" 
+		                    	class="alert alert-danger col-sm-offset-1 col-sm-10" 
+		                    	role="alert">
+		                        <strong>Este acuerdo está pendiente de regularizar</strong>, 
+		                        por lo que la petición de BAJA se ha de solicitar en la 
+		                        WEB de REGULARIZACIÓN PLANAS.
+		                    </div>
+							<div th:if="${sp.situacionPlanaEstado != null and acuerdo.baja != true}" class="col-sm-offset-10 col-sm-1">
+								<a 
+									id="go-to-tram-baja-form"
+									class="btn btn-danger"
+									th:href="@{/findcif/baja/{id}(id=${acuerdo.IDAcuerdo})}" 
+									><span th:text="Baja">Baja</span><span class="glyphicon glyphicon-arrow-right"></span></a>
+							</div>
+						</div><!-- .row form-group form-inline -->
 					</div>
 				</div>
 			</div>

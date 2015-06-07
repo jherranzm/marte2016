@@ -125,10 +125,27 @@ $(function() {
 	
 	username.on('change', getNewPassword);
 	
-	var acuerdoShowTabs = $('acuerdo-show-tabs');
+	var acuerdoShowTabs = $('#acuerdo-show-tabs');
 	acuerdoShowTabs.tab();
 	
+	var motivoBajaMARTE = $('#motivoBajaMARTE');
+	motivoBajaMARTE.on('change', motivoBajaMARTEOptionsHandler);
+	
+	$('#tramitacion-baja-cambio-cif').hide();
+	//$('#tramitacion-baja-horus-bonificacion').hide();
+	
+	
 });
+
+
+var motivoBajaMARTEOptionsHandler = function(){
+	var motivoBaja = $('#motivoBajaMARTE').val();
+	if(motivoBaja == '17' || motivoBaja == '18'){ //Cambio de CIF
+		$('#tramitacion-baja-cambio-cif').show();
+	}else{
+		$('#tramitacion-baja-cambio-cif').hide();
+	}
+}
 
 var getNewPassword = function (){
 	var userName = $('#username').val();

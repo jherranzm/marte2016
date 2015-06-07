@@ -56,9 +56,9 @@
 		
 			<div id="left" class="col-md-10">
 			
-				<div sec:authorize="isAuthenticated()" >
-					<div th:replace="html/findcif/findCif-search :: search"></div>
-				</div>
+				<div>LOGIN!</div>
+			
+				<div sec:authorize="isAuthenticated()" th:replace="html/findcif/findCif-search :: search"></div>
 			
 				<div id="info-condiciones-fechas" class="col-md-12">
 				
@@ -83,6 +83,7 @@
 					</div>
 				
 				</div>
+
 			</div>
 			<div id="right" class="col-md-2">
 				<div id="userConnected" sec:authorize="isAuthenticated()">
@@ -120,10 +121,10 @@
 						 </div>
 						 
 					    <input type="hidden"
-							th:name="${_csrf.parameterName}"
-							th:value="${_csrf.token}"/>
+							name="${_csrf.parameterName}"
+							value="${_csrf.token}"/>
 					</form>
-				</div><!-- #userNotConnected -->
+				</div><!-- #userConnected -->
 			</div>
 			
 			
