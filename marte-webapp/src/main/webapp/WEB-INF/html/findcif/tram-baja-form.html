@@ -131,7 +131,7 @@
 						method="POST" 
 						th:object="${tramBajaForm}"
 						class="form-horizontal"
-						th:action="@{/findcif/baja/1}">
+						th:action="@{/findcif/baja/conf}">
 				
 							<div id="tram-baja-step-1" class="col-md-offset-1 col-md-10">
 			                    <div id="tram-baja-aclaraciones" 
@@ -166,7 +166,7 @@
 											<label for="motivoBajaMARTE">Causa BAJA</label>
 				                            <select 
 				                            	class="form-control input-sm" 
-				                            	id="motivoBajaMARTE" name="motivoBajaMARTE">
+				                            	th:field="${tramBajaForm.motivoBajaMARTE}" >
 				                            	<option 
 													th:each="causa : ${causas}" 
 													th:value="${causa.idMotivoBajaMARTE}"
@@ -230,7 +230,7 @@
 							</div><!-- tram-baja-step-1 -->
 							<!-- Spring Security -->
 							<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-							<input type="hidden" th:name="idAcuerdo"              th:value="${tramBajaForm.idAcuerdo}" />
+							<input type="hidden" th:field="${tramBajaForm.idAcuerdo}" />
 							 
 							<!-- Botones Save & Back -->
 							<div class="form-group">

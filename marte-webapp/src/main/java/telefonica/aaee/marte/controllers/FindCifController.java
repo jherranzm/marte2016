@@ -12,6 +12,8 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,6 +32,7 @@ import telefonica.aaee.marte.acuerdos.dao.service.CodAPIService;
 import telefonica.aaee.marte.acuerdos.dao.service.MotivoBajaService;
 import telefonica.aaee.marte.acuerdos.dao.service.SituacionPlanaService;
 import telefonica.aaee.marte.acuerdos.dao.service.TramitacionAPIService;
+import telefonica.aaee.marte.editor.MotivoBajaEditor;
 import telefonica.aaee.marte.form.TramitacionBajaForm;
 import telefonica.aaee.marte.model.pagination.PageWrapper;
 import eu.bitwalker.useragentutils.UserAgent;
@@ -62,6 +65,12 @@ public class FindCifController extends BasicController {
 	
 	@Autowired
 	private CodAPIService codAPIService;
+	
+	@InitBinder("tramitacionBajaForm")
+	private void initBinder(WebDataBinder binder) {
+		binder.registerCustomEditor(MotivoBaja.class, new MotivoBajaEditor(motivoBajaService));
+	}
+
 	
 	@RequestMapping(value="/find", method=RequestMethod.GET)
 	public ModelAndView findCifGet(
@@ -151,7 +160,7 @@ public class FindCifController extends BasicController {
         return modelAndView;  
 	}
 	
-	@RequestMapping(value="/baja/{idAcuerdo}", method=RequestMethod.GET)
+	@RequestMapping(value="/baja/form/{idAcuerdo}", method={RequestMethod.GET, RequestMethod.POST})
 	public ModelAndView showFormBajaAcuerdo(
 			@ModelAttribute TramitacionBajaForm form,
 			@PathVariable String idAcuerdo
@@ -208,8 +217,8 @@ public class FindCifController extends BasicController {
 		modelAndView.addObject("sp", sp);
 	}
 	
-	@RequestMapping(value="/baja/1", method=RequestMethod.POST)
-	public ModelAndView bajaAcuerdo(
+	@RequestMapping(value="/baja/form", method=RequestMethod.POST)
+	public ModelAndView tramBajaAcuerdoForm(
 			@ModelAttribute TramitacionBajaForm form,
 			HttpServletRequest request,  
             final RedirectAttributes redirectAttributes, 
@@ -217,19 +226,21 @@ public class FindCifController extends BasicController {
 			) {
 		
 		logger.info(String.format("***********************************", ""));
-		logger.info(String.format("**    BAJA               **********", ""));
+		logger.info(String.format("**    BAJA  (form)       **********", ""));
 		logger.info(String.format("***********************************", ""));
-		for(String param : java.util.Collections.list(request.getAttributeNames())){
-			logger.info(String.format("REQUEST : [%s][%s]", param, request.getAttribute(param)));
-		}
+//		for(String param : java.util.Collections.list(request.getAttributeNames())){
+//			logger.info(String.format("REQUEST : [%s][%s]", param, request.getAttribute(param)));
+//		}
 		logger.info(String.format("FORM : [%s]", form.toString()));
 		logger.info(String.format("***********************************", ""));
 		
 		Acuerdo acuerdo = acuerdoService.findById(form.getIdAcuerdo());
-		MotivoBaja motivoBaja = motivoBajaService.findById(form.getMotivoBajaMARTE());
+		logger.info(String.format("[%s]", acuerdo.toString()));
+		MotivoBaja motivoBaja = form.getMotivoBajaMARTE();
+		logger.info(String.format("[%s]", motivoBaja.toString()));
 
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName(TRAM_BAJA_CONF);
+		modelAndView.setViewName(TRAM_BAJA_FORM);
 		modelAndView.addObject("tramBajaForm", form);
 		modelAndView.addObject("acuerdo", acuerdo);
 		modelAndView.addObject("motivoBaja", motivoBaja);
@@ -237,6 +248,34 @@ public class FindCifController extends BasicController {
 		return modelAndView;
 	}
 		
+	@RequestMapping(value="/baja/conf", method=RequestMethod.POST)
+	public ModelAndView bajaAcuerdo(
+			@ModelAttribute TramitacionBajaForm form,
+			HttpServletRequest request,  
+			final RedirectAttributes redirectAttributes, 
+			Locale locale
+			) {
+		
+		logger.info(String.format("***********************************", ""));
+		logger.info(String.format("**    BAJA  (conf)       **********", ""));
+		logger.info(String.format("***********************************", ""));
+		logger.info(String.format("FORM : [%s]", form.toString()));
+		logger.info(String.format("***********************************", ""));
+		
+		Acuerdo acuerdo = acuerdoService.findById(form.getIdAcuerdo());
+		logger.info(String.format("[%s]", acuerdo.toString()));
+		MotivoBaja motivoBaja = form.getMotivoBajaMARTE();
+		logger.info(String.format("[%s]", motivoBaja.toString()));
+		
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName(TRAM_BAJA_CONF);
+		modelAndView.addObject("tramBajaForm", form);
+		modelAndView.addObject("acuerdo", acuerdo);
+		modelAndView.addObject("motivoBaja", motivoBaja.getDescMotivoBajaMARTE());
+		modelAndView.addObject("causas", motivoBajaService.findAll());
+		return modelAndView;
+	}
+	
 	@RequestMapping(value="/baja/2", method=RequestMethod.POST)
 	public ModelAndView bajaAcuerdoConfirmada(
 			@ModelAttribute TramitacionBajaForm form,
@@ -246,11 +285,11 @@ public class FindCifController extends BasicController {
 			) {
 		
 		logger.info(String.format("***********************************", ""));
-		logger.info(String.format("**    BAJA               **********", ""));
+		logger.info(String.format("**    BAJA (2)           **********", ""));
 		logger.info(String.format("***********************************", ""));
-		for(String param : java.util.Collections.list(request.getAttributeNames())){
-			logger.info(String.format("REQUEST : [%s][%s]", param, request.getAttribute(param)));
-		}
+//		for(String param : java.util.Collections.list(request.getAttributeNames())){
+//			logger.info(String.format("REQUEST : [%s][%s]", param, request.getAttribute(param)));
+//		}
 		logger.info(String.format("FORM : [%s]", form.toString()));
 		logger.info(String.format("***********************************", ""));
 		

@@ -134,6 +134,17 @@ $(function() {
 	$('#tramitacion-baja-cambio-cif').hide();
 	//$('#tramitacion-baja-horus-bonificacion').hide();
 	
+	$('#tram-form-btn-back').on('click', function(){
+		alert('Back!');
+		$('#tram-baja-form-step-2').attr('action', '/marte-webapp/findcif/baja/form');
+		$('#tram-baja-form-step-2').submit();
+	});
+	$('#tram-form-btn-confirm').on('click', function(){
+		alert('Confirm!');
+		$('#tram-baja-form-step-2').attr('action', '/marte-webapp/findcif/baja/ok');
+		$('#tram-baja-form-step-2').submit();
+	});
+	
 	
 });
 

@@ -103,36 +103,31 @@
 						th:action="@{/findcif/baja/2}">
 				
 							<div id="tram-baja-step-1" class="col-md-offset-1 col-md-10">
-								<div id="tramitacion-baja-motivo" 	
+								<div id="tram-baja-conf-motivo" 	
 									class="row form-group form-inline">
 									<div class="col-sm-6">
-										<div>
-											<label for="motivoBajaMARTE">Causa BAJA</label>
-				                            <select 
-				                            	class="form-control input-sm" 
-				                            	disabled="disabled"
-				                            	id="motivoBajaMARTE" name="motivoBajaMARTE">
-				                            	<option 
-													th:each="causa : ${causas}" 
-													th:value="${causa.idMotivoBajaMARTE}"
-													th:text="${causa.descMotivoBajaMARTE}" >descMotivoBajaMARTE</option>
-				                            	
-				                            </select>   
+										<div class="input-group input-group-sm">
+											<span class="input-group-addon" 
+												id="input-group-addon-tram-motivo" 
+												th:text="#{tram.form.field.motivo.baja}">Motivo Baja</span>
+											<span class="input-group-addon" 
+												id="input-group-addon-tram-motivo-desc" 
+												th:text="${motivoBaja}">Motivo Baja</span>
 										</div>
 									</div>
-									<div id="tramitacion-baja-cambio-cif" class="col-sm-6">
+									<div id="tram-baja-conf-cambio-cif" class="col-sm-6">
 										<div class="input-group input-group-sm">
 											<span class="input-group-addon" 
 												id="input-group-addon-tram-nuevocif" 
 												th:text="#{tram.form.field.nuevocif}">Nuevo CIF</span>
 											<input 
 												type="text" class="form-control" 
-												disabled="disabled"
+												readonly="readonly"
 												th:field="${tramBajaForm.nuevocif}" />
 										</div>
 									</div>
 								</div><!-- .row form-group form-inline -->
-								<div id="tramitacion-baja-horus-bonificacion" 
+								<div id="tram-baja-conf-horus-bonificacion" 
 									class="row form-group form-inline">
 									<div class="col-sm-6">
 										<div class="input-group input-group-sm">
@@ -141,12 +136,12 @@
 											<input 
 												type="text" 
 												class="form-control"
-												disabled="disabled"
+												readonly="readonly"
 												th:field="${tramBajaForm.horus}" />
 										</div>
 									</div>
 								</div><!-- .row -->
-								<div id="tramitacion-baja-fecha-prevista" 
+								<div id="tram-baja-conf-fecha-prevista" 
 									class="row form-group form-inline">
 									<div class="col-sm-6">
 										<div class="input-group input-group-sm">
@@ -155,19 +150,19 @@
 												th:text="#{tram.form.field.fecha.prevista}">Fecha Tramitación Prevista</span>
 											<input 
 												type="text" class="form-control" 
-												disabled="disabled"
+												readonly="readonly"
 												th:value="${tramBajaForm.fechaTramPrevista != null ? #dates.format(tramBajaForm.fechaTramPrevista, 'dd-MM-yyyy') : 'Sin informar'}"
 												placeholder="31/12/2500" />
 										</div>
 									</div>
 								</div>
-								<div id="tramitacion-baja-peticion" 			class="row form-group form-inline">
+								<div id="tram-baja-conf-peticion" 			class="row form-group form-inline">
 									<div class="col-sm-12">
 										<h4><span th:text="#{tram.form.field.peticion}">Observaciones</span></h4>
 										<textarea 
 											class="form-control input-sm span12" 
 											th:field="${tramBajaForm.peticionTramitacion}"
-											disabled="disabled"
+											readonly="readonly"
 											rows = "5"
 											cols = "120"
 											placeholder="Observaciones..." ></textarea>
@@ -178,21 +173,21 @@
 							</div><!-- tram-baja-step-1 -->
 							<!-- Spring Security -->
 							<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-							<input type="hidden" th:name="idAcuerdo"              th:value="${tramBajaForm.idAcuerdo}" />
+							<input type="hidden" th:field="${tramBajaForm.idAcuerdo}" />
+							<input type="hidden" th:field="${tramBajaForm.motivoBajaMARTE}" />
 							 
 							<!-- Botones Save & Back -->
 							<div class="form-group">
 								<div class="col-md-offset-4 col-md-4">
 									<p class="text-center">
-										<a th:href="@{/findcif/baja/1}"
-											id="btn-back" class="btn btn-warning"> 
-											<span th:text="#{tram.form.btn.back}"></span>
-										</a>
+										<button id="tram-form-btn-back" type="button" class="btn btn-warning" 
+											th:text="#{tram.form.btn.back}">
+										</button>
 										<a th:href="@{/findcif/show/{idAcuerdo}(idAcuerdo=${tramBajaForm.idAcuerdo})}"
-											id="btn-back" class="btn btn-default"> 
+											id="tram-form-btn-cancel" class="btn btn-default"> 
 											<span th:text="#{tram.form.btn.cancel}"></span>
 										</a>
-										<button id="btn-save" type="submit" class="btn btn-primary"
+										<button id="tram-form-btn-confirm" type="button" class="btn btn-primary"
 											th:text="#{tram.form.btn.confirm}" >
 										</button>
 									</p>
