@@ -2,6 +2,7 @@ package telefonica.aaee.marte.controllers;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -11,6 +12,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
@@ -23,17 +26,21 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import telefonica.aaee.marte.acuerdos.dao.model.Acuerdo;
+import telefonica.aaee.marte.acuerdos.dao.model.CodAPI;
+import telefonica.aaee.marte.acuerdos.dao.model.MarteUsuario;
 import telefonica.aaee.marte.acuerdos.dao.model.MotivoBaja;
 import telefonica.aaee.marte.acuerdos.dao.model.SituacionPlana;
 import telefonica.aaee.marte.acuerdos.dao.model.SituacionPlanaEstado;
 import telefonica.aaee.marte.acuerdos.dao.model.TramitacionAPI;
 import telefonica.aaee.marte.acuerdos.dao.service.AcuerdoService;
 import telefonica.aaee.marte.acuerdos.dao.service.CodAPIService;
+import telefonica.aaee.marte.acuerdos.dao.service.MarteUsuarioService;
 import telefonica.aaee.marte.acuerdos.dao.service.MotivoBajaService;
 import telefonica.aaee.marte.acuerdos.dao.service.SituacionPlanaService;
 import telefonica.aaee.marte.acuerdos.dao.service.TramitacionAPIService;
 import telefonica.aaee.marte.editor.MotivoBajaEditor;
 import telefonica.aaee.marte.form.TramitacionBajaForm;
+import telefonica.aaee.marte.helpers.CalculoFechas;
 import telefonica.aaee.marte.model.pagination.PageWrapper;
 import eu.bitwalker.useragentutils.UserAgent;
 
@@ -51,6 +58,9 @@ public class FindCifController extends BasicController {
 
 	protected final Log logger = LogFactory.getLog(getClass());
 	
+	@Autowired
+	private MarteUsuarioService usuarioService;
+
 	@Autowired
 	private AcuerdoService acuerdoService;
 	
@@ -222,28 +232,30 @@ public class FindCifController extends BasicController {
 			@ModelAttribute TramitacionBajaForm form,
 			HttpServletRequest request,  
             final RedirectAttributes redirectAttributes, 
+			Authentication auth,
             Locale locale
 			) {
 		
+		UserDetails userDetails = (UserDetails) auth.getPrincipal();
+		logger.info(String.format("***********************************", ""));
+		logger.info(String.format("USER : [%s]", userDetails.toString()));
+		logger.info(String.format("Username : [%s]", userDetails.getUsername()));
 		logger.info(String.format("***********************************", ""));
 		logger.info(String.format("**    BAJA  (form)       **********", ""));
 		logger.info(String.format("***********************************", ""));
-//		for(String param : java.util.Collections.list(request.getAttributeNames())){
-//			logger.info(String.format("REQUEST : [%s][%s]", param, request.getAttribute(param)));
-//		}
 		logger.info(String.format("FORM : [%s]", form.toString()));
 		logger.info(String.format("***********************************", ""));
 		
 		Acuerdo acuerdo = acuerdoService.findById(form.getIdAcuerdo());
 		logger.info(String.format("[%s]", acuerdo.toString()));
-		MotivoBaja motivoBaja = form.getMotivoBajaMARTE();
+		MotivoBaja motivoBaja = motivoBajaService.findById(form.getMotivoBajaMARTE());
 		logger.info(String.format("[%s]", motivoBaja.toString()));
 
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName(TRAM_BAJA_FORM);
 		modelAndView.addObject("tramBajaForm", form);
 		modelAndView.addObject("acuerdo", acuerdo);
-		modelAndView.addObject("motivoBaja", motivoBaja);
+		//modelAndView.addObject("motivoBaja", motivoBaja);
 		modelAndView.addObject("causas", motivoBajaService.findAll());
 		return modelAndView;
 	}
@@ -253,9 +265,14 @@ public class FindCifController extends BasicController {
 			@ModelAttribute TramitacionBajaForm form,
 			HttpServletRequest request,  
 			final RedirectAttributes redirectAttributes, 
+			Authentication auth,
 			Locale locale
 			) {
 		
+		UserDetails userDetails = (UserDetails) auth.getPrincipal();
+		logger.info(String.format("***********************************", ""));
+		logger.info(String.format("USER : [%s]", userDetails.toString()));
+		logger.info(String.format("Username : [%s]", userDetails.getUsername()));
 		logger.info(String.format("***********************************", ""));
 		logger.info(String.format("**    BAJA  (conf)       **********", ""));
 		logger.info(String.format("***********************************", ""));
@@ -264,39 +281,82 @@ public class FindCifController extends BasicController {
 		
 		Acuerdo acuerdo = acuerdoService.findById(form.getIdAcuerdo());
 		logger.info(String.format("[%s]", acuerdo.toString()));
-		MotivoBaja motivoBaja = form.getMotivoBajaMARTE();
+		MotivoBaja motivoBaja = motivoBajaService.findById(form.getMotivoBajaMARTE());
 		logger.info(String.format("[%s]", motivoBaja.toString()));
 		
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName(TRAM_BAJA_CONF);
 		modelAndView.addObject("tramBajaForm", form);
 		modelAndView.addObject("acuerdo", acuerdo);
-		modelAndView.addObject("motivoBaja", motivoBaja.getDescMotivoBajaMARTE());
 		modelAndView.addObject("causas", motivoBajaService.findAll());
 		return modelAndView;
 	}
 	
-	@RequestMapping(value="/baja/2", method=RequestMethod.POST)
+	@RequestMapping(value="/baja/ok", method=RequestMethod.POST)
 	public ModelAndView bajaAcuerdoConfirmada(
 			@ModelAttribute TramitacionBajaForm form,
 			HttpServletRequest request,  
 			final RedirectAttributes redirectAttributes, 
+			Authentication auth,
 			Locale locale
 			) {
 		
+		UserDetails userDetails = (UserDetails) auth.getPrincipal();
 		logger.info(String.format("***********************************", ""));
-		logger.info(String.format("**    BAJA (2)           **********", ""));
+		logger.info(String.format("USER : [%s]", userDetails.toString()));
+		logger.info(String.format("Username : [%s]", userDetails.getUsername()));
 		logger.info(String.format("***********************************", ""));
-//		for(String param : java.util.Collections.list(request.getAttributeNames())){
-//			logger.info(String.format("REQUEST : [%s][%s]", param, request.getAttribute(param)));
-//		}
+		logger.info(String.format("**    BAJA (ok)          **********", ""));
+		logger.info(String.format("***********************************", ""));
 		logger.info(String.format("FORM : [%s]", form.toString()));
 		logger.info(String.format("***********************************", ""));
 		
-//		TramitacionAPI tramAPI = new TramitacionAPI();
-//		CodAPI codAIBaja = codAPIService.findByCodAPI("Baja");
-//		tramAPI.setCodAPI(codAPIBaja);
-//		TramitacionAPI tram = tramitacionAPIService.save(tramAPI);
+		TramitacionAPI tramAPI = new TramitacionAPI();
+		CodAPI codAPIBaja = codAPIService.findById("Baja");
+		tramAPI.setCodAPI(codAPIBaja);
+		tramAPI.setCodAPIOrig(codAPIBaja);
+		
+		Date ahora = Calendar.getInstance().getTime();
+		Calendar fechaNula = Calendar.getInstance();
+		fechaNula.set(Calendar.YEAR, 2500);
+		fechaNula.set(Calendar.MONTH, Calendar.DECEMBER);
+		fechaNula.set(Calendar.DAY_OF_MONTH, 31);
+		
+		// Fechas
+		tramAPI.setFechaPeticion(ahora);
+		tramAPI.setFechaTramPrevista(CalculoFechas.primerDiaHabil(ahora, false));
+		tramAPI.setFechaTramAPI(fechaNula.getTime());
+		tramAPI.setFechaGAE(fechaNula.getTime());
+		
+		Acuerdo acuerdo = acuerdoService.findById(form.getIdAcuerdo());
+		tramAPI.setAcuerdo(acuerdo);
+		tramAPI.setTipoDoc(acuerdo.getTipoDoc());
+		tramAPI.setCif(acuerdo.getCif());
+		tramAPI.setAcuerdoNumero(acuerdo.getAcuerdoNumero());
+		tramAPI.setImporteFijoMT(acuerdo.getImporteFijoMT());
+		tramAPI.setImporteFijoNM(acuerdo.getImporteFijoNM());
+		tramAPI.setDescuentoPlanaMT((int)acuerdo.getDescuentoPlanaMT());
+		tramAPI.setDescuentoPlanaNM((int)acuerdo.getDescuentoPlanaNM());
+		tramAPI.setImporteFijoMTAnterior(acuerdo.getImporteFijoMT());
+		tramAPI.setImporteFijoNMAnterior(acuerdo.getImporteFijoNM());
+		tramAPI.setDescuentoPlanaMTAnterior((int)acuerdo.getDescuentoPlanaMT());
+		tramAPI.setDescuentoPlanaNMAnterior((int)acuerdo.getDescuentoPlanaNM());
+		
+		tramAPI.setPeticionTramitacion(form.getPeticionTramitacion());
+		tramAPI.setOperadora(acuerdo.getOperadora());
+		tramAPI.setPlanaAutoajustable(acuerdo.getPlanaAutoajustable());
+		
+		MotivoBaja motivoBaja = motivoBajaService.findById(form.getMotivoBajaMARTE());
+		tramAPI.setMotivoBajaMARTE(motivoBaja);
+		tramAPI.setMotivoBaja(motivoBaja.getIdMotivoBajaFX().shortValue());
+		
+		
+		MarteUsuario marteUsuario = usuarioService.findByUsername(userDetails.getUsername());
+		tramAPI.setMatPeticionario(marteUsuario);
+
+		//	TramitacionAPI tram = tramitacionAPIService.save(tramAPI);
+		
+		logger.info(String.format("%s", tramAPI.toString()));
 		
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName(FIND_CIF_FORM);

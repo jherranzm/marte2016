@@ -3,13 +3,12 @@ package telefonica.aaee.marte.form;
 import java.util.Calendar;
 import java.util.Date;
 
-import telefonica.aaee.marte.acuerdos.dao.model.MotivoBaja;
 import telefonica.aaee.marte.helpers.CalculoFechas;
 
 public class TramitacionBajaForm {
 	
 	private String idAcuerdo;
-	private MotivoBaja motivoBajaMARTE;
+	private Long motivoBajaMARTE;
 	private String nuevocif;
 	private String horus;
 	private String peticionTramitacion;
@@ -42,12 +41,12 @@ public class TramitacionBajaForm {
 	}
 
 
-	public MotivoBaja getMotivoBajaMARTE() {
+	public Long getMotivoBajaMARTE() {
 		return motivoBajaMARTE;
 	}
 
 
-	public void setMotivoBajaMARTE(MotivoBaja motivoBajaMARTE) {
+	public void setMotivoBajaMARTE(Long motivoBajaMARTE) {
 		this.motivoBajaMARTE = motivoBajaMARTE;
 	}
 

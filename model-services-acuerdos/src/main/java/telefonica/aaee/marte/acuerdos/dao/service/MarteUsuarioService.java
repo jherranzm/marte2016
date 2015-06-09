@@ -16,6 +16,7 @@ import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.stereotype.Service;
 
 import telefonica.aaee.marte.acuerdos.dao.model.MarteUsuario;
+import telefonica.aaee.marte.acuerdos.dao.specifications.MarteUsuarioSpecifications;
 
 @Service
 public class MarteUsuarioService extends GenericAcuerdosService {
@@ -46,5 +47,9 @@ public class MarteUsuarioService extends GenericAcuerdosService {
 				new Order(Direction.ASC, "idUsuario")
 				)
 		);
+	}
+
+	public MarteUsuario findByUsername(String username) {
+		return repo.findOne(MarteUsuarioSpecifications.searchByCif(username));
 	}
 }

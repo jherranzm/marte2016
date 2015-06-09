@@ -83,8 +83,9 @@ public class TramitacionAPI implements Serializable {
 	@JoinColumn(name="CodAPI")
 	private CodAPI codAPI;
 
-	@Column(name="CodApi_Orig")
-	private String codAPIOrig;
+	@ManyToOne
+	@JoinColumn(name="CodApi_Orig")
+	private CodAPI codAPIOrig;
 
 	@Column(name="CORREO_SN")
 	private String envioCorreo;
@@ -338,11 +339,11 @@ public class TramitacionAPI implements Serializable {
 		this.codAPI = codAPI;
 	}
 
-	public String getCodAPIOrig() {
+	public CodAPI getCodAPIOrig() {
 		return this.codAPIOrig;
 	}
 
-	public void setCodAPIOrig(String codAPIOrig) {
+	public void setCodAPIOrig(CodAPI codAPIOrig) {
 		this.codAPIOrig = codAPIOrig;
 	}
 

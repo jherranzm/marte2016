@@ -22,7 +22,7 @@ public class CodAPIService extends GenericAcuerdosService {
 
 	protected final Log logger = LogFactory.getLog(getClass());
 
-	private SimpleJpaRepository<CodAPI, Long> repo;
+	private SimpleJpaRepository<CodAPI, String> repo;
 
 	public CodAPIService() {
 	}
@@ -33,10 +33,10 @@ public class CodAPIService extends GenericAcuerdosService {
 
 	@PostConstruct
 	public void init() {
-		JpaEntityInformation<CodAPI, Long> entityInfo = new 
-				JpaMetamodelEntityInformation<CodAPI, Long>(
+		JpaEntityInformation<CodAPI, String> entityInfo = new 
+				JpaMetamodelEntityInformation<CodAPI, String>(
 						CodAPI.class, em.getMetamodel());
-		repo = new SimpleJpaRepository<CodAPI, Long>(entityInfo, em);
+		repo = new SimpleJpaRepository<CodAPI, String>(entityInfo, em);
 
 	}
 	
@@ -47,4 +47,11 @@ public class CodAPIService extends GenericAcuerdosService {
 				)
 		);
 	}
+	
+	public CodAPI findById(String id){
+		return repo.findOne(id);
+	}
+	
+	
+	
 }

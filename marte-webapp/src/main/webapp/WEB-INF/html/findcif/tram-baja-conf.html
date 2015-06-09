@@ -95,6 +95,37 @@
 			<div class="tab-content">
 				<div th:fragment="tram-baja-conf">
 				
+					<div>
+						<div class="row form-group form-inline">
+							<div class="col-sm-5">
+								<div class="input-group input-group-sm">
+									<span 
+										class="input-group-addon primary" 
+										id="input-group-addon-tipoDoc"
+										th:text="#{acuerdo.form.field.acuerdofx}">Acuerdo FX</span>
+									<input type="text" 
+										class="form-control" 
+										readonly="readonly"
+										th:value="${acuerdo.acuerdoFX}"
+										placeholder="L" />
+								</div>
+							</div>
+							<div class="col-sm-7">
+								<div class="input-group input-group-sm">
+									<span 
+										class="input-group-addon primary" 
+										id="input-group-addon-nombre"
+										th:text="#{acuerdo.form.field.nombre}">Empresa</span>
+									<input type="text" 
+										class="form-control" 
+										readonly="readonly"
+										th:value="${acuerdo.nombre}"
+										placeholder="NombreEmpresa" />
+								</div>
+							</div>
+						</div><!-- .row form-group form-inline -->
+					</div>
+				
 					<form 
 						id="tram-baja-form-step-2" 
 						method="POST" 
