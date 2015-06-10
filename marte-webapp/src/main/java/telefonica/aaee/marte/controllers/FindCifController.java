@@ -1,5 +1,6 @@
 package telefonica.aaee.marte.controllers;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -25,8 +26,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import telefonica.aaee.dao.maestras.model.Cliente;
+import telefonica.aaee.dao.maestras.model.VCliente;
+import telefonica.aaee.dao.maestras.service.ClienteService;
+import telefonica.aaee.dao.maestras.service.VClienteService;
 import telefonica.aaee.marte.acuerdos.dao.model.Acuerdo;
 import telefonica.aaee.marte.acuerdos.dao.model.CodAPI;
+import telefonica.aaee.marte.acuerdos.dao.model.EstadoTramitacion;
 import telefonica.aaee.marte.acuerdos.dao.model.MarteUsuario;
 import telefonica.aaee.marte.acuerdos.dao.model.MotivoBaja;
 import telefonica.aaee.marte.acuerdos.dao.model.SituacionPlana;
@@ -34,6 +40,7 @@ import telefonica.aaee.marte.acuerdos.dao.model.SituacionPlanaEstado;
 import telefonica.aaee.marte.acuerdos.dao.model.TramitacionAPI;
 import telefonica.aaee.marte.acuerdos.dao.service.AcuerdoService;
 import telefonica.aaee.marte.acuerdos.dao.service.CodAPIService;
+import telefonica.aaee.marte.acuerdos.dao.service.EstadoTramitacionService;
 import telefonica.aaee.marte.acuerdos.dao.service.MarteUsuarioService;
 import telefonica.aaee.marte.acuerdos.dao.service.MotivoBajaService;
 import telefonica.aaee.marte.acuerdos.dao.service.SituacionPlanaService;
@@ -76,6 +83,15 @@ public class FindCifController extends BasicController {
 	@Autowired
 	private CodAPIService codAPIService;
 	
+	@Autowired
+	private ClienteService clienteService;
+	
+	@Autowired
+	private VClienteService vClienteService;
+	
+	@Autowired
+	private EstadoTramitacionService estadoTramitacionService;
+
 	@InitBinder("tramitacionBajaForm")
 	private void initBinder(WebDataBinder binder) {
 		binder.registerCustomEditor(MotivoBaja.class, new MotivoBajaEditor(motivoBajaService));
@@ -301,6 +317,8 @@ public class FindCifController extends BasicController {
 			Locale locale
 			) {
 		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+		
 		UserDetails userDetails = (UserDetails) auth.getPrincipal();
 		logger.info(String.format("***********************************", ""));
 		logger.info(String.format("USER : [%s]", userDetails.toString()));
@@ -327,12 +345,16 @@ public class FindCifController extends BasicController {
 		tramAPI.setFechaTramPrevista(CalculoFechas.primerDiaHabil(ahora, false));
 		tramAPI.setFechaTramAPI(fechaNula.getTime());
 		tramAPI.setFechaGAE(fechaNula.getTime());
+		tramAPI.setFinVigencia(fechaNula.getTime());
+		tramAPI.setFechaCorreo(fechaNula.getTime());
 		
 		Acuerdo acuerdo = acuerdoService.findById(form.getIdAcuerdo());
 		tramAPI.setAcuerdo(acuerdo);
 		tramAPI.setTipoDoc(acuerdo.getTipoDoc());
 		tramAPI.setCif(acuerdo.getCif());
+		tramAPI.setNombre(acuerdo.getNombre());
 		tramAPI.setAcuerdoNumero(acuerdo.getAcuerdoNumero());
+		tramAPI.setTerritorio(acuerdo.getTerritorio());
 		tramAPI.setImporteFijoMT(acuerdo.getImporteFijoMT());
 		tramAPI.setImporteFijoNM(acuerdo.getImporteFijoNM());
 		tramAPI.setDescuentoPlanaMT((int)acuerdo.getDescuentoPlanaMT());
@@ -341,8 +363,34 @@ public class FindCifController extends BasicController {
 		tramAPI.setImporteFijoNMAnterior(acuerdo.getImporteFijoNM());
 		tramAPI.setDescuentoPlanaMTAnterior((int)acuerdo.getDescuentoPlanaMT());
 		tramAPI.setDescuentoPlanaNMAnterior((int)acuerdo.getDescuentoPlanaNM());
+		tramAPI.setTipoPlanas(acuerdo.getModalidadConcertada());
+		
+		tramAPI.setObservaciones("");
+		tramAPI.setEmail("");
+		tramAPI.setTipoSoporte("");
+		tramAPI.setSoporteAnterior("");
+		tramAPI.setDireccionAnterior("");
+		tramAPI.setCcc("");
+		tramAPI.setCccAnteriror("");
+		tramAPI.setAutorizacion(form.getHorus() != null ? form.getHorus() : "");
+		tramAPI.setBajaCliente("False");
+		tramAPI.setTramitar("False");
+		tramAPI.setCargaGAE("False");
+		tramAPI.setEnvioCorreo("S");
+		
+		// RdV
+		Cliente cli = clienteService.findByCif(acuerdo.getCif());
+		if(cli == null){
+			tramAPI.setMatComercial("");
+			tramAPI.setMatJArea("");
+		}else{
+			VCliente cliente = vClienteService.findById(cli.getId());
+			tramAPI.setMatComercial(cliente.getMatVendedor());
+			tramAPI.setMatJArea(cliente.getMatJArea());
+		}
 		
 		tramAPI.setPeticionTramitacion(form.getPeticionTramitacion());
+		
 		tramAPI.setOperadora(acuerdo.getOperadora());
 		tramAPI.setPlanaAutoajustable(acuerdo.getPlanaAutoajustable());
 		
@@ -353,18 +401,29 @@ public class FindCifController extends BasicController {
 		
 		MarteUsuario marteUsuario = usuarioService.findByUsername(userDetails.getUsername());
 		tramAPI.setMatPeticionario(marteUsuario);
+		
+		EstadoTramitacion estadoTramitacion = estadoTramitacionService.findById(0L);
+		tramAPI.setMarteEstadoTramitacion(estadoTramitacion);
+		
+		tramAPI.setCambioImporteTemporal("P");
+		tramAPI.setTrabajo("AAEE"+sdf.format(ahora));
 
-		//	TramitacionAPI tram = tramitacionAPIService.save(tramAPI);
+		TramitacionAPI tram = tramitacionAPIService.save(tramAPI);
 		
 		logger.info(String.format("%s", tramAPI.toString()));
 		
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName(FIND_CIF_FORM);
+		modelAndView.addObject("acuerdo", acuerdo);
+		modelAndView.addObject("tramitacion", tram);
+		
+		addSituacionPlanaToMAV(modelAndView, acuerdo);
+		
+		modelAndView.setViewName(SHOW_ACUERDO_TRAM);
 		return modelAndView;
 	}
 	
 	@RequestMapping(value="/show/{idAcuerdo}/{idTramitacion}", method=RequestMethod.GET)
-	public ModelAndView showAcuerdo(
+	public ModelAndView showAcuerdoAndTramitacion(
 			@PathVariable String idAcuerdo,
 			@PathVariable Long idTramitacion
 			) {

@@ -5,7 +5,7 @@
 
 	<head th:replace="html/header :: head">
 		<meta charset="UTF-8" />
-		<title th:text="#{app.name}">tram-baja-form</title>
+		<title th:text="#{app.name}">tram-baja-conf</title>
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		
 		
@@ -146,7 +146,9 @@
 												th:text="${motivoBaja}">Motivo Baja</span>
 										</div>
 									</div>
-									<div id="tram-baja-conf-cambio-cif" class="col-sm-6">
+									<div 
+										th:if="${tramBajaForm.nuevocif != null and tramBajaForm.nuevocif != ''}" 
+										id="tram-baja-conf-cambio-cif" class="col-sm-6">
 										<div class="input-group input-group-sm">
 											<span class="input-group-addon" 
 												id="input-group-addon-tram-nuevocif" 
@@ -158,7 +160,7 @@
 										</div>
 									</div>
 								</div><!-- .row form-group form-inline -->
-								<div id="tram-baja-conf-horus-bonificacion" 
+								<div th:if="${tramBajaForm.horus != null and tramBajaForm.horus != ''}" id="tram-baja-conf-horus-bonificacion" 
 									class="row form-group form-inline">
 									<div class="col-sm-6">
 										<div class="input-group input-group-sm">

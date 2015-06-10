@@ -1,14 +1,12 @@
 package telefonica.aaee.marte.acuerdos.dao.model;
 
 import java.io.Serializable;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -26,10 +24,6 @@ public class EstadoTramitacion implements Serializable {
 
 	@Column(nullable=false, length=25)
 	private String estado;
-
-	//bi-directional many-to-one association to TramitacionAPI
-	@OneToMany(mappedBy="marteEstadoTramitacion")
-	private List<TramitacionAPI> tramitacionapis;
 
 	public EstadoTramitacion() {
 	}
@@ -56,28 +50,6 @@ public class EstadoTramitacion implements Serializable {
 
 	public void setEstado(String estado) {
 		this.estado = estado;
-	}
-
-	public List<TramitacionAPI> getTramitacionapis() {
-		return this.tramitacionapis;
-	}
-
-	public void setTramitacionapis(List<TramitacionAPI> tramitacionapis) {
-		this.tramitacionapis = tramitacionapis;
-	}
-
-	public TramitacionAPI addTramitacionapi(TramitacionAPI tramitacionapi) {
-		getTramitacionapis().add(tramitacionapi);
-		tramitacionapi.setMarteEstadoTramitacion(this);
-
-		return tramitacionapi;
-	}
-
-	public TramitacionAPI removeTramitacionapi(TramitacionAPI tramitacionapi) {
-		getTramitacionapis().remove(tramitacionapi);
-		tramitacionapi.setMarteEstadoTramitacion(null);
-
-		return tramitacionapi;
 	}
 
 	@Override

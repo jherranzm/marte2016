@@ -28,6 +28,7 @@ import org.springframework.data.jpa.repository.support.JpaEntityInformation;
 import org.springframework.data.jpa.repository.support.JpaMetamodelEntityInformation;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import telefonica.aaee.marte.acuerdos.dao.model.Acuerdo;
 import telefonica.aaee.marte.acuerdos.dao.model.CodAPI;
@@ -326,6 +327,7 @@ public class TramitacionAPIService extends GenericAcuerdosService {
 		return repo.findAll(TramitacionAPISpecifications.searchByTipoPeticionEstadoTram(tipoPeticion, et), request);
 	}
 
+	@Transactional(value = "acuerdosTransactionManager")
 	public TramitacionAPI save(TramitacionAPI tramAPI) {
 		return repo.saveAndFlush(tramAPI);
 	}
