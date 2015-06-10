@@ -106,52 +106,12 @@
 					<li><a href="#info-regus" data-toggle="tab">Info.Regus</a></li>
 				</ul>
 				<div id="pestanyes-content" class="tab-content">
-					<div id="listado-tramitaciones" th:if="${#lists.size(page.content) > 0}"  class="tab-pane active">
-						<div th:replace="html/pagination-url :: paginationbar"></div>
-						<div class="row">
-							<table
-								class="table table-hover table-striped table-bordered table-condensed">
-								<thead>
-									<tr>
-										<th th:text="#{tram.form.field.id}">ID</th>
-										<th th:text="#{tram.form.field.codAPI}">CodAPI</th>
-										<th th:text="#{tram.form.field.fechaPeticion}">Fecha Petición</th>
-										<th th:text="#{tram.form.field.fechaTramPrevista}">Fecha Prevista</th>
-										<th th:text="#{tram.form.field.fechaTramAPI}">Fecha Tramitación</th>
-										<th th:text="#{tram.form.field.peticionario}">Peticionario</th>
-									</tr>
-								</thead>
-								<tbody>
-									<tr th:each="tram : ${page.content}"
-										th:class="(${tram.marteEstadoTramitacion.estado} == 'TRAMITADA') ? 'success' : ((${tram.marteEstadoTramitacion.estado} == 'RECHAZADA') ? 'danger' : '')">
-										<td><a th:href="@{/findcif/show/{a}/{b}(a=${tram.acuerdo.IDAcuerdo},b=${tram.id})}"><span th:text="${tram.id}"></span></a></td>
-										<td th:text="${tram.codAPI.codApi}">CodAPI</td>
-										<td><span 
-												th:if="${tram.fechaPeticion != null}" 
-												th:text="${#dates.format(tram.fechaPeticion, 'dd-MM-yyyy')}">fechaPeticion
-											</span>
-										</td>
-										<td><span 
-												th:if="${tram.fechaTramPrevista != null}" 
-												th:text="${#dates.format(tram.fechaTramPrevista, 'dd-MM-yyyy')}">fechaTramPrevista
-											</span>
-										</td>
-										<td><span 
-												th:if="${tram.fechaTramAPI != null}" 
-												th:text="${#dates.format(tram.fechaTramAPI, 'dd-MM-yyyy')}">fechaTramAPI
-											</span>
-										</td>
-										<td><span 
-												th:alt="${tram.matPeticionario}"
-												th:text="|${tram.matPeticionario.nombre} ${tram.matPeticionario.apellido1}|">peticionario
-											</span>
-										</td>
-										
-									</tr>
-								</tbody>
-							</table>
-						</div><!-- .row -->
-					</div><!-- #listado-tramitaciones -->
+				
+					<div id="listado-tramitaciones" class="tab-pane">
+						<div th:replace="html/findcif/tram-list :: listado-tramitaciones-table">
+							<div class="well well-sm">Listado Tramitaciones</div>
+						</div>
+					</div>
 					
 					<div id="listado-facturas" class="tab-pane">
 						<div class="well well-sm">Listado Facturas</div>

@@ -127,7 +127,7 @@ public class TramitacionAPITest {
 		
 		boolean ret = false;
 		
-		EstadoTramitacion et = estadoTramitacionService.findById(2L);
+		EstadoTramitacion et = estadoTramitacionService.findById((short)2);
 		
 		Page<TramitacionAPI> page = tramitacionAPIService.findByEstadoTram(et, 1);
 		
@@ -265,7 +265,7 @@ public class TramitacionAPITest {
 		
 		boolean ret = false;
 		
-		EstadoTramitacion et = estadoTramitacionService.findById(1L);
+		EstadoTramitacion et = estadoTramitacionService.findById((short)1);
 		String tipoPeticion = "Baja";
 		
 		Page<TramitacionAPI> page = tramitacionAPIService.findByTipoPeticionEstadoTram(tipoPeticion, et, 1);

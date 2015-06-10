@@ -22,7 +22,7 @@ public class EstadoTramitacionService extends GenericAcuerdosService {
 
 	protected final Log logger = LogFactory.getLog(getClass());
 
-	private SimpleJpaRepository<EstadoTramitacion, Long> repo;
+	private SimpleJpaRepository<EstadoTramitacion, Short> repo;
 
 	public EstadoTramitacionService() {
 	}
@@ -33,10 +33,10 @@ public class EstadoTramitacionService extends GenericAcuerdosService {
 
 	@PostConstruct
 	public void init() {
-		JpaEntityInformation<EstadoTramitacion, Long> entityInfo = new 
-				JpaMetamodelEntityInformation<EstadoTramitacion, Long>(
+		JpaEntityInformation<EstadoTramitacion, Short> entityInfo = new 
+				JpaMetamodelEntityInformation<EstadoTramitacion, Short>(
 						EstadoTramitacion.class, em.getMetamodel());
-		repo = new SimpleJpaRepository<EstadoTramitacion, Long>(entityInfo, em);
+		repo = new SimpleJpaRepository<EstadoTramitacion, Short>(entityInfo, em);
 
 	}
 	
@@ -48,7 +48,7 @@ public class EstadoTramitacionService extends GenericAcuerdosService {
 		);
 	}
 	
-	public EstadoTramitacion findById(Long id){
+	public EstadoTramitacion findById(Short id){
 		return repo.findOne(id);
 	}
 }

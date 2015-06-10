@@ -111,7 +111,7 @@
 								th:action="@{/findcif/getAcuerdos}"
 								>
 								
-								<div class="col-sm-12">
+								<div class="col-sm-12 well well-sm">
 									<div class=" col-sm-2">
 										<button id="btn-header" type="button" class="btn-sm btn-primary" >
 											<span th:text="#{findcif.title}">Buscar Acuerdos por CIF</span>
@@ -136,10 +136,12 @@
 						</div>
 				</div>
 					
-				<div th:if="${errors != null and #lists.size(errors)>0}" class="alert alert-danger" role="alert">
-					<strong>Error!</strong>
-					<span th:each="error : ${errors}" th:text="${error}">Error description</span>
-				</div>
+				<div>
+					<div th:if="${errors != null and #lists.size(errors)>0}" class="alert alert-danger" role="alert">
+						<strong>Error!</strong>
+						<span th:each="error : ${errors}" th:text="${error}">Error description</span>
+					</div>
+				</div>					
 				
 				
 			</div>

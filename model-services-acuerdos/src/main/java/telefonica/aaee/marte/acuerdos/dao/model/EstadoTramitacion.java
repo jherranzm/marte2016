@@ -17,7 +17,7 @@ public class EstadoTramitacion implements Serializable {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(unique=true, nullable=false)
-	private Long id;
+	private Short id;
 
 	@Column(length=250)
 	private String descripcion;
@@ -28,11 +28,11 @@ public class EstadoTramitacion implements Serializable {
 	public EstadoTramitacion() {
 	}
 
-	public Long getId() {
+	public Short getId() {
 		return this.id;
 	}
 
-	public void setId(Long id) {
+	public void setId(Short id) {
 		this.id = id;
 	}
 

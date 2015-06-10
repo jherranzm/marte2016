@@ -277,7 +277,7 @@ public class FindCifController extends BasicController {
 	}
 		
 	@RequestMapping(value="/baja/conf", method=RequestMethod.POST)
-	public ModelAndView bajaAcuerdo(
+	public ModelAndView tramBajaAcuerdoConf(
 			@ModelAttribute TramitacionBajaForm form,
 			HttpServletRequest request,  
 			final RedirectAttributes redirectAttributes, 
@@ -305,11 +305,12 @@ public class FindCifController extends BasicController {
 		modelAndView.addObject("tramBajaForm", form);
 		modelAndView.addObject("acuerdo", acuerdo);
 		modelAndView.addObject("causas", motivoBajaService.findAll());
+		modelAndView.addObject("motivoBaja", motivoBaja.getDescMotivoBajaMARTE());
 		return modelAndView;
 	}
 	
 	@RequestMapping(value="/baja/ok", method=RequestMethod.POST)
-	public ModelAndView bajaAcuerdoConfirmada(
+	public ModelAndView tramBajaAcuerdoConfirmada(
 			@ModelAttribute TramitacionBajaForm form,
 			HttpServletRequest request,  
 			final RedirectAttributes redirectAttributes, 
@@ -384,6 +385,7 @@ public class FindCifController extends BasicController {
 			tramAPI.setMatComercial("");
 			tramAPI.setMatJArea("");
 		}else{
+			logger.info(String.format("%s", cli.toString()));
 			VCliente cliente = vClienteService.findById(cli.getId());
 			tramAPI.setMatComercial(cliente.getMatVendedor());
 			tramAPI.setMatJArea(cliente.getMatJArea());
@@ -395,18 +397,22 @@ public class FindCifController extends BasicController {
 		tramAPI.setPlanaAutoajustable(acuerdo.getPlanaAutoajustable());
 		
 		MotivoBaja motivoBaja = motivoBajaService.findById(form.getMotivoBajaMARTE());
+		logger.info(String.format("%s", motivoBaja.toString()));
 		tramAPI.setMotivoBajaMARTE(motivoBaja);
 		tramAPI.setMotivoBaja(motivoBaja.getIdMotivoBajaFX().shortValue());
 		
-		
 		MarteUsuario marteUsuario = usuarioService.findByUsername(userDetails.getUsername());
+		logger.info(String.format("%s", marteUsuario.toString()));
 		tramAPI.setMatPeticionario(marteUsuario);
 		
-		EstadoTramitacion estadoTramitacion = estadoTramitacionService.findById(0L);
+		EstadoTramitacion estadoTramitacion = estadoTramitacionService.findById((short)0);
+		logger.info(String.format("%s", estadoTramitacion.toString()));
 		tramAPI.setMarteEstadoTramitacion(estadoTramitacion);
 		
 		tramAPI.setCambioImporteTemporal("P");
 		tramAPI.setTrabajo("AAEE"+sdf.format(ahora));
+
+		logger.info(String.format("%s", tramAPI.toString()));
 
 		TramitacionAPI tram = tramitacionAPIService.save(tramAPI);
 		
