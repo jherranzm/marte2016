@@ -9,8 +9,11 @@ import javax.persistence.Query;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.domain.Sort.Order;
 import org.springframework.data.jpa.repository.support.JpaEntityInformation;
 import org.springframework.data.jpa.repository.support.JpaMetamodelEntityInformation;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
@@ -18,6 +21,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import telefonica.aaee.marte.marte.dao.exceptions.AjustePlanaNotFoundException;
+import telefonica.aaee.marte.marte.dao.specifications.AjustePlanaSpecifications;
 import telefonica.aaee.marte.marte.model.AjustePlana;
 
 
@@ -28,7 +32,7 @@ public class AjustePlanaService extends GenericMarteService{
 	
 	private static final String FIND_BY_UNIQUE = "AjustePlana.findByUnique";
 		
-	private JpaRepository<AjustePlana, Long> repo;
+	private SimpleJpaRepository<AjustePlana, Long> repo;
 	
 
 	public AjustePlanaService() {
@@ -117,6 +121,40 @@ public class AjustePlanaService extends GenericMarteService{
 	
 	public List<AjustePlana> saveAll(Set<AjustePlana> oficinas){
 		return repo.save(oficinas);
+	}
+	
+	public Page<AjustePlana> findByAcuerdoAny(
+			 String tipoDoc,
+			 String cif,
+			 String acuerdoNumero,
+			 String fechaAny,
+			 Integer pageNumber){
+		
+		PageRequest request = new PageRequest(pageNumber - 1, PAGE_SIZE,
+				new Sort(
+						new Order(Direction.ASC, "acuerdoNumero")
+						)
+		);
+		
+		return repo.findAll(AjustePlanaSpecifications.searchByAcuerdoAny(tipoDoc, cif, acuerdoNumero, fechaAny), request);
+	}
+	
+	public Page<AjustePlana> findByAcuerdoAny(
+			AjustePlana ajuste,
+			Integer pageNumber){
+		
+		PageRequest request = new PageRequest(pageNumber - 1, PAGE_SIZE,
+				new Sort(
+						new Order(Direction.ASC, "acuerdoNumero")
+						)
+				);
+		
+		return repo.findAll(AjustePlanaSpecifications.searchByAcuerdoAny(
+				ajuste.getTipoDoc()
+				, ajuste.getCif()
+				, ajuste.getAcuerdoNumero()
+				, ajuste.getFechaAny())
+				, request);
 	}
 	
 	@Transactional(value="marteTransactionManager")

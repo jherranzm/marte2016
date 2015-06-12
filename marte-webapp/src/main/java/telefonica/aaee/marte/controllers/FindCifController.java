@@ -48,7 +48,10 @@ import telefonica.aaee.marte.acuerdos.dao.service.TramitacionAPIService;
 import telefonica.aaee.marte.editor.MotivoBajaEditor;
 import telefonica.aaee.marte.form.TramitacionBajaForm;
 import telefonica.aaee.marte.helpers.CalculoFechas;
+import telefonica.aaee.marte.marte.dao.service.AjustePlanaService;
+import telefonica.aaee.marte.marte.model.AjustePlana;
 import telefonica.aaee.marte.model.pagination.PageWrapper;
+import telefonica.aaee.util.Constantes;
 import eu.bitwalker.useragentutils.UserAgent;
 
 @Controller
@@ -64,6 +67,8 @@ public class FindCifController extends BasicController {
 	private static final String TRAM_BAJA_CONF = "html/findcif/tram-baja-conf";
 
 	protected final Log logger = LogFactory.getLog(getClass());
+	protected final SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+	
 	
 	@Autowired
 	private MarteUsuarioService usuarioService;
@@ -91,6 +96,9 @@ public class FindCifController extends BasicController {
 	
 	@Autowired
 	private EstadoTramitacionService estadoTramitacionService;
+	
+	@Autowired
+	private AjustePlanaService ajustePlanaService;
 
 	@InitBinder("tramitacionBajaForm")
 	private void initBinder(WebDataBinder binder) {
@@ -104,17 +112,6 @@ public class FindCifController extends BasicController {
 			) {
 		
 		logger.info("/findcif/find");
-		
-		String userAgent = req.getHeader("user-agent");
-		
-		logger.info("UserAgent: " + userAgent);
-		
-		UserAgent ua = UserAgent.parseUserAgentString(req.getHeader("User-Agent"));		
-		
-		logger.info("Browser: " + ua.getBrowser());
-		logger.info("MajorVersion: " + ua.getBrowserVersion().getMajorVersion());
-		logger.info("MinorVersion: " + ua.getBrowserVersion().getMinorVersion());
-		
 		
 		ModelAndView model2 = new ModelAndView();
 		model2.setViewName(FIND_CIF_FORM);
@@ -230,19 +227,6 @@ public class FindCifController extends BasicController {
 		return modelAndView; 
 	}
 
-	private void addSituacionPlanaToMAV(ModelAndView modelAndView,
-			Acuerdo acuerdo) {
-		SituacionPlana sp = situacionPlanaService.findByIDAcuerdo(acuerdo.getIDAcuerdo());
-		if(sp == null){
-			SituacionPlanaEstado spe = new SituacionPlanaEstado();
-			spe.setEstado(null);
-			sp = new SituacionPlana();
-			sp.setSituacionPlanaEstado(spe);
-		}
-		logger.info(String.format("[%s]", sp));
-		modelAndView.addObject("sp", sp);
-	}
-	
 	@RequestMapping(value="/baja/form", method=RequestMethod.POST)
 	public ModelAndView tramBajaAcuerdoForm(
 			@ModelAttribute TramitacionBajaForm form,
@@ -252,15 +236,7 @@ public class FindCifController extends BasicController {
             Locale locale
 			) {
 		
-		UserDetails userDetails = (UserDetails) auth.getPrincipal();
-		logger.info(String.format("***********************************", ""));
-		logger.info(String.format("USER : [%s]", userDetails.toString()));
-		logger.info(String.format("Username : [%s]", userDetails.getUsername()));
-		logger.info(String.format("***********************************", ""));
-		logger.info(String.format("**    BAJA  (form)       **********", ""));
-		logger.info(String.format("***********************************", ""));
-		logger.info(String.format("FORM : [%s]", form.toString()));
-		logger.info(String.format("***********************************", ""));
+		getSignature(form, request, auth);
 		
 		Acuerdo acuerdo = acuerdoService.findById(form.getIdAcuerdo());
 		logger.info(String.format("[%s]", acuerdo.toString()));
@@ -275,7 +251,8 @@ public class FindCifController extends BasicController {
 		modelAndView.addObject("causas", motivoBajaService.findAll());
 		return modelAndView;
 	}
-		
+
+
 	@RequestMapping(value="/baja/conf", method=RequestMethod.POST)
 	public ModelAndView tramBajaAcuerdoConf(
 			@ModelAttribute TramitacionBajaForm form,
@@ -285,15 +262,7 @@ public class FindCifController extends BasicController {
 			Locale locale
 			) {
 		
-		UserDetails userDetails = (UserDetails) auth.getPrincipal();
-		logger.info(String.format("***********************************", ""));
-		logger.info(String.format("USER : [%s]", userDetails.toString()));
-		logger.info(String.format("Username : [%s]", userDetails.getUsername()));
-		logger.info(String.format("***********************************", ""));
-		logger.info(String.format("**    BAJA  (conf)       **********", ""));
-		logger.info(String.format("***********************************", ""));
-		logger.info(String.format("FORM : [%s]", form.toString()));
-		logger.info(String.format("***********************************", ""));
+		getSignature(form, request, auth);
 		
 		Acuerdo acuerdo = acuerdoService.findById(form.getIdAcuerdo());
 		logger.info(String.format("[%s]", acuerdo.toString()));
@@ -318,17 +287,9 @@ public class FindCifController extends BasicController {
 			Locale locale
 			) {
 		
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
-		
 		UserDetails userDetails = (UserDetails) auth.getPrincipal();
-		logger.info(String.format("***********************************", ""));
-		logger.info(String.format("USER : [%s]", userDetails.toString()));
-		logger.info(String.format("Username : [%s]", userDetails.getUsername()));
-		logger.info(String.format("***********************************", ""));
-		logger.info(String.format("**    BAJA (ok)          **********", ""));
-		logger.info(String.format("***********************************", ""));
-		logger.info(String.format("FORM : [%s]", form.toString()));
-		logger.info(String.format("***********************************", ""));
+
+		getSignature(form, request, auth);
 		
 		TramitacionAPI tramAPI = new TramitacionAPI();
 		CodAPI codAPIBaja = codAPIService.findById("Baja");
@@ -350,21 +311,7 @@ public class FindCifController extends BasicController {
 		tramAPI.setFechaCorreo(fechaNula.getTime());
 		
 		Acuerdo acuerdo = acuerdoService.findById(form.getIdAcuerdo());
-		tramAPI.setAcuerdo(acuerdo);
-		tramAPI.setTipoDoc(acuerdo.getTipoDoc());
-		tramAPI.setCif(acuerdo.getCif());
-		tramAPI.setNombre(acuerdo.getNombre());
-		tramAPI.setAcuerdoNumero(acuerdo.getAcuerdoNumero());
-		tramAPI.setTerritorio(acuerdo.getTerritorio());
-		tramAPI.setImporteFijoMT(acuerdo.getImporteFijoMT());
-		tramAPI.setImporteFijoNM(acuerdo.getImporteFijoNM());
-		tramAPI.setDescuentoPlanaMT((int)acuerdo.getDescuentoPlanaMT());
-		tramAPI.setDescuentoPlanaNM((int)acuerdo.getDescuentoPlanaNM());
-		tramAPI.setImporteFijoMTAnterior(acuerdo.getImporteFijoMT());
-		tramAPI.setImporteFijoNMAnterior(acuerdo.getImporteFijoNM());
-		tramAPI.setDescuentoPlanaMTAnterior((int)acuerdo.getDescuentoPlanaMT());
-		tramAPI.setDescuentoPlanaNMAnterior((int)acuerdo.getDescuentoPlanaNM());
-		tramAPI.setTipoPlanas(acuerdo.getModalidadConcertada());
+		copyAcuerdoToTram(tramAPI, acuerdo);
 		
 		tramAPI.setObservaciones("");
 		tramAPI.setEmail("");
@@ -391,10 +338,27 @@ public class FindCifController extends BasicController {
 			tramAPI.setMatJArea(cliente.getMatJArea());
 		}
 		
-		tramAPI.setPeticionTramitacion(form.getPeticionTramitacion());
+		//AjustesPlana
+		AjustePlana ajuste = new AjustePlana();
+		ajuste.setTipoDoc(acuerdo.getTipoDoc());
+		ajuste.setCif(acuerdo.getCif());
+		ajuste.setAcuerdoNumero(acuerdo.getAcuerdoNumero());
+		ajuste.setFechaAny("2014");
+		Page<AjustePlana> ajustes = ajustePlanaService.findByAcuerdoAny(ajuste, 1);
+		List<AjustePlana> listaAjustes = ajustes.getContent();
 		
-		tramAPI.setOperadora(acuerdo.getOperadora());
-		tramAPI.setPlanaAutoajustable(acuerdo.getPlanaAutoajustable());
+		
+		StringBuilder sbAjustes = new StringBuilder();
+		if(listaAjustes.size() > 0){
+			sbAjustes
+			.append("**********************************").append(Constantes.CRLF)
+			.append("* ACUERDO CON AJUSTES PENDIENTES *").append(Constantes.CRLF)
+			.append("**********************************").append(Constantes.CRLF)
+			;
+			for(AjustePlana a : listaAjustes){
+				logger.info(String.format("----- %s", a));
+			}
+		}
 		
 		MotivoBaja motivoBaja = motivoBajaService.findById(form.getMotivoBajaMARTE());
 		logger.info(String.format("%s", motivoBaja.toString()));
@@ -411,6 +375,33 @@ public class FindCifController extends BasicController {
 		
 		tramAPI.setCambioImporteTemporal("P");
 		tramAPI.setTrabajo("AAEE"+sdf.format(ahora));
+		
+		StringBuilder datosSession = new StringBuilder();
+		datosSession.append(Constantes.CRLF).append(Constantes.CRLF).append(Constantes.CRLF);
+		datosSession.append("Usuario:").append(marteUsuario.getCodUsuario());
+		datosSession.append(" : ").append(marteUsuario.getNombre());
+		datosSession.append(" ").append(marteUsuario.getApellido1()).append(Constantes.CRLF);
+		datosSession.append("IP:").append(request.getRemoteAddr()).append(Constantes.CRLF);
+		datosSession.append("Host:").append(request.getRemoteHost()).append(":").append(request.getRemotePort()).append(Constantes.CRLF);
+		datosSession.append("SessionId:").append(request.getRequestedSessionId()).append(Constantes.CRLF);
+		datosSession.append(sdf.format( ahora )).append(Constantes.CRLF);
+		datosSession.append("====================").append(Constantes.CRLF);
+
+
+		
+		StringBuffer sbPeticionTramitacion = new StringBuffer();
+		sbPeticionTramitacion.append(sbAjustes);
+		sbPeticionTramitacion
+			.append("BAJA de Acuerdo").append(Constantes.CRLF)
+			.append("===============").append(Constantes.CRLF);
+		sbPeticionTramitacion.append(String.format("Nuevo CIF : [%s]", form.getNuevocif())).append(Constantes.CRLF);
+		sbPeticionTramitacion.append(String.format("HORUS Bonificación : [%s]", form.getHorus())).append(Constantes.CRLF);
+		sbPeticionTramitacion.append(form.getPeticionTramitacion());
+		sbPeticionTramitacion.append(datosSession);
+		tramAPI.setPeticionTramitacion(sbPeticionTramitacion.toString());
+		
+		
+		
 
 		logger.info(String.format("%s", tramAPI.toString()));
 
@@ -426,6 +417,27 @@ public class FindCifController extends BasicController {
 		
 		modelAndView.setViewName(SHOW_ACUERDO_TRAM);
 		return modelAndView;
+	}
+
+
+	private void copyAcuerdoToTram(TramitacionAPI tramAPI, Acuerdo acuerdo) {
+		tramAPI.setAcuerdo(acuerdo);
+		tramAPI.setTipoDoc(acuerdo.getTipoDoc());
+		tramAPI.setCif(acuerdo.getCif());
+		tramAPI.setNombre(acuerdo.getNombre());
+		tramAPI.setAcuerdoNumero(acuerdo.getAcuerdoNumero());
+		tramAPI.setTerritorio(acuerdo.getTerritorio());
+		tramAPI.setImporteFijoMT(acuerdo.getImporteFijoMT());
+		tramAPI.setImporteFijoNM(acuerdo.getImporteFijoNM());
+		tramAPI.setDescuentoPlanaMT((int)acuerdo.getDescuentoPlanaMT());
+		tramAPI.setDescuentoPlanaNM((int)acuerdo.getDescuentoPlanaNM());
+		tramAPI.setImporteFijoMTAnterior(acuerdo.getImporteFijoMT());
+		tramAPI.setImporteFijoNMAnterior(acuerdo.getImporteFijoNM());
+		tramAPI.setDescuentoPlanaMTAnterior((int)acuerdo.getDescuentoPlanaMT());
+		tramAPI.setDescuentoPlanaNMAnterior((int)acuerdo.getDescuentoPlanaNM());
+		tramAPI.setTipoPlanas(acuerdo.getModalidadConcertada());
+		tramAPI.setOperadora(acuerdo.getOperadora());
+		tramAPI.setPlanaAutoajustable(acuerdo.getPlanaAutoajustable());
 	}
 	
 	@RequestMapping(value="/show/{idAcuerdo}/{idTramitacion}", method=RequestMethod.GET)
@@ -473,6 +485,52 @@ public class FindCifController extends BasicController {
 	
 	
 	
+	private void addSituacionPlanaToMAV(ModelAndView modelAndView,
+			Acuerdo acuerdo) {
+		SituacionPlana sp = situacionPlanaService.findByIDAcuerdo(acuerdo.getIDAcuerdo());
+		if(sp == null){
+			SituacionPlanaEstado spe = new SituacionPlanaEstado();
+			spe.setEstado(null);
+			sp = new SituacionPlana();
+			sp.setSituacionPlanaEstado(spe);
+		}
+		logger.info(String.format("[%s]", sp));
+		modelAndView.addObject("sp", sp);
+	}
+
+
+	private void getSignature(
+			TramitacionBajaForm form
+			, HttpServletRequest request
+			, Authentication auth) {
+		
+		String sessionId = request.getSession().getId();
+		String userAgent = request.getHeader("user-agent");
+		UserAgent ua = UserAgent.parseUserAgentString(request.getHeader("User-Agent"));		
+		UserDetails userDetails = (UserDetails) auth.getPrincipal();
+		MarteUsuario marteUsuario = usuarioService.findByUsername(userDetails.getUsername());
+		
+		logger.info(String.format("***********************************", ""));
+		logger.info(String.format("** USER      : [%s]", userDetails.toString()));
+		logger.info(String.format("** Username  : [%s]", userDetails.getUsername()));
+		logger.info(String.format("** Usuario   : [%s]", marteUsuario.toString()));
+		logger.info(String.format("***********************************", ""));
+		logger.info(String.format("** TramBajaForm       *************", ""));
+		logger.info(String.format("***********************************", ""));
+		logger.info(String.format("** FORM      : [%s]", form.toString()));
+		logger.info(String.format("***********************************", ""));
+		logger.info(String.format("** SessionId : [%s]", sessionId));
+		logger.info(String.format("***********************************", ""));
+		logger.info(String.format("** UserAgent : [%s]", userAgent));
+		logger.info(String.format("***********************************", ""));
+		logger.info(String.format("** Browser     : [%s]", ua.getBrowser()));
+		logger.info(String.format("** MajorVersion: [%s]", ua.getBrowserVersion().getMajorVersion()));
+		logger.info(String.format("** MinorVersion: [%s]", ua.getBrowserVersion().getMinorVersion()));
+		logger.info(String.format("***********************************", ""));
+		
+	}
+
+
 	private String getUrl(String queBuscar) {
 		StringBuilder url = new StringBuilder();
 		url.append("findcif/find");

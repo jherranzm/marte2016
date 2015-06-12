@@ -50,7 +50,7 @@
 						th:fragment="listado-tramitaciones-table" 
 						id="listado-tramitaciones-table" 
 						th:if="${#lists.size(page.content) > 0}"  
-						class="tab-pane active">
+						>
 						<div th:replace="html/pagination-url :: paginationbar"></div>
 						<div class="row">
 							<table

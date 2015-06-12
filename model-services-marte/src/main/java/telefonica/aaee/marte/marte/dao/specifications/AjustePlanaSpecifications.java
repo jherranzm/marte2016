@@ -24,4 +24,26 @@ public abstract class AjustePlanaSpecifications {
            }
        };
      }
+	public static Specification<AjustePlana> searchByAcuerdoAny(
+			final String tipoDoc,
+			final String cif,
+			final String acuerdoNumero,
+			final String fechaAny
+			) {
+		return new Specification<AjustePlana>() {
+			
+			public Predicate toPredicate(
+					Root<AjustePlana> root
+					, CriteriaQuery<?> criteriaQuery
+					, CriteriaBuilder criteriaBuilder)
+			{
+				return criteriaBuilder.and(
+						criteriaBuilder.equal(root.<String>get("tipoDoc"), tipoDoc)
+						, criteriaBuilder.equal(root.<String>get("cif"), cif)
+						, criteriaBuilder.equal(root.<String>get("acuerdoNumero"), acuerdoNumero)
+						, criteriaBuilder.equal(root.<String>get("fechaAny"), fechaAny)
+						);
+			}
+		};
+	}
 }
