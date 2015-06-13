@@ -1,43 +1,31 @@
 package telefonica.aaee.marte.form;
 
+import java.io.Serializable;
 import java.util.Calendar;
-import java.util.Date;
 
 import telefonica.aaee.marte.helpers.CalculoFechas;
 
-public class TramitacionBajaForm {
+public class TramitacionBajaForm extends TramitacionForm implements Serializable{
 	
-	private String idAcuerdo;
+	private static final long serialVersionUID = 1L;
+	
 	private Long motivoBajaMARTE;
 	private String nuevocif;
 	private String horus;
-	private String peticionTramitacion;
-	private Date fechaTramPrevista;
-	private Date fechaPeticion;
 	private String bonificacion;
 	
 	
 	public TramitacionBajaForm() {
 		super();
-		this.idAcuerdo = "";
+		this.setIdAcuerdo("");
 		this.nuevocif = "";
 		this.horus = "";
-		this.peticionTramitacion = "";
+		this.setPeticionTramitacion("");
 		this.motivoBajaMARTE = null;
 		java.util.Date ahora = Calendar.getInstance().getTime();
-		this.fechaTramPrevista = CalculoFechas.primerDiaHabil(ahora, false);
+		this.setFechaTramPrevista(CalculoFechas.primerDiaHabil(ahora, false));
 		this.setFechaPeticion(ahora);
 		this.setBonificacion("NO");
-	}
-
-
-	public String getIdAcuerdo() {
-		return idAcuerdo;
-	}
-
-
-	public void setIdAcuerdo(String idAcuerdo) {
-		this.idAcuerdo = idAcuerdo;
 	}
 
 
@@ -71,34 +59,6 @@ public class TramitacionBajaForm {
 	}
 
 
-	public String getPeticionTramitacion() {
-		return peticionTramitacion;
-	}
-
-
-	public void setPeticionTramitacion(String peticionTramitacion) {
-		this.peticionTramitacion = peticionTramitacion;
-	}
-
-
-	public Date getFechaTramPrevista() {
-		return fechaTramPrevista;
-	}
-
-
-	public void setFechaTramPrevista(Date fechaTramPrevista) {
-		this.fechaTramPrevista = fechaTramPrevista;
-	}
-
-
-	public Date getFechaPeticion() {
-		return fechaPeticion;
-	}
-
-
-	public void setFechaPeticion(Date fechaPeticion) {
-		this.fechaPeticion = fechaPeticion;
-	}
 
 
 	public String getBonificacion() {
@@ -114,13 +74,13 @@ public class TramitacionBajaForm {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("TramitacionBajaForm [idAcuerdo=").append(idAcuerdo)
+		builder.append("TramitacionBajaForm [idAcuerdo=").append(getIdAcuerdo())
 				.append(", motivoBajaMARTE=").append(motivoBajaMARTE)
 				.append(", nuevocif=").append(nuevocif).append(", horus=")
 				.append(horus).append(", peticionTramitacion=")
-				.append(peticionTramitacion).append(", fechaTramPrevista=")
-				.append(fechaTramPrevista).append(", fechaPeticion=")
-				.append(fechaPeticion).append(", bonificacion=")
+				.append(getPeticionTramitacion()).append(", fechaTramPrevista=")
+				.append(getFechaTramPrevista()).append(", fechaPeticion=")
+				.append(getFechaPeticion()).append(", bonificacion=")
 				.append(bonificacion).append("]");
 		return builder.toString();
 	}

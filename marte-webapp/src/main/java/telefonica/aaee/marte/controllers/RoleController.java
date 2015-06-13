@@ -48,9 +48,6 @@ public class RoleController  extends BasicController{
 
 	private static final String FORM_NEW = "role-form-new";
 	private static final String FORM_EDIT = "role-form-edit";
-	private static final String RESULT_PAGE = "html/roles/roles-show";
-
-	
 	@Autowired
 	private RoleService roleService;
 	

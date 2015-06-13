@@ -49,7 +49,7 @@ public class MotivoBajaService extends GenericAcuerdosService {
 	}
 
 	public MotivoBaja findById(
-			long motivoBajaMARTE) {
+			Long motivoBajaMARTE) {
 		return repo.findOne(motivoBajaMARTE);
 	}
 }

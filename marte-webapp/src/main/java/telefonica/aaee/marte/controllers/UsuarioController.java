@@ -53,8 +53,6 @@ public class UsuarioController  extends BasicController{
 	private static final String FORM_NEW = "html/usuarios/usuario-new";
 //	private static final String FORM_EDIT = "usuario-form-edit";
 	private static final String FORM_EDIT = "html/usuarios/usuario-edit";
-	private static final String RESULT_PAGE = "html/usuarios/usuarios-show";
-	
 	private List<Role> cacheRoles = new ArrayList<Role>();
 	
 	@Autowired

@@ -34,7 +34,7 @@ public class MotivoBaja implements Serializable {
 	@Column(name="desc_motivo_baja_MARTE", nullable=false)
 	private String descMotivoBajaMARTE;
 
-	@Column(name="id_motivo_Baja_FX")
+	@Column(name="id_motivo_Baja_FX", nullable=false)
 	private Long idMotivoBajaFX;
 
 

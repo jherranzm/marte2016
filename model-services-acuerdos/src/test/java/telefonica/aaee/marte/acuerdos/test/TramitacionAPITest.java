@@ -24,6 +24,8 @@ import telefonica.aaee.marte.acuerdos.dao.model.TramitacionAPI;
 import telefonica.aaee.marte.acuerdos.dao.service.AcuerdoService;
 import telefonica.aaee.marte.acuerdos.dao.service.CodAPIService;
 import telefonica.aaee.marte.acuerdos.dao.service.EstadoTramitacionService;
+import telefonica.aaee.marte.acuerdos.dao.service.MarteUsuarioService;
+import telefonica.aaee.marte.acuerdos.dao.service.MotivoBajaService;
 import telefonica.aaee.marte.acuerdos.dao.service.TramitacionAPIService;
 import telefonica.aaee.marte.acuerdos.dao.vo.YearMonthEstatusVO;
 import telefonica.aaee.marte.acuerdos.test.config.AcuerdosServicesTestConfig;
@@ -40,6 +42,9 @@ public class TramitacionAPITest {
 	protected final Log logger = LogFactory.getLog(getClass());
 
 	@Autowired
+	private MarteUsuarioService usuarioService;
+
+	@Autowired
 	private CodAPIService codAPIService;
 	
 	@Autowired
@@ -50,7 +55,10 @@ public class TramitacionAPITest {
 	
 	@Autowired
 	private EstadoTramitacionService estadoTramitacionService;
-
+	
+	@Autowired
+	private MotivoBajaService motivoBajaService;
+	
 	@Test
 	public void testAcuerdosFindByCif() {
 
@@ -327,5 +335,4 @@ public class TramitacionAPITest {
 		
 		assertTrue(retTramAPI.getId() > 0);
 	}
-	
 }

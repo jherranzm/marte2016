@@ -133,13 +133,31 @@ $(function() {
 	
 	$('#tramitacion-baja-cambio-cif').hide();
 	
-	$('#tram-form-btn-back').on('click', function(){
-		$('#tram-baja-form-step-2').attr('action', '/marte-webapp/findcif/baja/form');
+	$('#tram-baja-form-btn-back').on('click', function(){
+		$('#tram-baja-form-step-2').attr('action', '/marte-webapp/tram/baja/form');
 		$('#tram-baja-form-step-2').submit();
 	});
-	$('#tram-form-btn-confirm').on('click', function(){
-		$('#tram-baja-form-step-2').attr('action', '/marte-webapp/findcif/baja/ok');
+	$('#tram-baja-form-btn-confirm').on('click', function(){
+		$('#tram-baja-form-step-2').attr('action', '/marte-webapp/tram/baja/ok');
 		$('#tram-baja-form-step-2').submit();
+	});
+	
+	$('#tram-otros-form-btn-back').on('click', function(){
+		$('#tram-otros-form-step-2').attr('action', '/marte-webapp/tram/otros/form');
+		$('#tram-otros-form-step-2').submit();
+	});
+	$('#tram-otros-form-btn-confirm').on('click', function(){
+		$('#tram-otros-form-step-2').attr('action', '/marte-webapp/tram/otros/ok');
+		$('#tram-otros-form-step-2').submit();
+	});
+	
+	$('#tram-mod-email-form-btn-back').on('click', function(){
+		$('#tram-mod-email-form-step-2').attr('action', '/marte-webapp/tram/modemail/form');
+		$('#tram-mod-email-form-step-2').submit();
+	});
+	$('#tram-mod-email-form-btn-confirm').on('click', function(){
+		$('#tram-mod-email-form-step-2').attr('action', '/marte-webapp/tram/modemail/ok');
+		$('#tram-mod-email-form-step-2').submit();
 	});
 	
 	

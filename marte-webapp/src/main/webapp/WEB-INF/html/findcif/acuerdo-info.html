@@ -95,6 +95,18 @@
 			<div class="tab-content">
 				<div th:fragment="acuerdo-info">
 					<div id="acuerdo-info" class="well well-sm">
+					
+						<div class="row form-group form-inline">
+		                    <div th:if="${sp.situacionPlanaEstado == null}" 
+		                    	id="informacionBajaNoSolicitableViaMARTE" 
+		                    	class="alert alert-danger col-sm-offset-1 col-sm-10" 
+		                    	role="alert">
+		                        <strong>Este acuerdo está pendiente de regularizar</strong>, 
+		                        por lo que la petición de BAJA se ha de solicitar en la 
+		                        WEB de REGULARIZACIÓN PLANAS.
+		                    </div>
+						</div><!-- .row form-group form-inline -->
+					
 						<div class="row form-group form-inline">
 							<div class="col-sm-3">
 								<div class="input-group input-group-sm">
@@ -291,20 +303,48 @@
 							</div>
 						</div><!-- .row form-group form-inline -->
 						<div class="row form-group form-inline">
-		                    <div th:if="${sp.situacionPlanaEstado == null}" 
-		                    	id="informacionBajaNoSolicitableViaMARTE" 
-		                    	class="alert alert-danger col-sm-offset-1 col-sm-10" 
-		                    	role="alert">
-		                        <strong>Este acuerdo está pendiente de regularizar</strong>, 
-		                        por lo que la petición de BAJA se ha de solicitar en la 
-		                        WEB de REGULARIZACIÓN PLANAS.
-		                    </div>
-							<div th:if="${sp.situacionPlanaEstado != null and acuerdo.baja != true}" class="col-sm-offset-10 col-sm-1">
-								<a 
-									id="go-to-tram-baja-form"
-									class="btn btn-danger"
-									th:href="@{/findcif/baja/form/{id}(id=${acuerdo.IDAcuerdo})}" 
-									><span th:text="Baja">Baja</span><span class="glyphicon glyphicon-arrow-right"></span></a>
+							<div class="col-sm-12">
+								<!-- Split button -->
+								<button type="button" class="btn btn-sm">Modificaciones del Acuerdo</button>
+								<div class="btn-group">
+								  <button type="button" class="btn btn-sm btn-primary">Cambios Administrativos</button>
+								  <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+								    <span class="caret"></span>
+								    <span class="sr-only">Toggle Dropdown</span>
+								  </button>
+								  <ul class="dropdown-menu" role="menu">
+								    <li><a 
+								    	href="#"
+								    	th:href="@{/tram/modemail/form/{id}(id=${acuerdo.IDAcuerdo})}" >
+								    		<span th:text="#{tram.option.mod.email}">Cambio email</span></a></li>
+								  </ul>
+								</div>
+								<!-- Split button -->
+								<div class="btn-group">
+								  <button type="button" class="btn btn-sm btn-primary">Otros</button>
+								  <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+								    <span class="caret"></span>
+								    <span class="sr-only">Toggle Dropdown</span>
+								  </button>
+								  <ul class="dropdown-menu" role="menu">
+								    <li><a 
+								    	href="#"
+								    	th:href="@{/tram/otros/form/{id}(id=${acuerdo.IDAcuerdo})}" ><span th:text="#{tram.option.otros}">Otros cambios</span></a></li>
+								  </ul>
+								</div>
+								<!-- Button Baja -->
+								<div th:if="${sp.situacionPlanaEstado != null and acuerdo.baja != true}" class="btn-group">
+								  <button type="button" class="btn btn-sm btn-danger" th:text="Baja">Baja</button>
+								  <button type="button" class="btn btn-sm btn-danger dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+								    <span class="caret"></span>
+								    <span class="sr-only">Toggle Dropdown</span>
+								  </button>
+								  <ul class="dropdown-menu" role="menu">
+								    <li><a 
+								    	href="#"
+								    	th:href="@{/tram/baja/form/{id}(id=${acuerdo.IDAcuerdo})}" ><span th:text="#{tram.option.baja}">Baja</span></a></li>
+								  </ul>
+								</div>
 							</div>
 						</div><!-- .row form-group form-inline -->
 					</div>
