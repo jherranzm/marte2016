@@ -3,6 +3,7 @@ package telefonica.aaee.marte.controllers;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
@@ -30,28 +31,70 @@ import telefonica.aaee.marte.acuerdos.dao.model.SituacionPlana;
 import telefonica.aaee.marte.acuerdos.dao.model.SituacionPlanaEstado;
 import telefonica.aaee.marte.acuerdos.dao.model.TramitacionAPI;
 import telefonica.aaee.marte.form.TramitacionForm;
-import telefonica.aaee.marte.form.TramitacionOtrosForm;
+import telefonica.aaee.marte.form.TramitacionModCCCForm;
+import telefonica.aaee.marte.marte.model.FacturaPagaLibroFacturacion;
+import telefonica.aaee.marte.marte.vo.CuentaCorriente;
 import telefonica.aaee.marte.model.pagination.PageWrapper;
 import telefonica.aaee.util.Constantes;
 import eu.bitwalker.useragentutils.UserAgent;
 
 @Controller
-@RequestMapping("/tram/otros")
-public class TramOtrosController extends BasicController {
+@RequestMapping("/tram/modccc")
+public class TramModCCCController extends BasicController {
+	
+	private HashMap<CuentaCorriente, Date> cuentas = new HashMap<CuentaCorriente, Date>();
 
-	private static final String TRAM_OTROS_FORM = "html/findcif/tram-otros-form";
-	private static final String TRAM_OTROS_CONF = "html/findcif/tram-otros-conf";
+	private static final String TRAM_MOD_CCC_FORM = "html/findcif/tram-mod-ccc-form";
+	private static final String TRAM_MOD_CCC_CONF = "html/findcif/tram-mod-ccc-conf";
 
 	protected final Log logger = LogFactory.getLog(getClass());
 	
+	private String getUrl(String queBuscar) {
+		StringBuilder url = new StringBuilder();
+		url.append("findcif/find");
+		url.append("cif=" + queBuscar);
+		return url.toString();
+	}
+	
+	private List<String> getLabels(String queBuscar) {
+		List<String> labels = new ArrayList<>();
+		labels.add(queBuscar);
+		return labels;
+	}
+
+	
+
+	@Override
+	protected ModelAndView getMAVFromQueBuscar(String queBuscar,
+			Integer pageNumber, Integer numItems) {
+		queBuscar = (queBuscar == null ? "" : queBuscar);
+		queBuscar = ("--".equals(queBuscar) ? "" : queBuscar);
+		
+		pageNumber = (pageNumber == null ? 1 : pageNumber);
+		numItems = (numItems == null ? numItemsPorPagina : numItems);
+		
+		logger.info(String.format("Search(queBuscar)  : [%s]", queBuscar));
+		logger.info(String.format("Search(pageNumber) : [%d]", pageNumber));
+		logger.info(String.format("Search(numItems)   : [%d]", numItems));
+	
+		Page<Acuerdo> lista = acuerdoService.findByCif(queBuscar, pageNumber);
+	
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName(RESULT_PAGE);
+		modelAndView.addObject("page", new PageWrapper<Acuerdo>(lista, this.getUrl(queBuscar)));
+		modelAndView.addObject("labels", this.getLabels(queBuscar));
+		return modelAndView;
+	}
+
+
 	@RequestMapping(value="/form/{idAcuerdo}", method={RequestMethod.GET, RequestMethod.POST})
-	public ModelAndView showFormOtrosAcuerdo(
-			@ModelAttribute TramitacionOtrosForm form,
+	public ModelAndView showFormModCCCAcuerdo(
+			@ModelAttribute TramitacionModCCCForm form,
 			@PathVariable String idAcuerdo
 			) {
 		List<String> errores = new ArrayList<String>();
 		idAcuerdo = (idAcuerdo == null) ? "" : idAcuerdo;
-		
+	
 		ModelAndView modelAndView = new ModelAndView();
 		if("".equals(idAcuerdo)){
 			errores.add("El Acuerdo viene sin informar.");
@@ -67,17 +110,18 @@ public class TramOtrosController extends BasicController {
 			return modelAndView;
 		}
 		modelAndView.addObject("acuerdo", acuerdo);
-		modelAndView.setViewName(TRAM_OTROS_FORM);
-				
+		modelAndView.setViewName(TRAM_MOD_CCC_FORM);
 		
+		getCCCPorAcuerdoConcertada(acuerdo);
+		
+		modelAndView.addObject("cuentas", cuentas.keySet());
 		
 		if(form == null){
-			form = new TramitacionOtrosForm();
+			form = new TramitacionModCCCForm();
 			form.setIdAcuerdo(acuerdo.getIDAcuerdo());
-	
 		}
 		logger.info(String.format("[%s]", form.toString()));
-		modelAndView.addObject("tramOtrosForm", form);
+		modelAndView.addObject("tramModCCCForm", form);
 		
 		addSituacionPlanaToMAV(modelAndView, acuerdo);
 	
@@ -86,14 +130,16 @@ public class TramOtrosController extends BasicController {
 
 
 	@RequestMapping(value="/form", method=RequestMethod.POST)
-	public ModelAndView tramOtrosAcuerdoForm(
-			@ModelAttribute TramitacionOtrosForm form,
+	public ModelAndView tramModCCCAcuerdoForm(
+			@ModelAttribute TramitacionModCCCForm form,
 			HttpServletRequest request,  
 			final RedirectAttributes redirectAttributes, 
 			Authentication auth,
 			Locale locale
 			) {
 		
+		ModelAndView modelAndView = new ModelAndView();
+
 		getSignature(form, request, auth);
 		
 		form.setPeticionTramitacion(getCorrectEncoding(form.getPeticionTramitacion()));
@@ -101,23 +147,28 @@ public class TramOtrosController extends BasicController {
 		Acuerdo acuerdo = acuerdoService.findById(form.getIdAcuerdo());
 		logger.info(String.format("[%s]", acuerdo.toString()));
 		
-		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName(TRAM_OTROS_FORM);
-		modelAndView.addObject("tramOtrosForm", form);
+		getCCCPorAcuerdoConcertada(acuerdo);
+		
+		modelAndView.addObject("cuentas", cuentas.keySet());
+
+		modelAndView.setViewName(TRAM_MOD_CCC_FORM);
+		modelAndView.addObject("tramModCCCForm", form);
 		modelAndView.addObject("acuerdo", acuerdo);
 		return modelAndView;
 	}
 
 
 	@RequestMapping(value="/conf", method=RequestMethod.POST)
-	public ModelAndView tramOtrosAcuerdoConf(
-			@ModelAttribute TramitacionOtrosForm form,
+	public ModelAndView tramModCCCAcuerdoConf(
+			@ModelAttribute TramitacionModCCCForm form,
 			HttpServletRequest request,  
 			final RedirectAttributes redirectAttributes, 
 			Authentication auth,
 			Locale locale
 			) {
 		
+		ModelAndView modelAndView = new ModelAndView();
+
 		getSignature(form, request, auth);
 		
 		form.setPeticionTramitacion(getCorrectEncoding(form.getPeticionTramitacion()));
@@ -125,17 +176,20 @@ public class TramOtrosController extends BasicController {
 		Acuerdo acuerdo = acuerdoService.findById(form.getIdAcuerdo());
 		logger.info(String.format("[%s]", acuerdo.toString()));
 		
-		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName(TRAM_OTROS_CONF);
-		modelAndView.addObject("tramOtrosForm", form);
+		getCCCPorAcuerdoConcertada(acuerdo);
+		
+		modelAndView.addObject("cuentas", cuentas.keySet());
+		
+		modelAndView.setViewName(TRAM_MOD_CCC_CONF);
+		modelAndView.addObject("tramModCCCForm", form);
 		modelAndView.addObject("acuerdo", acuerdo);
 		return modelAndView;
 	}
 
 
 	@RequestMapping(value="/ok", method=RequestMethod.POST)
-	public ModelAndView tramOtrosAcuerdoConfirmada(
-			@ModelAttribute TramitacionOtrosForm form,
+	public ModelAndView tramModCCCAcuerdoConfirmada(
+			@ModelAttribute TramitacionModCCCForm form,
 			HttpServletRequest request,  
 			final RedirectAttributes redirectAttributes, 
 			Authentication auth,
@@ -149,7 +203,7 @@ public class TramOtrosController extends BasicController {
 		form.setPeticionTramitacion(getCorrectEncoding(form.getPeticionTramitacion()));
 		
 		TramitacionAPI tramAPI = new TramitacionAPI();
-		CodAPI codAPI = codAPIService.findById("Otros");
+		CodAPI codAPI = codAPIService.findById("eMail");
 		tramAPI.setCodAPI(codAPI);
 		tramAPI.setCodAPIOrig(codAPI);
 		
@@ -160,8 +214,6 @@ public class TramOtrosController extends BasicController {
 		copyAcuerdoToTram(tramAPI, acuerdo);
 		
 		tramAPI.setObservaciones("");
-		tramAPI.setEmail("");
-		tramAPI.setTipoSoporte("");
 		tramAPI.setSoporteAnterior("");
 		tramAPI.setDireccionAnterior("");
 		tramAPI.setCcc("");
@@ -173,6 +225,9 @@ public class TramOtrosController extends BasicController {
 		tramAPI.setEnvioCorreo("S");
 		
 		tramSetRdV(tramAPI, acuerdo);
+
+		tramAPI.setEmail("");
+		tramAPI.setTipoSoporte("05");
 		
 		MotivoBaja motivoBaja = motivoBajaService.findById(99L);
 		logger.info(String.format("%s", motivoBaja.toString()));
@@ -193,16 +248,42 @@ public class TramOtrosController extends BasicController {
 		StringBuilder datosSession = getDatosSession(request, ahora,
 				marteUsuario);
 	
+		String ccc = (form.getBanco() == null ? "" : form.getBanco()) +
+				(form.getSucursal() == null ? "" : form.getSucursal()) +
+				(form.getDigitoControl() == null ? "" : form.getDigitoControl()) +
+				(form.getNumeroCuenta() == null ? "" : form.getNumeroCuenta())
+		;
+		tramAPI.setCcc(ccc);
 	
 		
 		StringBuffer sbPeticionTramitacion = new StringBuffer();
 		sbPeticionTramitacion
-			.append("Otros").append(Constantes.CRLF)
-			.append("===============").append(Constantes.CRLF)
+			.append("Modificación CCC.").append(Constantes.CRLF)
+			.append("================================").append(Constantes.CRLF)
 			.append(Constantes.CRLF);		
+		if(!"".equals(form.getBanco())){
+			sbPeticionTramitacion
+				.append("Banco:").append(form.getBanco()).append(Constantes.CRLF);
+		}
+		if(!"".equals(form.getSucursal())){
+			sbPeticionTramitacion
+			.append("Sucursal:").append(form.getSucursal()).append(Constantes.CRLF);
+		}
+		if(!"".equals(form.getDigitoControl())){
+			sbPeticionTramitacion
+			.append("DC:").append(form.getDigitoControl()).append(Constantes.CRLF);
+		}
+		if(!"".equals(form.getNumeroCuenta())){
+			sbPeticionTramitacion
+			.append("Número de Cuenta:").append(form.getNumeroCuenta()).append(Constantes.CRLF);
+		}
+		sbPeticionTramitacion
+		.append("CCC:").append(ccc).append(Constantes.CRLF);
 		if(!"".equals(form.getPeticionTramitacion())){
 			sbPeticionTramitacion.append(form.getPeticionTramitacion());
 		}
+		
+		
 		sbPeticionTramitacion.append(datosSession);
 		tramAPI.setPeticionTramitacion(sbPeticionTramitacion.toString());
 	
@@ -267,41 +348,23 @@ public class TramOtrosController extends BasicController {
 	}
 
 
-	private String getUrl(String queBuscar) {
-		StringBuilder url = new StringBuilder();
-		url.append("findcif/find");
-		url.append("cif=" + queBuscar);
-		return url.toString();
-	}
-	
-	private List<String> getLabels(String queBuscar) {
-		List<String> labels = new ArrayList<>();
-		labels.add(queBuscar);
-		return labels;
-	}
-
-	
-
-	@Override
-	protected ModelAndView getMAVFromQueBuscar(String queBuscar,
-			Integer pageNumber, Integer numItems) {
-		queBuscar = (queBuscar == null ? "" : queBuscar);
-		queBuscar = ("--".equals(queBuscar) ? "" : queBuscar);
-		
-		pageNumber = (pageNumber == null ? 1 : pageNumber);
-		numItems = (numItems == null ? numItemsPorPagina : numItems);
-		
-		logger.info(String.format("Search(queBuscar)  : [%s]", queBuscar));
-		logger.info(String.format("Search(pageNumber) : [%d]", pageNumber));
-		logger.info(String.format("Search(numItems)   : [%d]", numItems));
-	
-		Page<Acuerdo> lista = acuerdoService.findByCif(queBuscar, pageNumber);
-	
-		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName(RESULT_PAGE);
-		modelAndView.addObject("page", new PageWrapper<Acuerdo>(lista, this.getUrl(queBuscar)));
-		modelAndView.addObject("labels", this.getLabels(queBuscar));
-		return modelAndView;
+	private void getCCCPorAcuerdoConcertada(Acuerdo acuerdo) {
+		Page<FacturaPagaLibroFacturacion> paginaFacturas = facturasService.findByAcuerdoConcertada(acuerdo.getAcuerdoFX(), 1);
+		List<FacturaPagaLibroFacturacion> facturas = paginaFacturas.getContent();
+		for(FacturaPagaLibroFacturacion factura : facturas){
+			logger.info(String.format("%s", factura));
+			CuentaCorriente cuenta = new CuentaCorriente(factura);
+			if(!cuentas.containsKey(cuenta)){
+				cuentas.put(cuenta, factura.getFechaEmision());
+			}
+		}
+		for(CuentaCorriente key : cuentas.keySet()){
+			logger.info(String.format("%tY/%tm/%td : %s "
+					, cuentas.get(key)
+					, cuentas.get(key)
+					, cuentas.get(key)
+					, key));
+		}
 	}
 
 }

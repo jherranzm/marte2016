@@ -34,6 +34,7 @@ import telefonica.aaee.marte.acuerdos.dao.service.SituacionPlanaService;
 import telefonica.aaee.marte.acuerdos.dao.service.TramitacionAPIService;
 import telefonica.aaee.marte.helpers.CalculoFechas;
 import telefonica.aaee.marte.marte.dao.service.AjustePlanaService;
+import telefonica.aaee.marte.marte.dao.service.FacturaPagaLibroFacturacionService;
 import telefonica.aaee.util.Constantes;
 
 public abstract class BasicController {
@@ -84,6 +85,9 @@ public abstract class BasicController {
 	protected AjustePlanaService ajustePlanaService;
 	@Autowired
 	protected MarteUsuarioService marteUsuarioService;
+	
+	@Autowired
+	protected FacturaPagaLibroFacturacionService facturasService;
 
 	@RequestMapping(value = "*", method = { RequestMethod.GET, RequestMethod.POST })
 	public ModelAndView defaultMethod(HttpServletRequest request) {

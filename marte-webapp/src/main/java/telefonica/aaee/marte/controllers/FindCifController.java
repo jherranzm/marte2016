@@ -88,6 +88,9 @@ public class FindCifController extends BasicController {
 			modelAndView.addObject("errores", errores);
 			return modelAndView;
 		}
+
+		logger.info(String.format("[%s]", acuerdo.toString()));
+		
 		modelAndView.addObject("acuerdo", acuerdo);
 		modelAndView.setViewName(SHOW_ACUERDO);
 		
@@ -111,8 +114,6 @@ public class FindCifController extends BasicController {
 		modelAndView.addObject("bonificaciones", new String[]{ "SI", "NO"});
 
 		addSituacionPlanaToMAV(modelAndView, acuerdo);
-		
-		
 		
         return modelAndView;  
 	}
@@ -170,8 +171,9 @@ public class FindCifController extends BasicController {
 			spe.setEstado(null);
 			sp = new SituacionPlana();
 			sp.setSituacionPlanaEstado(spe);
+		}else{
+			logger.info(String.format("[%s]", sp));
 		}
-		logger.info(String.format("[%s]", sp));
 		modelAndView.addObject("sp", sp);
 	}
 

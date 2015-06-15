@@ -302,10 +302,12 @@
 								</div>
 							</div>
 						</div><!-- .row form-group form-inline -->
-						<div class="row form-group form-inline">
+						<div th:if="${acuerdo.baja != true}" class="row form-group form-inline">
 							<div class="col-sm-12">
 								<!-- Split button -->
 								<button type="button" class="btn btn-sm">Modificaciones del Acuerdo</button>
+								
+								<!-- Cambios Administrativos -->
 								<div class="btn-group">
 								  <button type="button" class="btn btn-sm btn-primary">Cambios Administrativos</button>
 								  <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
@@ -317,9 +319,13 @@
 								    	href="#"
 								    	th:href="@{/tram/modemail/form/{id}(id=${acuerdo.IDAcuerdo})}" >
 								    		<span th:text="#{tram.option.mod.email}">Cambio email</span></a></li>
+								    <li><a 
+								    	href="#"
+								    	th:href="@{/tram/modccc/form/{id}(id=${acuerdo.IDAcuerdo})}" >
+								    		<span th:text="#{tram.option.mod.ccc}">Cambio Cuenta Bancaria</span></a></li>
 								  </ul>
 								</div>
-								<!-- Split button -->
+								<!-- Otros -->
 								<div class="btn-group">
 								  <button type="button" class="btn btn-sm btn-primary">Otros</button>
 								  <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">

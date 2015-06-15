@@ -160,6 +160,15 @@ $(function() {
 		$('#tram-mod-email-form-step-2').submit();
 	});
 	
+	$('#tram-mod-ccc-form-btn-back').on('click', function(){
+		$('#tram-mod-ccc-form-step-2').attr('action', '/marte-webapp/tram/modccc/form');
+		$('#tram-mod-ccc-form-step-2').submit();
+	});
+	$('#tram-mod-ccc-form-btn-confirm').on('click', function(){
+		$('#tram-mod-ccc-form-step-2').attr('action', '/marte-webapp/tram/modccc/ok');
+		$('#tram-mod-ccc-form-step-2').submit();
+	});
+	
 	
 });
 
