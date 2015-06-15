@@ -30,16 +30,16 @@ import telefonica.aaee.util.Constantes;
         basePackages = {"telefonica.aaee.marte.marte"}
         )
 @ComponentScan("telefonica.aaee.marte.marte") //Specifies which package to scan
-@PropertySource("file:${catalina.home}/conf/marte.properties")
+@PropertySource("file:${catalina.home}/conf/application.properties")
 public class JPAMarteConfig 
 	{
 
 	protected final Log logger = LogFactory.getLog(getClass());
 	
 	private static final String DRIVER = "db.driver";
-	private static final String URL = "db.url.marte";
-    private static final String USERNAME = "db.username.marte";
-    private static final String PASSWORD = "db.password.marte";
+	private static final String URL = "db.url.marte.marte";
+    private static final String USERNAME = "db.username.marte.marte";
+    private static final String PASSWORD = "db.password.marte.marte";
 
 	@Resource
     private Environment environment;

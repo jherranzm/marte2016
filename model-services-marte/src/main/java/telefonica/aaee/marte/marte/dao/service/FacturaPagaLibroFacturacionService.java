@@ -45,7 +45,7 @@ public class FacturaPagaLibroFacturacionService extends GenericMarteService{
         JpaEntityInformation<FacturaPagaLibroFacturacion, Long> entityInfo = new JpaMetamodelEntityInformation<FacturaPagaLibroFacturacion, Long>(FacturaPagaLibroFacturacion.class, em.getMetamodel());
         repo = new SimpleJpaRepository<FacturaPagaLibroFacturacion, Long>(entityInfo, em);
         
-        logger.info(String.format("Número de registros :  [%d]", repo.findAll().size()));
+        //logger.info(String.format("Número de registros :  [%d]", repo.findAll().size()));
 	}
 	
 	public List<FacturaPagaLibroFacturacion> findAll() {
