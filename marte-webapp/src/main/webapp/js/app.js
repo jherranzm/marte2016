@@ -169,6 +169,31 @@ $(function() {
 		$('#tram-mod-ccc-form-step-2').submit();
 	});
 	
+	$('#tram-mod-ccc-form-btn-save').on('click', function(){
+		if(validateCCC){
+			$('#tram-mod-ccc-form-btn-save').submit();
+		}else{
+			$('#tram-mod-ccc-form-btn-save').addClass('disabled');
+			$('#tram-mod-ccc-form-btn-save').prop('disabled', true);
+		}
+	});
+	
+	$('#ccc-valid').on('click', function(){
+		if(validateCCC()){
+			$('#tram-mod-ccc-form-btn-save').removeClass('disabled');
+			$('#tram-mod-ccc-form-btn-save').prop('disabled', false);
+			$('#ccc-valid').html('Válida!');
+			$('#ccc-valid').removeClass('btn-danger');
+			$('#ccc-valid').addClass('btn-success');
+		}else{
+			$('#tram-mod-ccc-form-btn-save').addClass('disabled');
+			$('#tram-mod-ccc-form-btn-save').prop('disabled', true);
+			$('#ccc-valid').html('NO válida!');
+			$('#ccc-valid').removeClass('btn-success');
+			$('#ccc-valid').addClass('btn-danger');
+		}
+	});
+	
 	
 });
 
@@ -327,6 +352,54 @@ function showDetails(){
     $("#info-num-comercial").load(url);
     
 
+}
+
+function validateCCC(){
+	
+	var CCC = $('#ccc-01').val() + $('#ccc-02').val() + $('#ccc-03').val() + $('#ccc-04').val();
+
+	if (CCC.length<20 || CCC.length>20){
+		alert('Faltan números en la Cuenta corriente');
+		return false;
+	}else{
+		digit1 = 0;
+		digit2 = 0;
+		suma1 = 0;
+		suma2 = 0;
+		parc1 = 0;
+		parc2 = 0;
+		
+		digit1 = parseFloat(CCC.substr( 8, 1));
+		digit2 = parseFloat(CCC.substr(9, 1));
+		
+		suma1 = parseFloat(CCC.substr(0,1))*4 + parseFloat(CCC.substr(1,1))*8 + parseFloat(CCC.substr(2,1))*5;
+		suma1 = suma1 + parseFloat(CCC.substr(3,1))*10 +parseFloat(CCC.substr(4,1))*9 + parseFloat(CCC.substr(5,1))*7;
+		suma1 = suma1 + parseFloat(CCC.substr(6,1))*3 + parseFloat(CCC.substr(7,1))*6;
+		parc1 = 11 - ( suma1 % 11);
+		if (parc1 > 9){ 
+			parc1= 11- parc1; 
+		}
+		
+		//parc1 = iff((parc1 > 9), 11 - parc1, parc1)
+		
+		suma2 = parseFloat(CCC.substr(10,1))*1 + parseFloat(CCC.substr(11,1))*2 + parseFloat(CCC.substr(12,1))*4;
+		suma2 = suma2 + parseFloat(CCC.substr(13,1))*8 + parseFloat(CCC.substr(14,1))*5 + parseFloat(CCC.substr(15,1))*10;
+		suma2 = suma2 + parseFloat(CCC.substr(16,1))*9 + parseFloat(CCC.substr(17,1))*7 + parseFloat(CCC.substr(18,1))*3;
+		suma2 = suma2 + parseFloat(CCC.substr(19,1))*6;
+		parc2 = 11 - (suma2 % 11);
+		if (parc2 > 9){ 
+			parc2 = 11- parc2;
+		}
+		//parc2 = iff((parc2 > 9), 11 - parc2, parc2) 
+		
+		if (digit1==parc1 && digit2==parc2){
+			//alert("Cuenta corriente correcta");
+			return true;
+		}else{
+			alert('Los dígitos de control NO son correctos.');
+			return false;
+		}
+	}
 }
 
 

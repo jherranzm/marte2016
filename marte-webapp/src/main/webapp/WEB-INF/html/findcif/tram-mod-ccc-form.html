@@ -148,6 +148,7 @@
 												id="input-group-addon-tram-mod-ccc-banco" 
 												th:text="#{tram.form.field.banco}">Banco</span>
 											<input 
+												id="ccc-01"
 												type="number" class="form-control" 
 												th:field="${tramModCCCForm.banco}"
 												min="0000"
@@ -160,8 +161,9 @@
 										<div class="input-group input-group-sm">
 											<span class="input-group-addon" 
 												id="input-group-addon-tram-mod-ccc-oficina" 
-												th:text="#{tram.form.field.oficina}">Oficina</span>
+												th:text="#{tram.form.field.sucursal}">Oficina</span>
 											<input 
+												id="ccc-02"
 												type="number" class="form-control" 
 												th:field="${tramModCCCForm.sucursal}"
 												min="0000"
@@ -170,12 +172,13 @@
 												placeholder="9999" />
 										</div>
 									</div>
-									<div class="col-sm-3">
+									<div class="col-sm-2">
 										<div class="input-group input-group-sm">
 											<span class="input-group-addon" 
 												id="input-group-addon-tram-mod-ccc-dc" 
-												th:text="#{tram.form.field.dc}">DC</span>
+												th:text="#{tram.form.field.digitoControl}">DC</span>
 											<input 
+												id="ccc-03"
 												type="number" class="form-control" 
 												th:field="${tramModCCCForm.digitoControl}"
 												min="00"
@@ -188,8 +191,9 @@
 										<div class="input-group input-group-sm">
 											<span class="input-group-addon" 
 												id="input-group-addon-tram-mod-ccc-cuenta" 
-												th:text="#{tram.form.field.cuenta}">Cuenta</span>
+												th:text="#{tram.form.field.numeroCuenta}">Cuenta</span>
 											<input 
+												id="ccc-04"
 												type="number" class="form-control" 
 												th:field="${tramModCCCForm.numeroCuenta}"
 												min="0000000000"
@@ -198,7 +202,17 @@
 												placeholder="9999999999" />
 										</div>
 									</div>
+									<div class="col-sm-1">
+										<div class="input-group input-group-sm">
+											<a 
+												href="#"
+												id="ccc-valid" class="btn btn-danger"> 
+												<span th:text="#{ccc.no.valida}">NO válida!</span><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+											</a>
+										</div>
+									</div>
 								</div>
+								
 								<div id="tram-mod-ccc-fecha-prevista" 
 									class="row form-group form-inline">
 									<div class="col-sm-6">
@@ -214,6 +228,7 @@
 										</div>
 									</div>
 								</div>
+								
 								<div id="tram-mod-ccc-peticion" 			class="row form-group form-inline">
 									<div class="col-sm-12">
 										<h4><span th:text="#{tram.form.field.peticion}">Observaciones</span></h4>
@@ -236,8 +251,9 @@
 							<div class="form-group">
 								<div class="col-md-offset-4 col-md-4">
 									<p class="text-center">
-										<button id="btn-save" type="submit" class="btn btn-primary"
-											th:text="#{tram.form.btn.save}" >
+										<button id="tram-mod-ccc-form-btn-save" type="submit" class="btn btn-primary"
+											th:text="#{tram.form.btn.save}"
+											disabled="disabled" >
 										</button>
 										<a th:href="@{/findcif/show/{idAcuerdo}(idAcuerdo=${tramModCCCForm.idAcuerdo})}"
 											id="btn-back" class="btn btn-default"> 
