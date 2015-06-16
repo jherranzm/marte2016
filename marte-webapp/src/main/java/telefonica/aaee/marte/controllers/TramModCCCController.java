@@ -203,7 +203,7 @@ public class TramModCCCController extends BasicController {
 		form.setPeticionTramitacion(getCorrectEncoding(form.getPeticionTramitacion()));
 		
 		TramitacionAPI tramAPI = new TramitacionAPI();
-		CodAPI codAPI = codAPIService.findById("eMail");
+		CodAPI codAPI = codAPIService.findById("Otros");
 		tramAPI.setCodAPI(codAPI);
 		tramAPI.setCodAPIOrig(codAPI);
 		
@@ -258,7 +258,8 @@ public class TramModCCCController extends BasicController {
 		
 		StringBuffer sbPeticionTramitacion = new StringBuffer();
 		sbPeticionTramitacion
-			.append("Modificación CCC.").append(Constantes.CRLF)
+			.append("Cambio Cuenta Bancaria.").append(Constantes.CRLF)
+			.append("CCC:").append(ccc).append(Constantes.CRLF)
 			.append("================================").append(Constantes.CRLF)
 			.append(Constantes.CRLF);		
 		if(!"".equals(form.getBanco())){
