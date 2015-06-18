@@ -50,8 +50,6 @@ public class AjustePlanaService extends GenericMarteService{
 		logger.info("Inicializando [AjustePlanaService] ...");
         JpaEntityInformation<AjustePlana, Long> entityInfo = new JpaMetamodelEntityInformation<AjustePlana, Long>(AjustePlana.class, em.getMetamodel());
         repo = new SimpleJpaRepository<AjustePlana, Long>(entityInfo, em);
-        
-        logger.info(String.format("Número de registros :  [%d]", repo.findAll().size()));
 	}
 	
 	public List<AjustePlana> findAll() {

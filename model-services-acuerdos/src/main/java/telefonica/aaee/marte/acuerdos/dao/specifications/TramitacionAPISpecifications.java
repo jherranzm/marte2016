@@ -11,6 +11,7 @@ import org.springframework.data.jpa.domain.Specification;
 
 import telefonica.aaee.marte.acuerdos.dao.model.Acuerdo;
 import telefonica.aaee.marte.acuerdos.dao.model.EstadoTramitacion;
+import telefonica.aaee.marte.acuerdos.dao.model.MarteUsuario;
 import telefonica.aaee.marte.acuerdos.dao.model.TramitacionAPI;
 
 public class TramitacionAPISpecifications {
@@ -127,6 +128,22 @@ public class TramitacionAPISpecifications {
                 return criteriaBuilder.and(
                 		criteriaBuilder.equal(root.get("codAPI"), tipoPeticion )
                 		, criteriaBuilder.equal(root.get("marteEstadoTramitacion"), et )
+                	);
+            }
+        };
+	}
+
+	public static Specification<TramitacionAPI> searchByPeticionario(
+			final MarteUsuario marteUsuario) {
+        return new Specification<TramitacionAPI>() {
+
+            public Predicate toPredicate(
+         		   Root<TramitacionAPI> root
+         		   , CriteriaQuery<?> criteriaQuery
+         		   , CriteriaBuilder criteriaBuilder)
+            {
+                return criteriaBuilder.and(
+                		criteriaBuilder.equal(root.get("matPeticionario"), marteUsuario )
                 	);
             }
         };

@@ -442,6 +442,22 @@
 						</div>
 					</div>
 				</div><!-- .row -->
+				<div id="tramitacion-mod-ccc" 
+					th:if="${tramitacion.codAPI.codApi == 'Otros' and tramitacion.ccc != ''}" class="row form-group form-inline">
+					<div class="col-sm-6">
+						<div class="input-group input-group-sm">
+							<span 
+								class="input-group-addon" 
+								id="input-group-addon-tram-ccc"
+								th:text="#{tram.form.field.ccc}">CCC</span>
+							<input type="text" 
+								class="form-control" 
+								readonly="readonly"
+								th:value="${tramitacion.ccc}"
+								 />
+						</div>
+					</div>
+				</div><!-- .row -->
 				<div id="tramitacion-peticion" class="row form-group form-inline">
 					<div class="col-sm-12">
 						<h4><span th:text="#{tram.form.field.peticion}">Petición</span></h4>

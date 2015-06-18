@@ -1,14 +1,15 @@
 package telefonica.aaee.marte.controllers;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import telefonica.aaee.marte.acuerdos.dao.model.Acuerdo;
 import telefonica.aaee.marte.acuerdos.dao.model.MotivoBaja;
@@ -24,7 +26,6 @@ import telefonica.aaee.marte.acuerdos.dao.model.SituacionPlana;
 import telefonica.aaee.marte.acuerdos.dao.model.SituacionPlanaEstado;
 import telefonica.aaee.marte.acuerdos.dao.model.TramitacionAPI;
 import telefonica.aaee.marte.editor.MotivoBajaEditor;
-import telefonica.aaee.marte.form.TramitacionBajaForm;
 import telefonica.aaee.marte.model.pagination.PageWrapper;
 
 @Controller
@@ -66,14 +67,60 @@ public class FindCifController extends BasicController {
         return modelAndView;  
 	}
 	
+	@RequestMapping(value = "/show", method = RequestMethod.GET)
+	public ModelAndView showAcuerdoPaginaTramitacion(
+			@RequestParam(value = "idAcuerdo", required = false) String idAcuerdo
+			, @RequestParam(value = "page", required = false) Integer pageNumber
+			, @RequestParam(value = "size", required = false) Integer numItems
+			, final RedirectAttributes redirectAttributes
+			, Locale locale
+			, Pageable pageable){
+		ModelAndView modelAndView = new ModelAndView();
+
+		List<String> errores = new ArrayList<String>();
+		idAcuerdo = (idAcuerdo == null) ? "" : idAcuerdo;
+		pageNumber = (pageNumber == null ? 1 : pageNumber);
+		numItems = (numItems == null ? numItemsPorPagina : numItems);
+
+		if("".equals(idAcuerdo)){
+			errores.add("El Acuerdo viene sin informar.");
+			modelAndView.setViewName(FIND_CIF_FORM);
+			modelAndView.addObject("errores", errores);
+			return modelAndView;
+		}
+		Acuerdo acuerdo = acuerdoService.findById(idAcuerdo);
+		if(acuerdo == null){
+			errores.add("El Acuerdo NO existe en el sistema.");
+			modelAndView.setViewName(FIND_CIF_FORM);
+			modelAndView.addObject("errores", errores);
+			return modelAndView;
+		}
+
+		logger.info(String.format("[%s]", acuerdo.toString()));
+		
+		modelAndView.addObject("acuerdo", acuerdo);
+		modelAndView.setViewName(SHOW_ACUERDO);
+		
+		// Tramitaciones
+		Page<TramitacionAPI> tramitaciones = tramitacionAPIService.findByIDAcuerdo(acuerdo, pageNumber);
+		logger.info(String.format("Número de tramitaciones : [%s][%d]", idAcuerdo, tramitaciones.getContent().size()));
+		modelAndView.addObject("page", new PageWrapper<TramitacionAPI>(tramitaciones, this.getUrl(idAcuerdo)));
+		modelAndView.addObject("labels", this.getLabels(idAcuerdo));
+		
+		addSituacionPlanaToMAV(modelAndView, acuerdo);
+		
+        return modelAndView;  
+	}
+	
 	@RequestMapping(value="/show/{idAcuerdo}", method=RequestMethod.GET)
 	public ModelAndView showAcuerdo(
-			@PathVariable String idAcuerdo
+			@PathVariable String idAcuerdo,
+			HttpServletRequest request
 			) {
 
 		List<String> errores = new ArrayList<String>();
 		idAcuerdo = (idAcuerdo == null) ? "" : idAcuerdo;
-
+		
 		ModelAndView modelAndView = new ModelAndView();
 		if("".equals(idAcuerdo)){
 			errores.add("El Acuerdo viene sin informar.");
@@ -97,22 +144,9 @@ public class FindCifController extends BasicController {
 		// Tramitaciones
 		Page<TramitacionAPI> tramitaciones = tramitacionAPIService.findByIDAcuerdo(acuerdo, 1);
 		logger.info(String.format("Número de tramitaciones : [%s][%d]", idAcuerdo, tramitaciones.getContent().size()));
-		modelAndView.addObject("page", new PageWrapper<TramitacionAPI>(tramitaciones, this.getUrl("")));
-		modelAndView.addObject("labels", this.getLabels(""));
+		modelAndView.addObject("page", new PageWrapper<TramitacionAPI>(tramitaciones, this.getUrl(idAcuerdo)));
+		modelAndView.addObject("labels", this.getLabels(idAcuerdo));
 		
-		TramitacionBajaForm tramBajaForm = new TramitacionBajaForm();
-		tramBajaForm.setIdAcuerdo(acuerdo.getIDAcuerdo());
-		Calendar cal = Calendar.getInstance();
-		if(cal.get(Calendar.MONTH) == Calendar.DECEMBER){
-			tramBajaForm.setBonificacion("SI");
-		}
-
-		logger.info(String.format("[%s]", tramBajaForm.toString()));
-		
-		modelAndView.addObject("tramBajaForm", tramBajaForm);
-		modelAndView.addObject("causas", motivoBajaService.findAll());
-		modelAndView.addObject("bonificaciones", new String[]{ "SI", "NO"});
-
 		addSituacionPlanaToMAV(modelAndView, acuerdo);
 		
         return modelAndView;  
@@ -180,8 +214,8 @@ public class FindCifController extends BasicController {
 
 	private String getUrl(String queBuscar) {
 		StringBuilder url = new StringBuilder();
-		url.append("findcif/find");
-		url.append("cif=" + queBuscar);
+		url.append("/findcif/show?");
+		url.append("idAcuerdo=").append(queBuscar);
 		return url.toString();
 	}
 	

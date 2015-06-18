@@ -33,6 +33,7 @@ import org.springframework.transaction.annotation.Transactional;
 import telefonica.aaee.marte.acuerdos.dao.model.Acuerdo;
 import telefonica.aaee.marte.acuerdos.dao.model.CodAPI;
 import telefonica.aaee.marte.acuerdos.dao.model.EstadoTramitacion;
+import telefonica.aaee.marte.acuerdos.dao.model.MarteUsuario;
 import telefonica.aaee.marte.acuerdos.dao.model.TramitacionAPI;
 import telefonica.aaee.marte.acuerdos.dao.specifications.TramitacionAPISpecifications;
 import telefonica.aaee.marte.acuerdos.dao.vo.EstadisticasPorTipoPeticionVO;
@@ -330,6 +331,15 @@ public class TramitacionAPIService extends GenericAcuerdosService {
 	@Transactional(value = "acuerdosTransactionManager")
 	public TramitacionAPI save(TramitacionAPI tramAPI) {
 		return repo.saveAndFlush(tramAPI);
+	}
+
+	public Page<TramitacionAPI> findByPeticionario(MarteUsuario marteUsuario, Integer pageNumber) {
+		PageRequest request = new PageRequest(pageNumber - 1, PAGE_SIZE,
+				new Sort(
+						new Order(Direction.DESC, "id")
+						)
+		);
+		return repo.findAll(TramitacionAPISpecifications.searchByPeticionario(marteUsuario), request);
 	}
 	
 }

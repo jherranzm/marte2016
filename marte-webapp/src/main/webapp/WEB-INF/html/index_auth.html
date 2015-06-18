@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html 
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+<head th:replace="html/header :: head">
+	<meta charset="UTF-8" />
+	<title th:text="#{app.name}">Marte</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+
+	<link rel="shortcut icon" th:href="@{/img/icons/favicon.ico}" />
+
+	<!-- CSS to style the file input field as button and adjust the Bootstrap progress bars -->
+	<link rel="stylesheet" type="text/css"
+		href="../../css/jquery.fileupload.css"
+		th:href="@{/css/jquery.fileupload.css}" />
+	<link rel="stylesheet" type="text/css"
+		href="../../css/jquery.fileupload-ui.css"
+		th:href="@{/css/jquery.fileupload-ui.css}" />
+	
+	
+	<!-- Bootstrap -->
+	<link rel="stylesheet" type="text/css" media="screen"
+		href="../../css/bootstrap.css" 
+		th:href="@{/css/bootstrap.css}" />
+	<link rel="stylesheet" type="text/css" media="screen"
+		href="../../css/bootstrap-sticky-footer.css" 
+		th:href="@{/css/bootstrap-sticky-footer.css}" />
+
+
+	<!-- app -->
+	<link rel="stylesheet" type="text/css" media="screen"
+		href="../../css/app.css" 
+		th:href="@{/css/app.css}" />
+
+	<!-- dropzone -->
+	<link rel="stylesheet" type="text/css" media="screen"
+		href="../../css/dropzone.css" 
+		th:href="@{/css/dropzone.css}" />
+
+	<!-- datepicker -->
+	<link rel="stylesheet" type="text/css" media="screen"
+		href="../../css/bootstrap-datepicker.css" 
+		th:href="@{/css/bootstrap-datepicker.css}" />
+	
+</head>
+
+<body>
+	<!-- Docs master nav -->
+	<div th:replace="html/header :: header"></div>
+
+	<div id="wrap">
+
+		<div class="container">
+		
+			<div id="left" class="col-md-10">
+			
+				<div sec:authorize="isAuthenticated()" >
+					<div th:replace="html/findcif/findCif-search :: search"></div>
+				</div>
+			
+				<div id="info-tramitaciones" class="col-md-12">
+				
+					<div th:replace="html/tram-list-by-user :: listado-tramitaciones-table"></div>
+				
+				</div>
+			</div>
+			<div id="right" class="col-md-2">
+				<div id="userConnected" sec:authorize="isAuthenticated()">
+					<span sec:authentication="principal.username" >Usuario</span>
+				</div><!-- #userConnected -->
+				<div id="userNotConnected" sec:authorize="isAnonymous()">
+					<form method="POST"
+						name="f" 
+						class="form-horizontal"
+						th:action="@{/login}">
+						<div class="form-group">
+							<div class="col-md-12">
+								<input id="username" name="username" type="text" 
+								class="form-control input-sm" 
+								placeholder="username" 
+								value="" />
+							</div> 
+						</div>
+				    
+						<div class="form-group">
+							<div class="col-md-12">
+								<input id="password" name="password" type="password" 
+								class="form-control input-sm" 
+								placeholder="password" 
+								value="" />
+							</div> 
+						</div>
+				    
+						<div class="form-group">
+						   <div class="col-md-12">
+						     <button id="btn-save" type="submit" class="btn btn-primary btn-sm pull-right">
+								Login
+						     </button>
+						   </div>
+						 </div>
+						 
+					    <input type="hidden"
+							th:name="${_csrf.parameterName}"
+							th:value="${_csrf.token}"/>
+					</form>
+				</div><!-- #userNotConnected -->
+			</div>
+			
+			
+
+		</div><!-- .container -->
+
+	</div><!-- #wrap -->
+
+
+	
+<div th:replace="html/footer :: footer">
+
+	<div id="footer" th:fragment="footer">
+		<div class="container">
+			<p class="text-muted credit" data-th-text="#{app.name}">
+				footer
+			</p>
+
+
+	
+		<!--[if lt IE 9]>
+			<script 
+				src="../../js/jquery-1.11.2.min.js"
+				th:src="@{/js/jquery-1.11.2.min.js}"></script>
+		<![endif]-->
+		
+		<!--[if gte IE 9]> 
+			<script 
+				src="../../js/jquery-2.1.1.min.js"
+				th:src="@{/js/jquery-2.1.1.min.js}"></script>
+		<![endif]-->
+		
+		<!--[if !IE]> -->
+			<script 
+				src="../../js/jquery-2.1.1.min.js"
+				th:src="@{/js/jquery-2.1.1.min.js}"></script>
+		<!-- <![endif]-->
+		
+			
+			<script src="../../js/bootstrap.js"
+				th:src="@{/js/bootstrap.js}"></script>
+			<script src="../../js/jquery-ui.js"
+				th:src="@{/js/jquery-ui.js}"></script>
+			<script src="../../js/heartcode-canvasloader-min.js"
+				th:src="@{/js/heartcode-canvasloader-min.js}"></script>
+			<script src="../../js/bootstrap-datepicker.js"
+				th:src="@{/js/bootstrap-datepicker.js}"></script>
+			<script src="../../js/bootstrap-datepicker.es.js"
+				th:src="@{/js/locales/bootstrap-datepicker.es.js}" charset="UTF-8"></script>
+			<script src="../../js/bootstrap-datepicker.ca.js"
+				th:src="@{/js/locales/bootstrap-datepicker.ca.js}" charset="UTF-8"></script>
+			
+		</div>
+	</div>
+
+</div>
+
+
+</body>
+</html>
