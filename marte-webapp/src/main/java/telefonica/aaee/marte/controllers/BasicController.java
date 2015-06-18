@@ -33,8 +33,8 @@ import telefonica.aaee.marte.acuerdos.dao.service.MotivoBajaService;
 import telefonica.aaee.marte.acuerdos.dao.service.SituacionPlanaService;
 import telefonica.aaee.marte.acuerdos.dao.service.TramitacionAPIService;
 import telefonica.aaee.marte.helpers.CalculoFechas;
-import telefonica.aaee.marte.marte.dao.service.AjustePlanaService;
-import telefonica.aaee.marte.marte.dao.service.FacturaPagaLibroFacturacionService;
+import telefonica.aaee.marte.mofa.dao.service.AjustePlanaService;
+import telefonica.aaee.marte.mofa.dao.service.FacturaPagaLibroFacturacionService;
 import telefonica.aaee.util.Constantes;
 
 public abstract class BasicController {

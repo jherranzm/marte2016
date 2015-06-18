@@ -32,9 +32,9 @@ import telefonica.aaee.marte.acuerdos.dao.model.SituacionPlanaEstado;
 import telefonica.aaee.marte.acuerdos.dao.model.TramitacionAPI;
 import telefonica.aaee.marte.form.TramitacionForm;
 import telefonica.aaee.marte.form.TramitacionModCCCForm;
-import telefonica.aaee.marte.marte.model.FacturaPagaLibroFacturacion;
-import telefonica.aaee.marte.marte.vo.CuentaCorriente;
 import telefonica.aaee.marte.model.pagination.PageWrapper;
+import telefonica.aaee.marte.mofa.model.FacturaPagaLibroFacturacion;
+import telefonica.aaee.marte.mofa.vo.CuentaCorriente;
 import telefonica.aaee.util.Constantes;
 import eu.bitwalker.useragentutils.UserAgent;
 

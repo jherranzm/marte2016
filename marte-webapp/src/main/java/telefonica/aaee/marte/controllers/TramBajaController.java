@@ -34,7 +34,6 @@ import telefonica.aaee.marte.acuerdos.dao.model.TramitacionAPI;
 import telefonica.aaee.marte.editor.MotivoBajaEditor;
 import telefonica.aaee.marte.form.TramitacionBajaForm;
 import telefonica.aaee.marte.form.TramitacionForm;
-import telefonica.aaee.marte.marte.model.AjustePlana;
 import telefonica.aaee.marte.model.pagination.PageWrapper;
 import telefonica.aaee.util.Constantes;
 import eu.bitwalker.useragentutils.UserAgent;

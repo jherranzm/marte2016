@@ -9,7 +9,7 @@
         <dependent-module archiveName="model-services-acuerdos-2016-01.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/model-services-acuerdos/model-services-acuerdos">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="model-services-marte-2016-01.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/model-services-marte/model-services-marte">
+        <dependent-module archiveName="model-services-marte-2016-01.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/ model-services-mofa/ model-services-mofa">
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <property name="java-output-path" value="/marte-webapp/target/classes"/>
