@@ -95,7 +95,9 @@
 							<form class="form-inline"
 								th:action="@{/logout}" method="POST">
 								<div>&nbsp;</div>
-								<button type="submit" class="btn btn-xs btn-vertical-align-middle">
+								<button
+									id="form-logout-btn-submit" 
+									type="submit" class="btn btn-xs btn-vertical-align-middle">
 									<span class="glyphicon glyphicon-off"></span> 
 									<span sec:authentication="principal.username" >Usuario</span>
 								</button>

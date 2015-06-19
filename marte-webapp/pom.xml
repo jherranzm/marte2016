@@ -321,6 +321,12 @@
 			<version>2016-01</version>
 		</dependency>
 
+		<dependency>
+			<groupId>telefonica.aaee.marte</groupId>
+			<artifactId>model-services-mofa</artifactId>
+			<version>2016-01</version>
+		</dependency>
+
 
 		
 		

@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html 
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+	<head th:replace="html/header :: head">
+		<meta charset="UTF-8" />
+		<title th:text="#{app.name}">tram-mod-co-form</title>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		
+		
+		<link rel="shortcut icon" th:href="@{/img/icons/favicon.ico}" />
+		
+		<!-- CSS to style the file input field as button and adjust the Bootstrap progress bars -->
+		<link rel="stylesheet" type="text/css"
+			href="../../../css/jquery.fileupload.css"
+			th:href="@{/css/jquery.fileupload.css}" />
+		<link rel="stylesheet" type="text/css"
+			href="../../../css/jquery.fileupload-ui.css"
+			th:href="@{/css/jquery.fileupload-ui.css}" />
+		
+		
+		<!-- Bootstrap -->
+		<link rel="stylesheet" type="text/css" media="screen"
+			href="../../../css/bootstrap.css" th:href="@{/css/bootstrap.css}" />
+		<link rel="stylesheet" type="text/css" media="screen"
+			href="../../../css/bootstrap-sticky-footer.css"
+			th:href="@{/css/bootstrap-sticky-footer.css}" />
+		
+		
+		<!-- app -->
+		<link rel="stylesheet" type="text/css" media="screen"
+			href="../../../css/app.css" th:href="@{/css/app.css}" />
+		
+		<!-- dropzone -->
+		<link rel="stylesheet" type="text/css" media="screen"
+			href="../../../css/dropzone.css" th:href="@{/css/dropzone.css}" />
+		
+		<!-- datepicker -->
+		<link rel="stylesheet" type="text/css" media="screen"
+			href="../../../css/bootstrap-datepicker.css"
+			th:href="@{/css/bootstrap-datepicker.css}" />
+	
+	</head>
+<body>
+	<!-- Docs master nav -->
+	<div th:replace="html/header :: header">
+		<div class="navbar navbar-inverse navbar-static-top bs-docs-nav"
+			id="top" role="banner">
+			<div class="container">
+				<div class="navbar-header">
+					<a th:href="@{/index.jsp}" class="navbar-brand"
+						data-th-text="#{app.name}">Aplicación</a>
+				</div>
+				<nav class="collapse navbar-collapse bs-navbar-collapse"
+					role="navigation">
+					<ul class="nav navbar-nav">
+						<li class="active"><a th:href="@{/index.jsp}"
+							data-th-text="#{go.home}">Go Home </a></li>
+
+						<li class="dropdown"><a href="#" class="dropdown-toggle"
+							data-toggle="dropdown"> <span
+								data-th-text="#{menu.informes}">menu.informes</span> <b
+								class="caret"></b></a>
+							<ul class="dropdown-menu">
+								<li><a th:href="@{/role/pages/1}"
+									data-th-text="#{role.form.list.title}">
+										role.form.list.title </a></li>
+								<li><a th:href="@{/usuario/pages/1}"
+									data-th-text="#{usuario.form.list.title}">
+										usuario.form.list.title </a></li>
+								<li class="divider"></li>
+								<li><a th:href="@{/usuario/pages/1}"
+									data-th-text="#{usuario.form.list.title}">
+										usuario.form.list.title </a></li>
+								<li><a th:href="@{/pestanya/pages/1}"
+									data-th-text="#{pestanya.form.list.title}">
+										pestanya.form.list.title </a></li>
+								<li><a th:href="@{/informe/pages/1}"
+									data-th-text="#{informe.form.list.title}">
+										informe.form.list.title </a></li>
+								<li><a th:href="@{/regladenegocio/pages/1}"
+									data-th-text="#{regladenegocio.form.list.title}">
+										regladenegocio.form.list.title </a></li>
+							</ul></li>
+
+					</ul>
+				</nav>
+			</div>
+		</div>
+	</div>
+
+	<div id="wrap">
+		<div class="container">
+			<div class="tab-content">
+				<div th:fragment="tram-mod-co-form">
+				
+					<div>
+						<div class="row form-group form-inline">
+							<div class="col-sm-5">
+								<div class="input-group input-group-sm">
+									<span 
+										class="input-group-addon primary" 
+										id="input-group-addon-tipoDoc"
+										th:text="#{acuerdo.form.field.acuerdofx}">Acuerdo FX</span>
+									<input type="text" 
+										class="form-control" 
+										readonly="readonly"
+										th:value="${acuerdo.acuerdoFX}"
+										placeholder="L" />
+								</div>
+							</div>
+							<div class="col-sm-7">
+								<div class="input-group input-group-sm">
+									<span 
+										class="input-group-addon primary" 
+										id="input-group-addon-nombre"
+										th:text="#{acuerdo.form.field.nombre}">Empresa</span>
+									<input type="text" 
+										class="form-control" 
+										readonly="readonly"
+										th:value="${acuerdo.nombre}"
+										placeholder="NombreEmpresa" />
+								</div>
+							</div>
+						</div><!-- .row form-group form-inline -->
+					</div>
+					
+					<div th:replace="html/findcif/ccc-list :: listado-ccc-table"></div>
+				
+					<form 
+						id="tram-mod-co-form-step-1" 
+						method="POST" 
+						th:object="${tramModCOForm}"
+						class="form-horizontal"
+						th:action="@{/tram/modco/conf}">
+				
+							<div id="tram-mod-co-step-1" class="col-md-offset-1 col-md-10">
+			                    <div id="tram-mod-co-aclaraciones" 
+			                    	class="alert alert-info" role="alert">
+			                        <strong>Modificación de Cuenta Oficial</strong> de cargo de factura.
+			                    </div>
+								<div id="tram-mod-co" 
+									class="row form-group form-inline">
+									<div class="col-sm-3">
+										<div class="input-group input-group-sm">
+											<span class="input-group-addon" 
+												id="input-group-addon-tram-mod-co-banco" 
+												th:text="#{tram.form.field.banco}">Banco</span>
+											<input 
+												id="co-01"
+												type="number" class="form-control" 
+												th:field="${tramModCOForm.banco}"
+												min="0000"
+												max="9999"
+												step="1"
+												placeholder="9999" />
+										</div>
+									</div>
+									<div class="col-sm-3">
+										<div class="input-group input-group-sm">
+											<span class="input-group-addon" 
+												id="input-group-addon-tram-mod-co-oficina" 
+												th:text="#{tram.form.field.sucursal}">Oficina</span>
+											<input 
+												id="co-02"
+												type="number" class="form-control" 
+												th:field="${tramModCOForm.sucursal}"
+												min="0000"
+												max="9999"
+												step="1"
+												placeholder="9999" />
+										</div>
+									</div>
+								</div>
+								
+								<div id="tram-mod-co-fecha-prevista" 
+									class="row form-group form-inline">
+									<div class="col-sm-6">
+										<div class="input-group input-group-sm">
+											<span class="input-group-addon" 
+												id="input-group-addon-tram-fecha-prevista" 
+												th:text="#{tram.form.field.fecha.prevista}">Fecha Tramitación Prevista</span>
+											<input 
+												type="text" class="form-control" 
+												disabled="disabled"
+												th:value="${tramModCOForm.fechaTramPrevista != null ? #dates.format(tramModCOForm.fechaTramPrevista, 'dd-MM-yyyy') : 'Sin informar'}"
+												placeholder="31/12/2500" />
+										</div>
+									</div>
+								</div>
+								
+								<div id="tram-mod-co-peticion" 			class="row form-group form-inline">
+									<div class="col-sm-12">
+										<h4><span th:text="#{tram.form.field.peticion}">Observaciones</span></h4>
+										<textarea 
+											class="form-control input-sm span12" 
+											th:field="${tramModCOForm.peticionTramitacion}"
+											rows = "5"
+											cols = "120"
+											placeholder="Observaciones..." ></textarea>
+									</div>
+								</div>
+								
+								<!-- .row -->
+							</div><!-- tram-mod-co-step-1 -->
+							<!-- Spring Security -->
+							<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+							<input type="hidden" th:field="${tramModCOForm.idAcuerdo}" />
+							 
+							<!-- Botones Save & Back -->
+							<div class="form-group">
+								<div class="col-md-offset-4 col-md-4">
+									<p class="text-center">
+										<button id="tram-mod-co-form-btn-save" type="submit" class="btn btn-primary"
+											th:text="#{tram.form.btn.save}"
+											>
+										</button>
+										<a th:href="@{/findcif/show/{idAcuerdo}(idAcuerdo=${tramModCOForm.idAcuerdo})}"
+											id="btn-back" class="btn btn-default"> 
+											<span th:text="#{tram.form.btn.back}"></span>
+										</a>
+									</p>
+								</div>
+							</div>
+					</form>
+				</div>
+			</div>
+
+
+		</div><!-- .container -->
+	</div><!-- #wrap -->
+	
+	<div th:replace="html/footer :: footer"></div>
+	
+</body>
+</html>

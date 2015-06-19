@@ -169,32 +169,46 @@ $(function() {
 		$('#tram-mod-ccc-form-step-2').submit();
 	});
 	
-	$('#tram-mod-ccc-form-btn-save').on('click', function(){
-		if(validateCCC){
-			$('#tram-mod-ccc-form-btn-save').submit();
+	$('#tram-mod-ccc-form-btn-save').on('click', function(event){
+		event.preventDefault();
+		if(clickBtnCCCValidate()){
+			$('#tram-mod-ccc-form-step-1').submit();
 		}else{
 			$('#tram-mod-ccc-form-btn-save').addClass('disabled');
 			$('#tram-mod-ccc-form-btn-save').prop('disabled', true);
 		}
 	});
 	
-	$('#ccc-valid').on('click', function(){
-		if(validateCCC()){
-			$('#tram-mod-ccc-form-btn-save').removeClass('disabled');
-			$('#tram-mod-ccc-form-btn-save').prop('disabled', false);
-			$('#ccc-valid').html('Válida!');
-			$('#ccc-valid').removeClass('btn-danger');
-			$('#ccc-valid').addClass('btn-success');
-		}else{
-			$('#tram-mod-ccc-form-btn-save').addClass('disabled');
-			$('#tram-mod-ccc-form-btn-save').prop('disabled', true);
-			$('#ccc-valid').html('NO válida!');
-			$('#ccc-valid').removeClass('btn-success');
-			$('#ccc-valid').addClass('btn-danger');
-		}
+	$('#ccc-valid').on('click', clickBtnCCCValidate);
+	
+	$('.ccc-copy').on('click', function(){
+		var ccc = $(this).attr('id');
+		//alert("CCC to copy " + ccc);
+		$('#ccc-01').val(ccc.substr(1,4));
+		$('#ccc-02').val(ccc.substr(5,4));
+		$('#ccc-03').val(ccc.substr(9,2));
+		$('#ccc-04').val(ccc.substr(11,10));
+		//012345678901234567890
+		clickBtnCCCValidate();
+	});
+	
+	$('.co-copy').on('click', function(){
+		var ccc = $(this).attr('id');
+		//alert("CCC to copy " + ccc);
+		$('#co-01').val(ccc.substr(1,4));
+		$('#co-02').val(ccc.substr(5,4));
 	});
 	
 	
+	
+	$('#tram-mod-co-form-btn-back').on('click', function(){
+		$('#tram-mod-co-form-step-2').attr('action', '/marte-webapp/tram/modco/form');
+		$('#tram-mod-co-form-step-2').submit();
+	});
+	$('#tram-mod-co-form-btn-confirm').on('click', function(){
+		$('#tram-mod-co-form-step-2').attr('action', '/marte-webapp/tram/modco/ok');
+		$('#tram-mod-co-form-step-2').submit();
+	});
 });
 
 
@@ -354,7 +368,7 @@ function showDetails(){
 
 }
 
-function validateCCC(){
+var validateCCC = function (){
 	
 	var CCC = $('#ccc-01').val() + $('#ccc-02').val() + $('#ccc-03').val() + $('#ccc-04').val();
 
@@ -380,8 +394,6 @@ function validateCCC(){
 			parc1= 11- parc1; 
 		}
 		
-		//parc1 = iff((parc1 > 9), 11 - parc1, parc1)
-		
 		suma2 = parseFloat(CCC.substr(10,1))*1 + parseFloat(CCC.substr(11,1))*2 + parseFloat(CCC.substr(12,1))*4;
 		suma2 = suma2 + parseFloat(CCC.substr(13,1))*8 + parseFloat(CCC.substr(14,1))*5 + parseFloat(CCC.substr(15,1))*10;
 		suma2 = suma2 + parseFloat(CCC.substr(16,1))*9 + parseFloat(CCC.substr(17,1))*7 + parseFloat(CCC.substr(18,1))*3;
@@ -390,16 +402,33 @@ function validateCCC(){
 		if (parc2 > 9){ 
 			parc2 = 11- parc2;
 		}
-		//parc2 = iff((parc2 > 9), 11 - parc2, parc2) 
 		
 		if (digit1==parc1 && digit2==parc2){
-			//alert("Cuenta corriente correcta");
 			return true;
 		}else{
 			alert('Los dígitos de control NO son correctos.');
 			return false;
 		}
 	}
+}
+
+var clickBtnCCCValidate = function (){
+	if(validateCCC()){
+		$('#tram-mod-ccc-form-btn-save').removeClass('disabled');
+		$('#tram-mod-ccc-form-btn-save').prop('disabled', false);
+		$('#ccc-valid').html('Válida!');
+		$('#ccc-valid').removeClass('btn-danger');
+		$('#ccc-valid').addClass('btn-success');
+		return true;
+	}else{
+		$('#tram-mod-ccc-form-btn-save').addClass('disabled');
+		$('#tram-mod-ccc-form-btn-save').prop('disabled', true);
+		$('#ccc-valid').html('NO válida!');
+		$('#ccc-valid').removeClass('btn-success');
+		$('#ccc-valid').addClass('btn-danger');
+		return false;
+	}
+	return false;
 }
 
 

@@ -307,33 +307,104 @@
 								<!-- Split button -->
 								<button type="button" class="btn btn-sm">Modificaciones del Acuerdo</button>
 								
-								<!-- Cambios Administrativos -->
+								<!-- Cambios Condiciones -->
 								<div class="btn-group">
-								  <button type="button" class="btn btn-sm btn-primary">Cambios Administrativos</button>
-								  <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+								  <button type="button" class="btn btn-sm btn-primary">Modificación Condiciones</button>
+								  <button
+								  	id="tram-option-mod-cond" 
+								  	type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
 								    <span class="caret"></span>
 								    <span class="sr-only">Toggle Dropdown</span>
 								  </button>
 								  <ul class="dropdown-menu" role="menu">
 								    <li><a 
+								    	id="tram-option-mod-condiciones"
+								    	href="#"
+								    	th:href="@{/tram/modcond/form/{id}(id=${acuerdo.IDAcuerdo})}" >
+								    		<span th:text="#{tram.option.mod.condiciones}">Modificación Condiciones</span></a></li>
+								    <li th:if="${acuerdo.nuevoMercado == 'False'}"><a 
+								    	id="tram-option-mod-nuevomercado"
+								    	href="#"
+								    	th:href="@{/tram/modnuevomercado/form/{id}(id=${acuerdo.IDAcuerdo})}" >
+								    		<span th:text="#{tram.option.mod.nuevomercado}">Cambio a Nuevo Mercado</span></a></li>
+								    <li th:if="${acuerdo.planaSimplificada == 'False'}"><a 
+								    	id="tram-option-mod-tosimplificada"
+								    	href="#"
+								    	th:href="@{/tram/modsimplificada/form/{id}(id=${acuerdo.IDAcuerdo})}" >
+								    		<span th:text="#{tram.option.mod.tosimplificada}">Cambio a Simplificada</span></a></li>
+								    <li th:if="${acuerdo.planaSimplificada == 'True'}"><a 
+								    	id="tram-option-mod-tonormal"
+								    	href="#"
+								    	th:href="@{/tram/modnormal/form/{id}(id=${acuerdo.IDAcuerdo})}" >
+								    		<span th:text="#{tram.option.mod.tonormal}">Cambio a Normal</span></a></li>
+								    <li th:if="${acuerdo.planaAutoajustable == 'False'}"><a 
+								    	id="tram-option-mod-autoajustable"
+								    	href="#"
+								    	th:href="@{/tram/modautoajustable/form/{id}(id=${acuerdo.IDAcuerdo})}" >
+								    		<span th:text="#{tram.option.mod.autoajustable}">Cambio a Autoajustable</span></a></li>
+								    <li th:if="${acuerdo.planaAutoajustable == 'True'}"><a 
+								    	id="tram-option-mod-importefijo"
+								    	href="#"
+								    	th:href="@{/tram/modimportefijo/form/{id}(id=${acuerdo.IDAcuerdo})}" >
+								    		<span th:text="#{tram.option.mod.importefijo}">Cambio a Importe Fijo</span></a></li>
+								  </ul>
+								</div>
+								
+								
+								<!-- Cambios Administrativos -->
+								<div class="btn-group">
+								  <button type="button" class="btn btn-sm btn-primary">Cambios Administrativos</button>
+								  <button 
+								  	id="tram-option-mod-adm" 
+								  	type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+								    <span class="caret"></span>
+								    <span class="sr-only">Toggle Dropdown</span>
+								  </button>
+								  <ul class="dropdown-menu" role="menu">
+								    <li><a 
+								    	id="tram-option-mod-tiposoporte"
+								    	href="#"
+								    	th:href="@{/tram/modtiposoporte/form/{id}(id=${acuerdo.IDAcuerdo})}" >
+								    		<span th:text="#{tram.option.mod.tiposoporte}">Cambio Tipo Soporte</span></a></li>
+								    <li><a 
+								    	id="tram-option-mod-ccc"
+								    	href="#"
+								    	th:href="@{/tram/modccc/form/{id}(id=${acuerdo.IDAcuerdo})}" >
+								    		<span th:text="#{tram.option.mod.ccc}">Cambio Cuenta Bancaria</span></a></li>
+								    <li><a 
+								    	id="tram-option-mod-pv"
+								    	href="#"
+								    	th:href="@{/tram/modpv/form/{id}(id=${acuerdo.IDAcuerdo})}" >
+								    		<span th:text="#{tram.option.mod.pv}">Cambio a Pago por Ventanilla</span></a></li>
+								    <li><a 
+								    	id="tram-option-mod-cco"
+								    	href="#"
+								    	th:href="@{/tram/modco/form/{id}(id=${acuerdo.IDAcuerdo})}" >
+								    		<span th:text="#{tram.option.mod.cco}">Cambio Cuenta Oficial</span></a></li>
+								    <li><a 
+								    	id="tram-option-mod-email"
 								    	href="#"
 								    	th:href="@{/tram/modemail/form/{id}(id=${acuerdo.IDAcuerdo})}" >
 								    		<span th:text="#{tram.option.mod.email}">Cambio email</span></a></li>
 								    <li><a 
+								    	id="tram-option-mod-dom"
 								    	href="#"
-								    	th:href="@{/tram/modccc/form/{id}(id=${acuerdo.IDAcuerdo})}" >
-								    		<span th:text="#{tram.option.mod.ccc}">Cambio Cuenta Bancaria</span></a></li>
+								    	th:href="@{/tram/moddom/form/{id}(id=${acuerdo.IDAcuerdo})}" >
+								    		<span th:text="#{tram.option.mod.dom}">Domicilios</span></a></li>
 								  </ul>
 								</div>
 								<!-- Otros -->
 								<div class="btn-group">
 								  <button type="button" class="btn btn-sm btn-primary">Otros</button>
-								  <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+								  <button 
+								  	id="tram-option-mod-otros" 
+								  	type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
 								    <span class="caret"></span>
 								    <span class="sr-only">Toggle Dropdown</span>
 								  </button>
 								  <ul class="dropdown-menu" role="menu">
 								    <li><a 
+								    	id="tram-option-otros"
 								    	href="#"
 								    	th:href="@{/tram/otros/form/{id}(id=${acuerdo.IDAcuerdo})}" ><span th:text="#{tram.option.otros}">Otros cambios</span></a></li>
 								  </ul>
@@ -341,12 +412,15 @@
 								<!-- Button Baja -->
 								<div th:if="${sp.situacionPlanaEstado != null and acuerdo.baja != true}" class="btn-group">
 								  <button type="button" class="btn btn-sm btn-danger" th:text="Baja">Baja</button>
-								  <button type="button" class="btn btn-sm btn-danger dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+								  <button 
+								  	id="tram-option-mod-baja" 
+								  	type="button" class="btn btn-sm btn-danger dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
 								    <span class="caret"></span>
 								    <span class="sr-only">Toggle Dropdown</span>
 								  </button>
 								  <ul class="dropdown-menu" role="menu">
 								    <li><a 
+								    	id="tram-option-baja"
 								    	href="#"
 								    	th:href="@{/tram/baja/form/{id}(id=${acuerdo.IDAcuerdo})}" ><span th:text="#{tram.option.baja}">Baja</span></a></li>
 								  </ul>

@@ -14,6 +14,9 @@ public class CuentaCorriente  implements Serializable {
 	private String sucursal;
 	private String digitoControl;
 	private String numeroCuenta;
+	
+	private String ccc20;
+	private String ccc21;
 
 	public CuentaCorriente() {
 	}
@@ -26,6 +29,9 @@ public class CuentaCorriente  implements Serializable {
 		this.sucursal = factura.getSucursal();
 		this.digitoControl = factura.getDigitoControl();
 		this.numeroCuenta = factura.getNumeroCuenta();
+		
+		this.ccc20 = this.banco+this.sucursal+this.digitoControl+this.numeroCuenta;
+		this.ccc21 = this.formaPagoFx+this.banco+this.sucursal+this.digitoControl+this.numeroCuenta;
 	}
 
 	public String getFormaPagoFx() {
@@ -74,6 +80,22 @@ public class CuentaCorriente  implements Serializable {
 
 	public void setNumeroCuenta(String numeroCuenta) {
 		this.numeroCuenta = numeroCuenta;
+	}
+
+	public String getCcc20() {
+		return ccc20;
+	}
+
+	public void setCcc20(String ccc20) {
+		this.ccc20 = ccc20;
+	}
+
+	public String getCcc21() {
+		return ccc21;
+	}
+
+	public void setCcc21(String ccc21) {
+		this.ccc21 = ccc21;
 	}
 
 	@Override

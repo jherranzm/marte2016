@@ -31,7 +31,7 @@ import telefonica.aaee.marte.acuerdos.dao.model.SituacionPlana;
 import telefonica.aaee.marte.acuerdos.dao.model.SituacionPlanaEstado;
 import telefonica.aaee.marte.acuerdos.dao.model.TramitacionAPI;
 import telefonica.aaee.marte.form.TramitacionForm;
-import telefonica.aaee.marte.form.TramitacionModCCCForm;
+import telefonica.aaee.marte.form.TramitacionModCOForm;
 import telefonica.aaee.marte.marte.model.FacturaPagaLibroFacturacion;
 import telefonica.aaee.marte.marte.vo.CuentaCorriente;
 import telefonica.aaee.marte.model.pagination.PageWrapper;
@@ -39,13 +39,13 @@ import telefonica.aaee.util.Constantes;
 import eu.bitwalker.useragentutils.UserAgent;
 
 @Controller
-@RequestMapping("/tram/modccc")
-public class TramModCCCController extends BasicController {
+@RequestMapping("/tram/modco")
+public class TramModCOController extends BasicController {
 	
 	private HashMap<CuentaCorriente, Date> cuentas = new HashMap<CuentaCorriente, Date>();
 
-	private static final String TRAM_MOD_CCC_FORM = "html/findcif/tram-mod-ccc-form";
-	private static final String TRAM_MOD_CCC_CONF = "html/findcif/tram-mod-ccc-conf";
+	private static final String TRAM_MOD_CO_FORM = "html/findcif/tram-mod-co-form";
+	private static final String TRAM_MOD_CO_CONF = "html/findcif/tram-mod-co-conf";
 
 	protected final Log logger = LogFactory.getLog(getClass());
 	
@@ -89,7 +89,7 @@ public class TramModCCCController extends BasicController {
 
 	@RequestMapping(value="/form/{idAcuerdo}", method={RequestMethod.GET, RequestMethod.POST})
 	public ModelAndView showFormModCCCAcuerdo(
-			@ModelAttribute TramitacionModCCCForm form,
+			@ModelAttribute TramitacionModCOForm form,
 			@PathVariable String idAcuerdo
 			) {
 		List<String> errores = new ArrayList<String>();
@@ -110,18 +110,18 @@ public class TramModCCCController extends BasicController {
 			return modelAndView;
 		}
 		modelAndView.addObject("acuerdo", acuerdo);
-		modelAndView.setViewName(TRAM_MOD_CCC_FORM);
+		modelAndView.setViewName(TRAM_MOD_CO_FORM);
 		
 		getCCCPorAcuerdoConcertada(acuerdo);
 		
 		modelAndView.addObject("cuentas", cuentas.keySet());
 		
 		if(form == null){
-			form = new TramitacionModCCCForm();
+			form = new TramitacionModCOForm();
 			form.setIdAcuerdo(acuerdo.getIDAcuerdo());
 		}
 		logger.info(String.format("[%s]", form.toString()));
-		modelAndView.addObject("tramModCCCForm", form);
+		modelAndView.addObject("tramModCOForm", form);
 		
 		addSituacionPlanaToMAV(modelAndView, acuerdo);
 	
@@ -130,8 +130,8 @@ public class TramModCCCController extends BasicController {
 
 
 	@RequestMapping(value="/form", method=RequestMethod.POST)
-	public ModelAndView tramModCCCAcuerdoForm(
-			@ModelAttribute TramitacionModCCCForm form,
+	public ModelAndView tramModCOAcuerdoForm(
+			@ModelAttribute TramitacionModCOForm form,
 			HttpServletRequest request,  
 			final RedirectAttributes redirectAttributes, 
 			Authentication auth,
@@ -151,16 +151,16 @@ public class TramModCCCController extends BasicController {
 		
 		modelAndView.addObject("cuentas", cuentas.keySet());
 
-		modelAndView.setViewName(TRAM_MOD_CCC_FORM);
-		modelAndView.addObject("tramModCCCForm", form);
+		modelAndView.setViewName(TRAM_MOD_CO_FORM);
+		modelAndView.addObject("tramModCOForm", form);
 		modelAndView.addObject("acuerdo", acuerdo);
 		return modelAndView;
 	}
 
 
 	@RequestMapping(value="/conf", method=RequestMethod.POST)
-	public ModelAndView tramModCCCAcuerdoConf(
-			@ModelAttribute TramitacionModCCCForm form,
+	public ModelAndView tramModCOAcuerdoConf(
+			@ModelAttribute TramitacionModCOForm form,
 			HttpServletRequest request,  
 			final RedirectAttributes redirectAttributes, 
 			Authentication auth,
@@ -180,16 +180,16 @@ public class TramModCCCController extends BasicController {
 		
 		modelAndView.addObject("cuentas", cuentas.keySet());
 		
-		modelAndView.setViewName(TRAM_MOD_CCC_CONF);
-		modelAndView.addObject("tramModCCCForm", form);
+		modelAndView.setViewName(TRAM_MOD_CO_CONF);
+		modelAndView.addObject("tramModCOForm", form);
 		modelAndView.addObject("acuerdo", acuerdo);
 		return modelAndView;
 	}
 
 
 	@RequestMapping(value="/ok", method=RequestMethod.POST)
-	public ModelAndView tramModCCCAcuerdoConfirmada(
-			@ModelAttribute TramitacionModCCCForm form,
+	public ModelAndView tramModCOAcuerdoConfirmada(
+			@ModelAttribute TramitacionModCOForm form,
 			HttpServletRequest request,  
 			final RedirectAttributes redirectAttributes, 
 			Authentication auth,
@@ -248,18 +248,16 @@ public class TramModCCCController extends BasicController {
 		StringBuilder datosSession = getDatosSession(request, ahora,
 				marteUsuario);
 	
-		String ccc = (form.getBanco() == null ? "" : form.getBanco()) +
-				(form.getSucursal() == null ? "" : form.getSucursal()) +
-				(form.getDigitoControl() == null ? "" : form.getDigitoControl()) +
-				(form.getNumeroCuenta() == null ? "" : form.getNumeroCuenta())
+		String ccc = (form.getBanco() == null ? "" : form.getBanco()) 
+				+ (form.getSucursal() == null ? "" : form.getSucursal()) 
 		;
 		tramAPI.setCcc(ccc);
 	
 		
 		StringBuffer sbPeticionTramitacion = new StringBuffer();
 		sbPeticionTramitacion
-			.append("Cambio Cuenta Bancaria.").append(Constantes.CRLF)
-			.append("CCC:").append(ccc).append(Constantes.CRLF)
+			.append("Cambio Cuenta Oficial.").append(Constantes.CRLF)
+			.append("CO:").append(ccc).append(Constantes.CRLF)
 			.append("================================").append(Constantes.CRLF)
 			.append(Constantes.CRLF);		
 		if(!"".equals(form.getBanco())){
@@ -270,16 +268,8 @@ public class TramModCCCController extends BasicController {
 			sbPeticionTramitacion
 			.append("Sucursal:").append(form.getSucursal()).append(Constantes.CRLF);
 		}
-		if(!"".equals(form.getDigitoControl())){
-			sbPeticionTramitacion
-			.append("DC:").append(form.getDigitoControl()).append(Constantes.CRLF);
-		}
-		if(!"".equals(form.getNumeroCuenta())){
-			sbPeticionTramitacion
-			.append("Número de Cuenta:").append(form.getNumeroCuenta()).append(Constantes.CRLF);
-		}
 		sbPeticionTramitacion
-		.append("CCC:").append(ccc).append(Constantes.CRLF);
+		.append("CO:").append(ccc).append(Constantes.CRLF);
 		if(!"".equals(form.getPeticionTramitacion())){
 			sbPeticionTramitacion.append(form.getPeticionTramitacion());
 		}

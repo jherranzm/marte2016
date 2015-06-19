@@ -6,7 +6,7 @@
 		http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>telefonica.aaee.marte</groupId>
-  <artifactId>model-services-marte</artifactId>
+  <artifactId>model-services-mofa</artifactId>
   <version>2016-01</version>
 
 

@@ -61,7 +61,8 @@
 										<th th:text="#{ccc.banco}">banco</th>
 										<th th:text="#{ccc.sucursal}">sucursal</th>
 										<th th:text="#{ccc.digitoControl}">DC</th>
-										<th th:text="#{ccc.numeroCuenta}">numer oCuenta</th>
+										<th th:text="#{ccc.numeroCuenta}">numeroCuenta</th>
+										<th><span class="glyphicon glyphicon-copy"></span></th>
 									</tr>
 								</thead>
 								<tbody>
@@ -72,6 +73,9 @@
 										<td th:text="${ccc.sucursal}">formaPagoFx</td>
 										<td th:text="${ccc.digitoControl}">formaPagoFx</td>
 										<td th:text="${ccc.numeroCuenta}">formaPagoFx</td>
+										<td><a href="#" th:id="${ccc.ccc21}" class="ccc-copy">
+											<span class="glyphicon glyphicon-transfer" aria-hidden="true"></span>
+											</a></td>
 									</tr>
 								</tbody>
 							</table>
