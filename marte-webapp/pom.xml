@@ -1,6 +1,4 @@
-<project 
-	xmlns="http://maven.apache.org/POM/4.0.0" 
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="
 		http://maven.apache.org/POM/4.0.0 
 		http://maven.apache.org/maven-v4_0_0.xsd">
@@ -274,19 +272,19 @@
 
 
 		<!-- Thymeleaf -->
-		
+
 		<dependency>
 			<groupId>org.thymeleaf</groupId>
 			<artifactId>thymeleaf</artifactId>
 			<version>${thymeleaf.version}</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.thymeleaf</groupId>
 			<artifactId>thymeleaf-spring4</artifactId>
 			<version>${thymeleaf.version}</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.thymeleaf.extras</groupId>
 			<artifactId>thymeleaf-extras-springsecurity3</artifactId>
@@ -328,8 +326,8 @@
 		</dependency>
 
 
-		
-		
+
+
 		<!-- MongoDb -->
 		<!-- mongodb java driver -->
 		<dependency>
@@ -350,7 +348,7 @@
 			<artifactId>spring-data-commons</artifactId>
 			<version>1.9.1.RELEASE</version>
 		</dependency>
-		
+
 
 		<!-- Clonado de objetos -->
 		<dependency>
@@ -388,11 +386,11 @@
 
 		<!-- Browser detection -->
 		<dependency>
-		   <groupId>eu.bitwalker</groupId>
-		   <artifactId>UserAgentUtils</artifactId>
-		   <version>1.15</version>
-		</dependency>		
-		
+			<groupId>eu.bitwalker</groupId>
+			<artifactId>UserAgentUtils</artifactId>
+			<version>1.15</version>
+		</dependency>
+
 	</dependencies>
 	<build>
 

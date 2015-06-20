@@ -212,9 +212,14 @@
 							<div class="form-group">
 								<div class="col-md-offset-4 col-md-4">
 									<p class="text-center">
-										<button id="tram-mod-co-form-btn-save" type="submit" class="btn btn-primary"
-											th:text="#{tram.form.btn.save}"
-											>
+										<button 
+											id="tram-mod-co-form-btn-save" 
+											type="submit" 
+											class="btn btn-primary ladda-button" 
+											data-style="expand-right" >
+											<span 
+												class="ladda-label"
+												th:text="#{tram.form.btn.save}">tram.form.btn.save</span>
 										</button>
 										<a th:href="@{/findcif/show/{idAcuerdo}(idAcuerdo=${tramModCOForm.idAcuerdo})}"
 											id="btn-back" class="btn btn-default"> 

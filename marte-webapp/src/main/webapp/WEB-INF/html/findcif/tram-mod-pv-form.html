@@ -5,7 +5,7 @@
 
 	<head th:replace="html/header :: head">
 		<meta charset="UTF-8" />
-		<title th:text="#{app.name}">tram-mod-email-form</title>
+		<title th:text="#{app.name}">tram-mod-pv-form</title>
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		
 		
@@ -93,7 +93,7 @@
 	<div id="wrap">
 		<div class="container">
 			<div class="tab-content">
-				<div th:fragment="tram-mod-email-form">
+				<div th:fragment="tram-mod-pv-form">
 				
 					<div>
 						<div class="row form-group form-inline">
@@ -125,34 +125,58 @@
 							</div>
 						</div><!-- .row form-group form-inline -->
 					</div>
+					
+					<div th:replace="html/findcif/ccc-list :: listado-ccc-table"></div>
 				
 					<form 
-						id="tram-mod-email-form-step-1" 
+						id="tram-mod-pv-form-step-1" 
 						method="POST" 
-						th:object="${tramModEmailForm}"
+						th:object="${tramModPVForm}"
 						class="form-horizontal"
-						th:action="@{/tram/modemail/conf}">
+						th:action="@{/tram/modpv/conf}">
 				
-							<div id="tram-mod-email-step-1" class="col-md-offset-1 col-md-10">
-			                    <div id="tram-mod-email-aclaraciones" 
+							<div id="tram-mod-pv-step-1" class="col-md-offset-1 col-md-10">
+			                    <div id="tram-mod-pv-aclaraciones" 
 			                    	class="alert alert-info" role="alert">
-			                        <strong>Modificación de correo electrónico</strong> de aviso de disponibilidad de la Factura en www.movistar.es.
+			                        <strong>Modificación a Pago por Ventanilla</strong> de cargo de factura.
 			                    </div>
-								<div id="tram-mod-email-email" 
+								<div id="tram-mod-co" 
 									class="row form-group form-inline">
-									<div class="col-sm-6">
+									<div class="col-sm-3">
 										<div class="input-group input-group-sm">
 											<span class="input-group-addon" 
-												id="input-group-addon-tram-email" 
-												th:text="#{tram.form.field.email}">Correo electrónico</span>
+												id="input-group-addon-tram-mod-pv-banco" 
+												th:text="#{tram.form.field.banco}">Banco</span>
 											<input 
-												type="email" class="form-control" 
-												th:field="${tramModEmailForm.email}"
-												placeholder="example@dominio.com" />
+												id="co-01"
+												type="number" class="form-control" 
+												th:field="${tramModPVForm.banco}"
+												min="0000"
+												max="9999"
+												step="1"
+												readonly="readonly"
+												placeholder="9999" />
+										</div>
+									</div>
+									<div class="col-sm-3">
+										<div class="input-group input-group-sm">
+											<span class="input-group-addon" 
+												id="input-group-addon-tram-mod-pv-oficina" 
+												th:text="#{tram.form.field.sucursal}">Oficina</span>
+											<input 
+												id="co-02"
+												type="number" class="form-control" 
+												th:field="${tramModPVForm.sucursal}"
+												min="0000"
+												max="9999"
+												step="1"
+												readonly="readonly"
+												placeholder="9999" />
 										</div>
 									</div>
 								</div>
-								<div id="tramitacion-otros-fecha-prevista" 
+								
+								<div id="tram-mod-pv-fecha-prevista" 
 									class="row form-group form-inline">
 									<div class="col-sm-6">
 										<div class="input-group input-group-sm">
@@ -162,17 +186,20 @@
 											<input 
 												type="text" class="form-control" 
 												disabled="disabled"
-												th:value="${tramModEmailForm.fechaTramPrevista != null ? #dates.format(tramModEmailForm.fechaTramPrevista, 'dd-MM-yyyy') : 'Sin informar'}"
+												th:value="${tramModPVForm.fechaTramPrevista != null ? #dates.format(tramModPVForm.fechaTramPrevista, 'dd-MM-yyyy') : 'Sin informar'}"
 												placeholder="31/12/2500" />
 										</div>
 									</div>
 								</div>
-								<div id="tramitacion-otros-peticion" 			class="row form-group form-inline">
+								
+								<div 
+									id="tram-mod-pv-peticion" 			
+									class="row form-group form-inline">
 									<div class="col-sm-12">
 										<h4><span th:text="#{tram.form.field.peticion}">Observaciones</span></h4>
 										<textarea 
 											class="form-control input-sm span12" 
-											th:field="${tramModEmailForm.peticionTramitacion}"
+											th:field="${tramModPVForm.peticionTramitacion}"
 											rows = "5"
 											cols = "120"
 											placeholder="Observaciones..." ></textarea>
@@ -180,17 +207,17 @@
 								</div>
 								
 								<!-- .row -->
-							</div><!-- tram-mod-email-step-1 -->
+							</div><!-- tram-mod-pv-step-1 -->
 							<!-- Spring Security -->
 							<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-							<input type="hidden" th:field="${tramModEmailForm.idAcuerdo}" />
+							<input type="hidden" th:field="${tramModPVForm.idAcuerdo}" />
 							 
 							<!-- Botones Save & Back -->
 							<div class="form-group">
 								<div class="col-md-offset-4 col-md-4">
 									<p class="text-center">
 										<button 
-											id="tram-mod-email-form-btn-save" 
+											id="tram-mod-pv-form-btn-save" 
 											type="submit" 
 											class="btn btn-primary ladda-button" 
 											data-style="expand-right" >
@@ -198,7 +225,7 @@
 												class="ladda-label"
 												th:text="#{tram.form.btn.save}">tram.form.btn.save</span>
 										</button>
-										<a th:href="@{/findcif/show/{idAcuerdo}(idAcuerdo=${tramModEmailForm.idAcuerdo})}"
+										<a th:href="@{/findcif/show/{idAcuerdo}(idAcuerdo=${tramModPVForm.idAcuerdo})}"
 											id="btn-back" class="btn btn-default"> 
 											<span th:text="#{tram.form.btn.back}"></span>
 										</a>

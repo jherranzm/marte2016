@@ -134,7 +134,7 @@
 						th:action="@{/tram/modccc/2}">
 				
 				
-							<div id="tram-mod-ccc-step-1" class="col-md-offset-1 col-md-10">
+							<div id="tram-mod-ccc-step-2" class="col-md-offset-1 col-md-10">
 			                    <div id="tram-mod-ccc-aclaraciones" 
 			                    	class="alert alert-info" role="alert">
 			                        <strong>Modificación de Cuenta Corriente</strong> de cargo de factura.
@@ -240,20 +240,33 @@
 							<div class="form-group">
 								<div class="col-md-offset-4 col-md-4">
 									<p class="text-center">
-										<button id="tram-mod-ccc-form-btn-back" type="button" class="btn btn-warning" 
-											th:text="#{tram.form.btn.back}">
+										<button 
+											id="tram-mod-ccc-form-btn-back" 
+											type="button" 
+											class="btn btn-warning ladda-button" 
+											data-style="expand-right" >
+											<span 
+												class="ladda-label"
+												th:text="#{tram.form.btn.back}">tram.form.btn.back</span>
 										</button>
 										<a th:href="@{/findcif/show/{idAcuerdo}(idAcuerdo=${tramModCCCForm.idAcuerdo})}"
 											id="tram-form-btn-cancel" class="btn btn-default"> 
 											<span th:text="#{tram.form.btn.cancel}"></span>
 										</a>
-										<button id="tram-mod-ccc-form-btn-confirm" type="button" class="btn btn-primary"
-											th:text="#{tram.form.btn.confirm}" >
+										<button 
+											id="tram-mod-ccc-form-btn-confirm" 
+											type="button" 
+											class="btn btn-primary ladda-button" 
+											data-style="expand-right" >
+											<span 
+												class="ladda-label"
+												th:text="#{tram.form.btn.confirm}">tram.form.btn.confirm</span>
 										</button>
 									</p>
 								</div>
 							</div>
 					</form>
+					<div id="loading-info"></div>
 				</div>
 			</div>
 

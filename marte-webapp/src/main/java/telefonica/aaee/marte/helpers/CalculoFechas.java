@@ -10,7 +10,7 @@ import java.util.logging.Logger;
 import org.apache.commons.lang3.time.DateUtils;
 
 public class CalculoFechas {
-	private static final int ULTIMO_DIA_ANTES_APERTURA_FX_FACTURACION = 22;
+	private static final int ULTIMO_DIA_ANTES_APERTURA_FX_FACTURACION = 23;
 	private static final int ULTIMO_DIA_ANTES_CIERRE_FX_POR_FACTURACION = 13;
 	private static final boolean SABADO_ES_FIESTA = true;
 	private static final boolean DOMINGO_ES_FIESTA = true;
@@ -122,8 +122,8 @@ public class CalculoFechas {
 		java.util.Date dia13 = Calendar.getInstance().getTime();
 		dia13 = DateUtils.setDays(fecha, ULTIMO_DIA_ANTES_CIERRE_FX_POR_FACTURACION);
 		
-		java.util.Date dia22 = Calendar.getInstance().getTime();
-		dia22 = DateUtils.setDays(fecha, ULTIMO_DIA_ANTES_APERTURA_FX_FACTURACION);
+		java.util.Date dia23 = Calendar.getInstance().getTime();
+		dia23 = DateUtils.setDays(fecha, ULTIMO_DIA_ANTES_APERTURA_FX_FACTURACION);
 		
 		int lastDay = Calendar.getInstance().getActualMaximum(Calendar.DAY_OF_MONTH);
 		LOGGER.info(String.format("Último día del mes       : [%d]", lastDay));
@@ -131,6 +131,7 @@ public class CalculoFechas {
 		
 		// Si la petición se hace a partir de las 14h30 es para el día siguiente
 		if(fecha.after(hora1430)){
+			LOGGER.info(String.format("A partir de las 1430, día siguiente: [%s]", fecha));
 			fecha = manyana(fecha);
 			while(esFiesta(fecha)){
 				fecha = manyana(fecha);
@@ -143,6 +144,7 @@ public class CalculoFechas {
 		
 		// Las peticiones que hay que pasar al mes siguiente
 		if(fecha.after(dia13) && mesSiguiente){
+			LOGGER.info(String.format("Para el mes siguiente: [%s]", fecha));
 			fecha = DateUtils.addMonths(fecha, 1);
 			fecha = DateUtils.setDays(fecha, 1);
 			fecha  = DateUtils.setHours(fecha, 8);
@@ -153,9 +155,10 @@ public class CalculoFechas {
 			}
 		}
 
-		// Para todas las peticiones... entre el 13 y el 22 NO se puede tramitar en FX.
+		// Para todas las peticiones... entre el 13 y el 23 NO se puede tramitar en FX.
 		// Se pasan al 23
-		if(fecha.after(dia13) && fecha.before(dia22)){
+		if(fecha.after(dia13) && fecha.before(dia23)){
+			LOGGER.info(String.format("Periodo facturación 'ABIERTA': [%s]", fecha));
 			fecha = DateUtils.setDays(fecha, 23);
 			while(esFiesta(fecha)){
 				fecha = manyana(fecha);

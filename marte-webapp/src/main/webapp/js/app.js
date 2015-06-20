@@ -133,6 +133,7 @@ $(function() {
 	
 	$('#tramitacion-baja-cambio-cif').hide();
 	
+	
 	$('#tram-baja-form-btn-back').on('click', function(){
 		$('#tram-baja-form-step-2').attr('action', '/marte-webapp/tram/baja/form');
 		$('#tram-baja-form-step-2').submit();
@@ -172,12 +173,70 @@ $(function() {
 	$('#tram-mod-ccc-form-btn-save').on('click', function(event){
 		event.preventDefault();
 		if(clickBtnCCCValidate()){
+			var l = Ladda.create(this);
+			l.start();
 			$('#tram-mod-ccc-form-step-1').submit();
 		}else{
 			$('#tram-mod-ccc-form-btn-save').addClass('disabled');
 			$('#tram-mod-ccc-form-btn-save').prop('disabled', true);
 		}
 	});
+	
+	$('#tram-mod-ccc-form-btn-confirm').on('click', function(event){
+		event.preventDefault();
+		var l = Ladda.create(this);
+		l.start();
+		$('#tram-mod-ccc-form-step-2').submit();
+	});
+	
+	$('#tram-mod-co-form-btn-save').on('click', function(event){
+		event.preventDefault();
+		var l = Ladda.create(this);
+		l.start();
+		$('#tram-mod-co-form-step-1').submit();
+	});
+	
+	$('#tram-mod-co-form-btn-confirm').on('click', function(event){
+		event.preventDefault();
+		var l = Ladda.create(this);
+		l.start();
+		$('#tram-mod-co-form-step-2').submit();
+	});
+	
+	
+	$('#tram-mod-pv-form-btn-save').on('click', function(event){
+		event.preventDefault();
+		var l = Ladda.create(this);
+		l.start();
+		$('#tram-mod-pv-form-step-1').submit();
+	});
+	
+	$('#tram-mod-pv-form-btn-confirm').on('click', function(event){
+		event.preventDefault();
+		var l = Ladda.create(this);
+		l.start();
+		$('#tram-mod-pv-form-step-2').submit();
+	});
+	
+	$('#tram-mod-email-form-btn-save').on('click', function(event){
+		var valid = $('#tram-mod-pv-form-step-1')[0].checkValidity();
+		event.preventDefault();
+		if(valid){
+			var l = Ladda.create(this);
+			l.start();
+			$('#tram-mod-email-form-step-1').submit();
+		}
+	});
+	
+	$('#tram-mod-email-form-btn-confirm').on('click', function(event){
+		event.preventDefault();
+		var l = Ladda.create(this);
+		l.start();
+		$('#tram-mod-email-form-step-2').submit();
+	});
+	
+	
+	//tram-mod-ccc-form-btn-confirm
 	
 	$('#ccc-valid').on('click', clickBtnCCCValidate);
 	
@@ -209,6 +268,25 @@ $(function() {
 		$('#tram-mod-co-form-step-2').attr('action', '/marte-webapp/tram/modco/ok');
 		$('#tram-mod-co-form-step-2').submit();
 	});
+	
+	$('#tram-mod-pv-form-btn-back').on('click', function(){
+		$('#tram-mod-pv-form-step-2').attr('action', '/marte-webapp/tram/modpv/form');
+		$('#tram-mod-pv-form-step-2').submit();
+	});
+	$('#tram-mod-pv-form-btn-confirm').on('click', function(){
+		$('#tram-mod-pv-form-step-2').attr('action', '/marte-webapp/tram/modpv/ok');
+		$('#tram-mod-pv-form-step-2').submit();
+	});
+	
+	$('#tram-mod-tiposoporte-form-btn-back').on('click', function(){
+		$('#tram-mod-tiposoporte-form-step-2').attr('action', '/marte-webapp/tram/modtiposoporte/form');
+		$('#tram-mod-tiposoporte-form-step-2').submit();
+	});
+	$('#tram-mod-tiposoporte-form-btn-confirm').on('click', function(){
+		$('#tram-mod-tiposoporte-form-step-2').attr('action', '/marte-webapp/tram/modtiposoporte/ok');
+		$('#tram-mod-tiposoporte-form-step-2').submit();
+	});
+	
 });
 
 
@@ -429,6 +507,28 @@ var clickBtnCCCValidate = function (){
 		return false;
 	}
 	return false;
+}
+
+function loading_info(msg){
+	var p_info = $('<p></p>');
+	p_info.text(msg);
+	$('#loading-info')
+			.empty()
+			.addClass('text-center');
+	$('#loading-info')
+			.append(p_info);
+
+	var cl = new CanvasLoader('loading-info');
+	cl.setColor('#3f68a6'); // default is '#000000'
+	cl.setShape('roundRect'); // default is 'oval'
+	cl.setDiameter(114); // default is 40
+	cl.setDensity(17); // default is 40
+	cl.setRange(1); // default is 1.3
+	cl.setSpeed(1); // default is 2
+	cl.setFPS(10); // default is 24
+	cl.show(); // Hidden by default
+	
+	
 }
 
 

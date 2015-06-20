@@ -165,10 +165,14 @@ public abstract class BasicController {
 		fechaNula.set(Calendar.YEAR, 2500);
 		fechaNula.set(Calendar.MONTH, Calendar.DECEMBER);
 		fechaNula.set(Calendar.DAY_OF_MONTH, 31);
+		fechaNula.set(Calendar.HOUR_OF_DAY, 00);
+		fechaNula.set(Calendar.MINUTE, 00);
+		fechaNula.set(Calendar.SECOND, 00);
 		
 		// Fechas
 		tramAPI.setFechaPeticion(ahora);
 		tramAPI.setFechaTramPrevista(CalculoFechas.primerDiaHabil(ahora, false));
+		
 		tramAPI.setFechaTramAPI(fechaNula.getTime());
 		tramAPI.setFechaGAE(fechaNula.getTime());
 		tramAPI.setFinVigencia(fechaNula.getTime());

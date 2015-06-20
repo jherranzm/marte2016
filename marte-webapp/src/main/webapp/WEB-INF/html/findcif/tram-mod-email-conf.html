@@ -187,15 +187,27 @@
 							<div class="form-group">
 								<div class="col-md-offset-4 col-md-4">
 									<p class="text-center">
-										<button id="tram-mod-email-form-btn-back" type="button" class="btn btn-warning" 
-											th:text="#{tram.form.btn.back}">
+										<button 
+											id="tram-mod-email-form-btn-back" 
+											type="button" 
+											class="btn btn-warning ladda-button" 
+											data-style="expand-right" >
+											<span 
+												class="ladda-label"
+												th:text="#{tram.form.btn.back}">tram.form.btn.back</span>
 										</button>
 										<a th:href="@{/findcif/show/{idAcuerdo}(idAcuerdo=${tramModEmailForm.idAcuerdo})}"
 											id="tram-form-btn-cancel" class="btn btn-default"> 
 											<span th:text="#{tram.form.btn.cancel}"></span>
 										</a>
-										<button id="tram-mod-email-form-btn-confirm" type="button" class="btn btn-primary"
-											th:text="#{tram.form.btn.confirm}" >
+										<button 
+											id="tram-mod-email-form-btn-confirm" 
+											type="button" 
+											class="btn btn-primary ladda-button" 
+											data-style="expand-right" >
+											<span 
+												class="ladda-label"
+												th:text="#{tram.form.btn.confirm}">tram.form.btn.confirm</span>
 										</button>
 									</p>
 								</div>
