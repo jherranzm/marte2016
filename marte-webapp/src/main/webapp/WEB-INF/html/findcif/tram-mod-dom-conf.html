@@ -5,7 +5,7 @@
 
 	<head th:replace="html/header :: head">
 		<meta charset="UTF-8" />
-		<title th:text="#{app.name}">tram-mod-dom-form</title>
+		<title th:text="#{app.name}">tram-mod-dom-conf</title>
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		
 		
@@ -93,7 +93,7 @@
 	<div id="wrap">
 		<div class="container">
 			<div class="tab-content">
-				<div th:fragment="tram-mod-dom-form">
+				<div th:fragment="tram-mod-dom-conf">
 				
 					<div>
 						<div class="row form-group form-inline">
@@ -125,15 +125,14 @@
 							</div>
 						</div><!-- .row form-group form-inline -->
 					</div>
-					
-					<div th:replace="html/findcif/ccc-list :: listado-ccc-table"></div>
 				
 					<form 
-						id="tram-mod-dom-form-step-1" 
+						id="tram-mod-dom-form-step-2" 
 						method="POST" 
 						th:object="${tramModDomForm}"
 						class="form-horizontal"
-						th:action="@{/tram/moddom/conf}">
+						th:action="@{/tram/moddom/2}">
+				
 				
 							<div id="tram-mod-dom-step-1" class="col-md-offset-1 col-md-10">
 			                    <div id="tram-mod-dom-aclaraciones" 
@@ -152,7 +151,7 @@
 												id="dom-soc-aa"
 												type="text" class="form-control" 
 												th:field="${tramModDomForm.domsoc.aa}"
-												required="required"
+												readonly="readonly"
 												placeholder="Persona de Contacto" />
 										</div>
 									</div>
@@ -165,7 +164,7 @@
 												id="dom-soc-dir"
 												type="text" class="form-control" 
 												th:field="${tramModDomForm.domsoc.direccion}"
-												required="required"
+												readonly="readonly"
 												placeholder="Calle, número Piso Puerta" />
 										</div>
 									</div>
@@ -180,7 +179,7 @@
 												th:field="${tramModDomForm.domsoc.cp}"
 												size="5"
 												maxlength="5"
-												required="required"
+												readonly="readonly"
 												placeholder="00000" />
 										</div>
 									</div>
@@ -193,7 +192,7 @@
 												id="dom-soc-localidad"
 												type="text" class="form-control" 
 												th:field="${tramModDomForm.domsoc.localidad}"
-												required="required"
+												readonly="readonly"
 												placeholder="Localidad" />
 										</div>
 									</div>
@@ -206,22 +205,12 @@
 												id="dom-soc-provincia"
 												type="text" class="form-control" 
 												th:field="${tramModDomForm.domsoc.provincia}"
-												required="required"
+												readonly="readonly"
 												placeholder="Provincia" />
 										</div>
 									</div>
 								</div>
 								
-								<div id="copy-options" 
-									class="row form-group form-inline">
-									<a href="#"
-										id="btn-dom-copy" class="btn btn-default"> 
-										<span th:text="#{copiar.domicilio}">Copiar Domicilio</span>
-										<span class="glyphicon glyphicon-arrow-down"></span>
-									</a>
-									
-								</div>
-
 								<div id="tram-mod-dom-fac" 
 									class="row form-group form-inline well well-sm">
 									<h4 th:text="#{dom.envio.factura}">Domicilio Envío de Factura</h4>
@@ -234,7 +223,7 @@
 												id="dom-fac-aa"
 												type="text" class="form-control" 
 												th:field="${tramModDomForm.domfac.aa}"
-												required="required"
+												readonly="readonly"
 												placeholder="Persona de Contacto" />
 										</div>
 									</div>
@@ -247,7 +236,7 @@
 												id="dom-fac-dir"
 												type="text" class="form-control" 
 												th:field="${tramModDomForm.domfac.direccion}"
-												required="required"
+												readonly="readonly"
 												placeholder="Calle, número Piso Puerta" />
 										</div>
 									</div>
@@ -262,7 +251,7 @@
 												th:field="${tramModDomForm.domfac.cp}"
 												size="5"
 												maxlength="5"
-												required="required"
+												readonly="readonly"
 												placeholder="00000" />
 										</div>
 									</div>
@@ -275,7 +264,7 @@
 												id="dom-fac-localidad"
 												type="text" class="form-control" 
 												th:field="${tramModDomForm.domfac.localidad}"
-												required="required"
+												readonly="readonly"
 												placeholder="Localidad" />
 										</div>
 									</div>
@@ -288,7 +277,7 @@
 												id="dom-fac-provincia"
 												type="text" class="form-control" 
 												th:field="${tramModDomForm.domfac.provincia}"
-												required="required"
+												readonly="readonly"
 												placeholder="Provincia" />
 										</div>
 									</div>
@@ -309,13 +298,15 @@
 										</div>
 									</div>
 								</div>
-								
-								<div id="tram-mod-dom-peticion" 			class="row form-group form-inline">
+								<div 
+									id="tram-mod-dom-peticion" 			
+									class="row form-group form-inline">
 									<div class="col-sm-12">
 										<h4><span th:text="#{tram.form.field.peticion}">Observaciones</span></h4>
 										<textarea 
 											class="form-control input-sm span12" 
 											th:field="${tramModDomForm.peticionTramitacion}"
+											readonly="readonly"
 											rows = "5"
 											cols = "120"
 											placeholder="Observaciones..." ></textarea>
@@ -333,18 +324,27 @@
 								<div class="col-md-offset-4 col-md-4">
 									<p class="text-center">
 										<button 
-											id="tram-mod-dom-form-btn-save" 
-											type="submit" 
+											id="tram-mod-dom-form-btn-back" 
+											type="button" 
+											class="btn btn-warning ladda-button" 
+											data-style="expand-right" >
+											<span 
+												class="ladda-label"
+												th:text="#{tram.form.btn.back}">tram.form.btn.back</span>
+										</button>
+										<a th:href="@{/findcif/show/{idAcuerdo}(idAcuerdo=${tramModDomForm.idAcuerdo})}"
+											id="tram-form-btn-cancel" class="btn btn-default"> 
+											<span th:text="#{tram.form.btn.cancel}"></span>
+										</a>
+										<button 
+											id="tram-mod-dom-form-btn-confirm" 
+											type="button" 
 											class="btn btn-primary ladda-button" 
 											data-style="expand-right" >
 											<span 
 												class="ladda-label"
-												th:text="#{tram.form.btn.save}">tram.form.btn.save</span>
+												th:text="#{tram.form.btn.confirm}">tram.form.btn.confirm</span>
 										</button>
-										<a th:href="@{/findcif/show/{idAcuerdo}(idAcuerdo=${tramModDomForm.idAcuerdo})}"
-											id="btn-back" class="btn btn-default"> 
-											<span th:text="#{tram.form.btn.back}"></span>
-										</a>
 									</p>
 								</div>
 							</div>
@@ -357,6 +357,7 @@
 	</div><!-- #wrap -->
 	
 	<div th:replace="html/footer :: footer"></div>
+	
 	
 </body>
 </html>

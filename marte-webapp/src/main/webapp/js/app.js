@@ -228,11 +228,28 @@ $(function() {
 		}
 	});
 	
+	$('#tram-mod-dom-form-btn-save').on('click', function(event){
+		var valid = $('#tram-mod-dom-form-step-1')[0].checkValidity();
+		event.preventDefault();
+		if(valid){
+			var l = Ladda.create(this);
+			l.start();
+			$('#tram-mod-dom-form-step-1').submit();
+		}
+	});
+	
 	$('#tram-mod-email-form-btn-confirm').on('click', function(event){
 		event.preventDefault();
 		var l = Ladda.create(this);
 		l.start();
 		$('#tram-mod-email-form-step-2').submit();
+	});
+	
+	$('#tram-mod-dom-form-btn-confirm').on('click', function(event){
+		event.preventDefault();
+		var l = Ladda.create(this);
+		l.start();
+		$('#tram-mod-dom-form-step-2').submit();
 	});
 	
 	
@@ -285,6 +302,24 @@ $(function() {
 	$('#tram-mod-tiposoporte-form-btn-confirm').on('click', function(){
 		$('#tram-mod-tiposoporte-form-step-2').attr('action', '/marte-webapp/tram/modtiposoporte/ok');
 		$('#tram-mod-tiposoporte-form-step-2').submit();
+	});
+	
+	$('#tram-mod-dom-form-btn-back').on('click', function(){
+		$('#tram-mod-dom-form-step-2').attr('action', '/marte-webapp/tram/moddom/form');
+		$('#tram-mod-dom-form-step-2').submit();
+	});
+	$('#tram-mod-dom-form-btn-confirm').on('click', function(){
+		$('#tram-mod-dom-form-step-2').attr('action', '/marte-webapp/tram/moddom/ok');
+		$('#tram-mod-dom-form-step-2').submit();
+	});
+	
+	
+	$('#btn-dom-copy').on('click', function(event){
+		$('#dom-fac-aa').val($('#dom-soc-aa').val());
+		$('#dom-fac-dir').val($('#dom-soc-dir').val());
+		$('#dom-fac-cp').val($('#dom-soc-cp').val());
+		$('#dom-fac-localidad').val($('#dom-soc-localidad').val());
+		$('#dom-fac-provincia').val($('#dom-soc-provincia').val());
 	});
 	
 });
