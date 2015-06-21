@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="http://localhost:8080/marte-webapp/" />
+<title>marte-webapp-mod-dom-copydom</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">marte-webapp-mod-dom-copydom</td></tr>
+</thead><tbody>
+<tr>
+	<td>open</td>
+	<td>/marte-webapp/</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=password</td>
+	<td>MXP130796</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=username</td>
+	<td>130796</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>id=btn-save</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=cif</td>
+	<td>03735491S</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>id=btn-save</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>css=a &gt; span</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=tram-option-mod-adm</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>id=tram-option-mod-dom</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=dom-soc-aa</td>
+	<td>Àéìóù</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=dom-soc-dir</td>
+	<td>Àéìóù, 23</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=dom-soc-cp</td>
+	<td>01234</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=dom-soc-localidad</td>
+	<td>Cualquiera</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=dom-soc-provincia</td>
+	<td>Las Palmas</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>css=span.glyphicon.glyphicon-arrow-down</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=peticionTramitacion</td>
+	<td>Lorem Ipsum és un text de farciment usat per la indústria de la tipografia i la impremta. Lorem Ipsum ha estat el text estàndard de la indústria des de l'any 1500, quan un impressor desconegut va fer servir una galerada de text i la va mesclar per crear un llibre de mostres tipogràfiques. No només ha sobreviscut cinc segles, sinó que ha fet el salt cap a la creació de tipus de lletra electrònics, romanent essencialment sense canvis. Es va popularitzar l'any 1960 amb el llançament de fulls Letraset que contenien passatges de Lorem Ipsum, i més recentment amb programari d'autoedició com Aldus Pagemaker que inclou versions de Lorem Ipsum.</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=tram-mod-dom-form-btn-save</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>id=tram-mod-dom-form-btn-confirm</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>id=form-logout-btn-submit</td>
+	<td></td>
+</tr>
+
+</tbody></table>
+</body>
+</html>

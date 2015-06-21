@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="http://localhost:8080/marte-webapp/" />
+<title>marte-webapp-mod-email</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">marte-webapp-mod-email</td></tr>
+</thead><tbody>
+<tr>
+	<td>open</td>
+	<td>/marte-webapp/</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=username</td>
+	<td>130796</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=password</td>
+	<td>MXP130796</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>id=btn-save</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=cif</td>
+	<td>03735491S</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>id=btn-save</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>css=a &gt; span</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>xpath=(//button[@type='button'])[5]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>css=#tram-option-mod-email &gt; span</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=email</td>
+	<td>ab@com.com</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=peticionTramitacion</td>
+	<td>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec faucibus augue. Mauris tristique dui ac odio laoreet placerat. Praesent a ipsum turpis. Ut commodo leo elit, congue vestibulum sapien mattis eu. Aenean odio nulla, porttitor sed scelerisque sed, semper quis urna. Nullam eros nisl, ullamcorper nec vestibulum vitae, dignissim vel dui. Nulla lacinia feugiat nunc. Maecenas tempus tincidunt porta. Phasellus laoreet commodo fringilla. Aenean id sodales neque. Phasellus volutpat, purus ac tincidunt fermentum, nisi lorem accumsan elit, a eleifend quam massa vel quam. Fusce erat libero, suscipit viverra aliquet sed, tempus ut libero. Nam volutpat lobortis metus bibendum egestas. </td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>id=tram-mod-email-form-btn-save</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>id=tram-mod-email-form-btn-confirm</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>id=form-logout-btn-submit</td>
+	<td></td>
+</tr>
+</tbody></table>
+</body>
+</html>

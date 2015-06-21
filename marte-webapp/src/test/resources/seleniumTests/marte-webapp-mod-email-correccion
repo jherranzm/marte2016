@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="http://localhost:8080/marte-webapp/" />
+<title>marte-webapp-mod-email-correccion</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">marte-webapp-mod-email-correccion</td></tr>
+</thead><tbody>
+<tr>
+	<td>open</td>
+	<td>/marte-webapp/</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=password</td>
+	<td>MXP130796</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=username</td>
+	<td>130796</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>id=btn-save</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=cif</td>
+	<td>P3001700H</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>id=btn-save</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>css=a &gt; span</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=tram-option-mod-adm</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>id=tram-option-mod-email</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=email</td>
+	<td>1</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=tram-mod-email-form-btn-save</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=email</td>
+	<td>info@cehegin.gov.es</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>id=tram-mod-email-form-btn-save</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>id=tram-mod-email-form-btn-back</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=email</td>
+	<td>ayuntamiento@cehegin.gov.es</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=peticionTramitacion</td>
+	<td>Donec vehicula nisi ut luctus euismod. Proin lobortis lectus quam. Aenean aliquam rhoncus ornare. Donec metus nisl, iaculis eu tellus quis, pellentesque viverra lorem. Sed sollicitudin eu arcu sit amet sollicitudin. Quisque dapibus facilisis nisi, eu efficitur est rhoncus id. Donec lobortis, arcu vel tristique dignissim, augue sapien pulvinar mauris, sed laoreet enim massa at tortor. Nulla ultrices mauris vitae consequat imperdiet. Sed vel elit feugiat, mollis massa ut, accumsan orci. Duis eu pellentesque elit. Etiam commodo, eros in placerat finibus, felis velit maximus velit, ut pellentesque nisi dolor at nulla. Sed cursus ante vitae lobortis fringilla. Duis tincidunt felis ut nunc interdum mollis. Vivamus dignissim, eros eget varius sagittis, est nulla aliquet magna, et blandit lectus nulla sit amet orci. Etiam sit amet est et erat condimentum fermentum at eget ex. </td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>id=tram-mod-email-form-btn-save</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>id=tram-mod-email-form-btn-confirm</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>id=form-logout-btn-submit</td>
+	<td></td>
+</tr>
+
+</tbody></table>
+</body>
+</html>

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="http://localhost:8080/marte-webapp/" />
+<title>marte-webapp-mod-tiposoporte</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">marte-webapp-mod-tiposoporte</td></tr>
+</thead><tbody>
+<tr>
+	<td>open</td>
+	<td>/marte-webapp/</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=password</td>
+	<td>MXP130796</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=username</td>
+	<td>130796</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>id=btn-save</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=cif</td>
+	<td>P3001700H</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>id=btn-save</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>css=a &gt; span</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=tram-option-mod-adm</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>css=#tram-option-mod-tiposoporte &gt; span</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=email</td>
+	<td>111</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=peticionTramitacion</td>
+	<td>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In dictum, mi nec consectetur varius, urna dolor dapibus est, a pharetra nisl metus quis arcu. Phasellus imperdiet sem quis nisl molestie feugiat. Duis aliquam sed leo pellentesque fringilla. Donec faucibus lorem id est auctor, id viverra sem pellentesque. In quis felis sit amet nisi pellentesque consectetur quis feugiat ante. In scelerisque commodo neque sed congue. Vestibulum in pulvinar dui. Nulla interdum diam massa, a interdum magna ultrices sit amet. Donec dignissim lectus eget erat luctus lacinia. Etiam suscipit, urna ut posuere euismod, neque est vehicula mauris, ac imperdiet arcu tortor quis metus. Morbi vel dui metus. Donec condimentum libero ligula, non fermentum eros gravida eget. Integer porta, est ut tincidunt sodales, risus nulla ornare felis, ac accumsan lacus dui sed purus. Donec eu nunc sed ligula imperdiet luctus. Donec dapibus augue id urna elementum, quis lobortis magna mollis. Suspendisse vitae lacinia erat. </td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=tram-mod-tiposoporte-form-btn-save</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=email</td>
+	<td>fric.factu@telef.csint</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>id=tram-mod-tiposoporte-form-btn-save</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>id=tram-mod-tiposoporte-form-btn-confirm</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>id=form-logout-btn-submit</td>
+	<td></td>
+</tr>
+
+</tbody></table>
+</body>
+</html>
