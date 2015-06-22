@@ -1,6 +1,7 @@
-package telefonica.aaee.marte.mofa.model;
+package telefonica.aaee.marte.mofa.dao.model;
 
 import java.io.Serializable;
+
 import javax.persistence.*;
 
 /**
@@ -8,7 +9,7 @@ import javax.persistence.*;
  * 
  */
 @Embeddable
-public class MapabancarioPK implements Serializable {
+public class MapaBancarioPK implements Serializable {
 	//default serial version id, required for serializable classes.
 	private static final long serialVersionUID = 1L;
 
@@ -18,7 +19,7 @@ public class MapabancarioPK implements Serializable {
 	@Column(name="Oficina")
 	private String oficina;
 
-	public MapabancarioPK() {
+	public MapaBancarioPK() {
 	}
 	public String getEntidad() {
 		return this.entidad;
@@ -37,10 +38,10 @@ public class MapabancarioPK implements Serializable {
 		if (this == other) {
 			return true;
 		}
-		if (!(other instanceof MapabancarioPK)) {
+		if (!(other instanceof MapaBancarioPK)) {
 			return false;
 		}
-		MapabancarioPK castOther = (MapabancarioPK)other;
+		MapaBancarioPK castOther = (MapaBancarioPK)other;
 		return 
 			this.entidad.equals(castOther.entidad)
 			&& this.oficina.equals(castOther.oficina);
@@ -54,4 +55,13 @@ public class MapabancarioPK implements Serializable {
 		
 		return hash;
 	}
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("MapabancarioPK [entidad=").append(entidad)
+				.append(", oficina=").append(oficina).append("]");
+		return builder.toString();
+	}
+	
+	
 }

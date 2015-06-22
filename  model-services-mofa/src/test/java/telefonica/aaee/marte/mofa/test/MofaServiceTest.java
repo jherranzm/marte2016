@@ -13,8 +13,11 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import telefonica.aaee.marte.mofa.dao.model.MapaBancario;
+import telefonica.aaee.marte.mofa.dao.model.MapaBancarioPK;
+import telefonica.aaee.marte.mofa.dao.model.Municipio;
+import telefonica.aaee.marte.mofa.dao.service.MapaBancarioService;
 import telefonica.aaee.marte.mofa.dao.service.MunicipioService;
-import telefonica.aaee.marte.mofa.model.Municipio;
 import telefonica.aaee.marte.mofa.test.config.JPAMofaTestConfig;
 import telefonica.aaee.marte.mofa.test.config.MofaServicesTestConfig;
 
@@ -27,6 +30,9 @@ public class MofaServiceTest {
 
 	@Autowired
 	private MunicipioService apunteService;
+
+	@Autowired
+	private MapaBancarioService mapaBancarioService;
 
 	@Test
 	public void testMunicipio() {
@@ -48,4 +54,25 @@ public class MofaServiceTest {
 		
 	}
 	
+	@Test
+	public void testMapaBancario() {
+
+		boolean ret = false;
+		
+		MapaBancarioPK id = new MapaBancarioPK();
+		id.setEntidad("2100");
+		id.setOficina("1016");
+		
+
+		MapaBancario entidad = mapaBancarioService.findById(id);
+		if(entidad == null){
+			assertTrue(ret);
+		}else{
+			ret = true;
+			logger.info(String.format("MapaBancario : [%s]", entidad.toString()));
+			assertTrue(ret);
+		}
+
+		
+	}
 }

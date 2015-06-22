@@ -13,7 +13,7 @@ import org.springframework.data.jpa.repository.support.JpaMetamodelEntityInforma
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.stereotype.Repository;
 
-import telefonica.aaee.marte.mofa.model.Municipio;
+import telefonica.aaee.marte.mofa.dao.model.Municipio;
 
 
 @Repository

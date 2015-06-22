@@ -1,4 +1,4 @@
-package telefonica.aaee.marte.mofa.model;
+package telefonica.aaee.marte.mofa.dao.model;
 
 import java.io.Serializable;
 import javax.persistence.*;
