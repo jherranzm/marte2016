@@ -33,7 +33,7 @@ import telefonica.aaee.marte.acuerdos.dao.model.TramitacionAPI;
 import telefonica.aaee.marte.form.TramitacionForm;
 import telefonica.aaee.marte.form.TramitacionModDomForm;
 import telefonica.aaee.marte.marte.model.FacturaPagaLibroFacturacion;
-import telefonica.aaee.marte.marte.vo.CuentaCorriente;
+import telefonica.aaee.marte.marte.vo.DireccionEnvio;
 import telefonica.aaee.marte.model.pagination.PageWrapper;
 import telefonica.aaee.util.Constantes;
 import eu.bitwalker.useragentutils.UserAgent;
@@ -42,7 +42,7 @@ import eu.bitwalker.useragentutils.UserAgent;
 @RequestMapping("/tram/moddom")
 public class TramModDomController extends BasicController {
 	
-	private HashMap<CuentaCorriente, Date> cuentas = new HashMap<CuentaCorriente, Date>();
+	private HashMap<DireccionEnvio, Date> direcciones = new HashMap<DireccionEnvio, Date>();
 
 	private static final String TRAM_MOD_DOM_FORM = "html/findcif/tram-mod-dom-form";
 	private static final String TRAM_MOD_DOM_CONF = "html/findcif/tram-mod-dom-conf";
@@ -112,9 +112,9 @@ public class TramModDomController extends BasicController {
 		modelAndView.addObject("acuerdo", acuerdo);
 		modelAndView.setViewName(TRAM_MOD_DOM_FORM);
 		
-		getCCCPorAcuerdoConcertada(acuerdo);
+		getDIRPorAcuerdoConcertada(acuerdo);
 		
-		modelAndView.addObject("cuentas", cuentas.keySet());
+		modelAndView.addObject("direcciones", direcciones.keySet());
 		
 		if(form == null){
 			form = new TramitacionModDomForm();
@@ -149,9 +149,9 @@ public class TramModDomController extends BasicController {
 		Acuerdo acuerdo = acuerdoService.findById(form.getIdAcuerdo());
 		logger.info(String.format("[%s]", acuerdo.toString()));
 		
-		getCCCPorAcuerdoConcertada(acuerdo);
+		getDIRPorAcuerdoConcertada(acuerdo);
 		
-		modelAndView.addObject("cuentas", cuentas.keySet());
+		modelAndView.addObject("direcciones", direcciones.keySet());
 
 		modelAndView.setViewName(TRAM_MOD_DOM_FORM);
 		modelAndView.addObject("tramModDomForm", form);
@@ -180,9 +180,9 @@ public class TramModDomController extends BasicController {
 		Acuerdo acuerdo = acuerdoService.findById(form.getIdAcuerdo());
 		logger.info(String.format("[%s]", acuerdo.toString()));
 		
-		getCCCPorAcuerdoConcertada(acuerdo);
+		getDIRPorAcuerdoConcertada(acuerdo);
 		
-		modelAndView.addObject("cuentas", cuentas.keySet());
+		modelAndView.addObject("direcciones", direcciones.keySet());
 		
 		modelAndView.setViewName(TRAM_MOD_DOM_CONF);
 		modelAndView.addObject("tramModDomForm", form);
@@ -343,21 +343,21 @@ public class TramModDomController extends BasicController {
 	}
 
 
-	private void getCCCPorAcuerdoConcertada(Acuerdo acuerdo) {
+	private void getDIRPorAcuerdoConcertada(Acuerdo acuerdo) {
 		Page<FacturaPagaLibroFacturacion> paginaFacturas = facturasService.findByAcuerdoConcertada(acuerdo.getAcuerdoFX(), 1);
 		List<FacturaPagaLibroFacturacion> facturas = paginaFacturas.getContent();
 		for(FacturaPagaLibroFacturacion factura : facturas){
 			logger.info(String.format("%s", factura));
-			CuentaCorriente cuenta = new CuentaCorriente(factura);
-			if(!cuentas.containsKey(cuenta)){
-				cuentas.put(cuenta, factura.getFechaEmision());
+			DireccionEnvio dir = new DireccionEnvio(factura);
+			if(!direcciones.containsKey(dir)){
+				direcciones.put(dir, factura.getFechaEmision());
 			}
 		}
-		for(CuentaCorriente key : cuentas.keySet()){
+		for(DireccionEnvio key : direcciones.keySet()){
 			logger.info(String.format("%tY/%tm/%td : %s "
-					, cuentas.get(key)
-					, cuentas.get(key)
-					, cuentas.get(key)
+					, direcciones.get(key)
+					, direcciones.get(key)
+					, direcciones.get(key)
 					, key));
 		}
 	}

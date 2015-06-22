@@ -126,10 +126,11 @@
 						</div><!-- .row form-group form-inline -->
 					</div>
 					
-					<div th:replace="html/findcif/ccc-list :: listado-ccc-table"></div>
+					<div th:replace="html/findcif/address-list :: listado-dir-table"></div>
 				
 					<form 
 						id="tram-mod-dom-form-step-1" 
+						data-toggle="validator" role="form"
 						method="POST" 
 						th:object="${tramModDomForm}"
 						class="form-horizontal"
@@ -141,9 +142,9 @@
 			                        <strong>Modificación de Direcciones</strong>, fiscal y de envío de factura.
 			                    </div>
 								<div id="tram-mod-dom-soc" 
-									class="row form-group form-inline well well-sm">
+									class="row form-inline well well-sm has-feedback">
 									<h4 th:text="#{dom.social}">Domicilio Social</h4>
-									<div class="col-sm-12">
+									<div class="form-group col-sm-12">
 										<div class="input-group input-group-sm">
 											<span class="input-group-addon" 
 												id="input-group-addon-tram-mod-dom-soc-aa" 
@@ -155,8 +156,9 @@
 												required="required"
 												placeholder="Persona de Contacto" />
 										</div>
+										<span class="help-block with-errors">Campo requerido</span>
 									</div>
-									<div class="col-sm-12">
+									<div class="form-group col-sm-12">
 										<div class="input-group input-group-sm">
 											<span class="input-group-addon" 
 												id="input-group-addon-tram-mod-dom-soc-direccion" 
@@ -169,7 +171,7 @@
 												placeholder="Calle, número Piso Puerta" />
 										</div>
 									</div>
-									<div class="col-sm-2">
+									<div class="form-group col-sm-2">
 										<div class="input-group input-group-sm">
 											<span class="input-group-addon" 
 												id="input-group-addon-tram-mod-dom-soc-cp" 
@@ -184,7 +186,7 @@
 												placeholder="00000" />
 										</div>
 									</div>
-									<div class="col-sm-6">
+									<div class="form-group col-sm-6">
 										<div class="input-group input-group-sm">
 											<span class="input-group-addon" 
 												id="input-group-addon-tram-mod-dom-soc-localidad" 
@@ -197,7 +199,7 @@
 												placeholder="Localidad" />
 										</div>
 									</div>
-									<div class="col-sm-4">
+									<div class="form-group col-sm-4">
 										<div class="input-group input-group-sm">
 											<span class="input-group-addon" 
 												id="input-group-addon-tram-mod-dom-soc-provincia" 
@@ -206,7 +208,7 @@
 												id="dom-soc-provincia"
 												type="text" class="form-control" 
 												th:field="${tramModDomForm.domsoc.provincia}"
-												required="required"
+												readonly="readonly"
 												placeholder="Provincia" />
 										</div>
 									</div>
@@ -288,7 +290,7 @@
 												id="dom-fac-provincia"
 												type="text" class="form-control" 
 												th:field="${tramModDomForm.domfac.provincia}"
-												required="required"
+												readonly="readonly"
 												placeholder="Provincia" />
 										</div>
 									</div>

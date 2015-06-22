@@ -11,6 +11,7 @@ public class DireccionEnvio  implements Serializable {
 	private String direccionEnvioFactura;
 	private String poblacion;
 	private String cp;
+	private String id;
 
 	public DireccionEnvio() {
 	}
@@ -20,6 +21,10 @@ public class DireccionEnvio  implements Serializable {
 		this.direccionEnvioFactura = factura.getDireccionEnvioFactura();
 		this.poblacion = factura.getPoblacion();
 		this.cp = factura.getCp();
+		this.id = this.personaContacto 
+				+ "|" + this.direccionEnvioFactura
+				+ "|" + this.poblacion
+				+ "|" + this.cp;
 	}
 	
 	public String getPersonaContacto() {
@@ -54,7 +59,13 @@ public class DireccionEnvio  implements Serializable {
 		this.cp = cp;
 	}
 	
-	
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
 
 	@Override
 	public int hashCode() {

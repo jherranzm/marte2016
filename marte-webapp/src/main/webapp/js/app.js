@@ -2,6 +2,19 @@
  * 
  */
 
+var aProvincias = ["Provincias", "Alava / Araba", "Albacete",
+		"Alicante", "Almería", "Avila", "Badajoz", "Baleares / Illes Balears",
+		"Barcelona", "Burgos", "Cáceres", "Cádiz", "Castellón", "Ciudad Real",
+		"Córdoba", "Coruña, La / Coruña, A", "Cuenca", "Gerona / Girona",
+		"Granada", "Guadalajara", "Guipuzcoa / Gipuzkoa", "Huelva", "Huesca",
+		"Jaen", "León", "Lérida / Lleida", "Rioja La", "Lugo", "Madrid",
+		"Málaga", "Murcia", "Navarra", "Orense / Ourense", "Asturias",
+		"Palencia", "Palmas Las", "Pontevedra", "Salamanca", "S.C.Tenerife",
+		"Cantabria", "Segovia", "Sevilla", "Soria", "Tarragona", "Teruel",
+		"Toledo", "Valencia", "Valladolid", "Vizcaya / Bizkaia", "Zamora",
+		"Zaragoza", "Ceuta", "Melilla"];
+
+
 $(function() {
 	handlerChangeTipoDescuento();
 	$("#tipoDescuento").change(handlerChangeTipoDescuento);
@@ -320,6 +333,41 @@ $(function() {
 		$('#dom-fac-cp').val($('#dom-soc-cp').val());
 		$('#dom-fac-localidad').val($('#dom-soc-localidad').val());
 		$('#dom-fac-provincia').val($('#dom-soc-provincia').val());
+		if( $('#dom-fac-cp')[0].checkValidity()){
+			
+			var codProvincia = $('#dom-fac-cp').val().substr(0,2);
+			var intCodProvincia = parseInt(codProvincia);
+			
+			$('#dom-fac-provincia').val(aProvincias[intCodProvincia]);
+		}
+		
+		$('#tram-mod-dom-form-step-1').checkValidity();
+		$('#peticionTramitacion').focus();
+	});
+	
+	$('#dom-soc-cp').on('focusout change', function(event){
+		if( $('#dom-soc-cp')[0].checkValidity()){
+			
+			var codProvincia = $('#dom-soc-cp').val().substr(0,2);
+			var intCodProvincia = parseInt(codProvincia);
+			
+			$('#dom-soc-provincia').val(aProvincias[intCodProvincia]);
+			if($('#tram-mod-dom-form-step-1').checkValidity()){
+				$('#tram-mod-dom-form-btn-save').removeAttr('disabled');
+			};
+		}
+	});
+	$('#dom-fac-cp').on('focusout change', function(event){
+		if( $('#dom-fac-cp')[0].checkValidity()){
+			
+			var codProvincia = $('#dom-fac-cp').val().substr(0,2);
+			var intCodProvincia = parseInt(codProvincia);
+			
+			$('#dom-fac-provincia').val(aProvincias[intCodProvincia]);
+			if($('#tram-mod-dom-form-step-1').checkValidity()){
+				$('#tram-mod-dom-form-btn-save').removeAttr('disabled');
+			};
+		}
 	});
 	
 });
