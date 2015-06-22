@@ -9,6 +9,7 @@ import org.apache.commons.logging.LogFactory;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -50,6 +51,26 @@ public class MofaServiceTest {
 			logger.info(String.format("Municipio : [%s]", acuerdo.toString()));
 		}
 
+		assertTrue(ret);
+		
+	}
+	
+	@Test
+	public void testMunicipioByCP() {
+		
+		boolean ret = false;
+		
+		Page<Municipio> page = apunteService.findByCP("08031", 1);
+		
+		int total = page.getContent().size();
+		logger.info(String.format("Número de apuntes : [%d]", total));
+		
+		ret = total > 0;
+		
+		for(Municipio acuerdo : page.getContent()){
+			logger.info(String.format("Municipio : [%s]", acuerdo.toString()));
+		}
+		
 		assertTrue(ret);
 		
 	}

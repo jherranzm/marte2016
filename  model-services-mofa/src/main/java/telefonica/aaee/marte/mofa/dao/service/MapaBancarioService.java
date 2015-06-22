@@ -54,4 +54,11 @@ public class MapaBancarioService extends GenericMofaService{
 	}
 	
 
+	public MapaBancario findByEntidadOficina(String banco, String oficina){
+		MapaBancarioPK id = new MapaBancarioPK();
+		id.setEntidad(banco);
+		id.setOficina(oficina);
+		
+		return repo.findOne(id);
+	}
 }

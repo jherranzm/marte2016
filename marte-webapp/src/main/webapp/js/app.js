@@ -265,9 +265,6 @@ $(function() {
 		$('#tram-mod-dom-form-step-2').submit();
 	});
 	
-	
-	//tram-mod-ccc-form-btn-confirm
-	
 	$('#ccc-valid').on('click', clickBtnCCCValidate);
 	
 	$('.ccc-copy').on('click', function(){
@@ -288,12 +285,11 @@ $(function() {
 		$('#co-02').val(ccc.substr(5,4));
 	});
 	
-	
-	
 	$('#tram-mod-co-form-btn-back').on('click', function(){
 		$('#tram-mod-co-form-step-2').attr('action', '/marte-webapp/tram/modco/form');
 		$('#tram-mod-co-form-step-2').submit();
 	});
+	
 	$('#tram-mod-co-form-btn-confirm').on('click', function(){
 		$('#tram-mod-co-form-step-2').attr('action', '/marte-webapp/tram/modco/ok');
 		$('#tram-mod-co-form-step-2').submit();
@@ -303,6 +299,7 @@ $(function() {
 		$('#tram-mod-pv-form-step-2').attr('action', '/marte-webapp/tram/modpv/form');
 		$('#tram-mod-pv-form-step-2').submit();
 	});
+	
 	$('#tram-mod-pv-form-btn-confirm').on('click', function(){
 		$('#tram-mod-pv-form-step-2').attr('action', '/marte-webapp/tram/modpv/ok');
 		$('#tram-mod-pv-form-step-2').submit();
@@ -312,6 +309,7 @@ $(function() {
 		$('#tram-mod-tiposoporte-form-step-2').attr('action', '/marte-webapp/tram/modtiposoporte/form');
 		$('#tram-mod-tiposoporte-form-step-2').submit();
 	});
+	
 	$('#tram-mod-tiposoporte-form-btn-confirm').on('click', function(){
 		$('#tram-mod-tiposoporte-form-step-2').attr('action', '/marte-webapp/tram/modtiposoporte/ok');
 		$('#tram-mod-tiposoporte-form-step-2').submit();
@@ -321,6 +319,7 @@ $(function() {
 		$('#tram-mod-dom-form-step-2').attr('action', '/marte-webapp/tram/moddom/form');
 		$('#tram-mod-dom-form-step-2').submit();
 	});
+	
 	$('#tram-mod-dom-form-btn-confirm').on('click', function(){
 		$('#tram-mod-dom-form-step-2').attr('action', '/marte-webapp/tram/moddom/ok');
 		$('#tram-mod-dom-form-step-2').submit();
@@ -357,6 +356,7 @@ $(function() {
 			};
 		}
 	});
+	
 	$('#dom-fac-cp').on('focusout change', function(event){
 		if( $('#dom-fac-cp')[0].checkValidity()){
 			
@@ -368,6 +368,27 @@ $(function() {
 				$('#tram-mod-dom-form-btn-save').removeAttr('disabled');
 			};
 		}
+	});
+	
+	$('.dir-copy').on('click', function(event){
+		
+		var dir = $(this).attr('id');
+		var dirArray = dir.split("|");
+		$('#dom-soc-aa').val(dirArray[0]);
+		$('#dom-soc-dir').val(dirArray[1]);
+		$('#dom-soc-localidad').val(dirArray[2]);
+		$('#dom-soc-cp').val(dirArray[3]);
+		if( $('#dom-soc-cp')[0].checkValidity()){
+			
+			var codProvincia = $('#dom-soc-cp').val().substr(0,2);
+			var intCodProvincia = parseInt(codProvincia);
+			
+			$('#dom-soc-provincia').val(aProvincias[intCodProvincia]);
+		}
+		
+		$('#tram-mod-dom-form-step-1').checkValidity();
+		$('#peticionTramitacion').focus();
+		
 	});
 	
 });
