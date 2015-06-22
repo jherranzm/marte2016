@@ -3,6 +3,8 @@
 	<name>model-services-mofa</name>
 	<comment></comment>
 	<projects>
+		<project>model-services-acuerdos</project>
+		<project>model-services-marte</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

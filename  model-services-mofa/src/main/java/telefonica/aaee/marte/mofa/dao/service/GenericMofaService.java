@@ -5,12 +5,10 @@ import javax.persistence.PersistenceContext;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 
-import telefonica.aaee.util.Constantes;
+public class GenericMofaService {
 
-public class GenericMarteService {
-
-	@PersistenceContext(unitName = Constantes.JPAMartePU)
-	@Qualifier(value = "marteEntityManagerFactory")
+	@PersistenceContext(unitName = "JPAMofaPU")
+	@Qualifier(value = "mofaEntityManagerFactory")
 	protected EntityManager em;
 	
 	public final Integer PAGE_SIZE = 50;
