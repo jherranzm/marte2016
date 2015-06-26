@@ -1,6 +1,10 @@
 package telefonica.aaee.marte.form;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+import telefonica.aaee.marte.mofa.dao.model.Municipio;
 
 public class TramitacionModDomForm extends TramitacionForm implements Serializable{
 
@@ -8,6 +12,9 @@ public class TramitacionModDomForm extends TramitacionForm implements Serializab
 	
 	private DireccionVO domsoc;
 	private DireccionVO domfac;
+	
+	private List<Municipio> municipiosSoc = new ArrayList<Municipio>();
+	private List<Municipio> municipiosFac = new ArrayList<Municipio>();
 	
 	public TramitacionModDomForm() {
 		super();
@@ -27,6 +34,37 @@ public class TramitacionModDomForm extends TramitacionForm implements Serializab
 
 	public void setDomfac(DireccionVO domfac) {
 		this.domfac = domfac;
+	}
+
+	public List<Municipio> getMunicipiosSoc() {
+		return municipiosSoc;
+	}
+
+	public void setMunicipiosSoc(List<Municipio> municipiosSoc) {
+		this.municipiosSoc = municipiosSoc;
+	}
+
+	public List<Municipio> getMunicipiosFac() {
+		return municipiosFac;
+	}
+
+	public void setMunicipiosFac(List<Municipio> municipiosFac) {
+		this.municipiosFac = municipiosFac;
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("TramitacionModDomForm [domsoc=");
+		builder.append(domsoc);
+		builder.append(", domfac=");
+		builder.append(domfac);
+		builder.append(", municipiosSoc=");
+		builder.append(municipiosSoc);
+		builder.append(", municipiosFac=");
+		builder.append(municipiosFac);
+		builder.append("]");
+		return builder.toString();
 	}
 
 	

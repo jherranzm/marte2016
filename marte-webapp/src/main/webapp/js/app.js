@@ -245,8 +245,29 @@ $(function() {
 		var valid = $('#tram-mod-dom-form-step-1')[0].checkValidity();
 		event.preventDefault();
 		if(valid){
+			
+			var domSocLocOptTxt = $('#dom-soc-localidad-opt  option:selected').text();
+			var domFacLocOptTxt = $('#dom-fac-localidad-opt  option:selected').text();
+			var domSocLocOptVal = $('#dom-soc-localidad-opt  option:selected').val();
+			var domFacLocOptVal = $('#dom-fac-localidad-opt  option:selected').val();
+			
+			console.log('Selected Municipio SOC. [' + domSocLocOptTxt + ']');
+			console.log('Selected Municipio FAC. [' + domFacLocOptTxt + ']');
+			console.log('Selected Municipio SOC. [' + domSocLocOptVal + ']');
+			console.log('Selected Municipio FAC. [' + domSocLocOptVal + ']');
+			
+			$('#dom-soc-localidad').val(domSocLocOptTxt);
+			$('#dom-fac-localidad').val(domFacLocOptTxt);
+			$('#dom-soc-localidad').val(domSocLocOptTxt);
+			$('#dom-fac-localidad').val(domFacLocOptTxt);
+			
+			console.log('Selected Municipio SOC. [' + $('#dom-soc-localidad').val() + ']');
+			console.log('Selected Municipio FAC. [' + $('#dom-fac-localidad').val() + ']');
 			var l = Ladda.create(this);
 			l.start();
+
+
+			
 			$('#tram-mod-dom-form-step-1').submit();
 		}
 	});
@@ -327,46 +348,49 @@ $(function() {
 	
 	
 	$('#btn-dom-copy').on('click', function(event){
+		console.log('#btn-dom-copy click');
 		$('#dom-fac-aa').val($('#dom-soc-aa').val());
 		$('#dom-fac-dir').val($('#dom-soc-dir').val());
 		$('#dom-fac-cp').val($('#dom-soc-cp').val());
 		$('#dom-fac-localidad').val($('#dom-soc-localidad').val());
 		$('#dom-fac-provincia').val($('#dom-soc-provincia').val());
 		if( $('#dom-fac-cp')[0].checkValidity()){
-			
-			var codProvincia = $('#dom-fac-cp').val().substr(0,2);
+			var cp = $('#dom-soc-cp').val();
+			var codProvincia = cp.substr(0,2);
 			var intCodProvincia = parseInt(codProvincia);
 			
 			$('#dom-fac-provincia').val(aProvincias[intCodProvincia]);
+			var valSelected = $('#dom-soc-localidad-opt').val();
+			console.log("#btn-dom-copy valSelected : [" + valSelected + "]");
+			var optDest = $('#dom-fac-localidad-opt');
+			populateMunicipiosSelected(cp, optDest, valSelected);
 		}
 		
-		$('#tram-mod-dom-form-step-1').checkValidity();
+		$('#tram-mod-dom-form-step-1')[0].checkValidity();
 		$('#peticionTramitacion').focus();
 	});
 	
-	$('#dom-soc-cp').on('focusout change', function(event){
+	$('#dom-soc-cp').on('focusout', function(event){
 		if( $('#dom-soc-cp')[0].checkValidity()){
-			
-			var codProvincia = $('#dom-soc-cp').val().substr(0,2);
+			var cp = $('#dom-soc-cp').val();
+			var codProvincia = cp.substr(0,2);
 			var intCodProvincia = parseInt(codProvincia);
 			
 			$('#dom-soc-provincia').val(aProvincias[intCodProvincia]);
-			if($('#tram-mod-dom-form-step-1').checkValidity()){
-				$('#tram-mod-dom-form-btn-save').removeAttr('disabled');
-			};
+			var optDest = $('#dom-soc-localidad-opt');
+			populateMunicipios(cp, optDest);
 		}
 	});
 	
-	$('#dom-fac-cp').on('focusout change', function(event){
+	$('#dom-fac-cp').on('focusout', function(event){
 		if( $('#dom-fac-cp')[0].checkValidity()){
-			
-			var codProvincia = $('#dom-fac-cp').val().substr(0,2);
+			var cp = $('#dom-fac-cp').val();
+			var codProvincia = cp.substr(0,2);
 			var intCodProvincia = parseInt(codProvincia);
 			
 			$('#dom-fac-provincia').val(aProvincias[intCodProvincia]);
-			if($('#tram-mod-dom-form-step-1').checkValidity()){
-				$('#tram-mod-dom-form-btn-save').removeAttr('disabled');
-			};
+			var optDest = $('#dom-fac-localidad-opt');
+			populateMunicipios(cp, optDest);
 		}
 	});
 	
@@ -386,12 +410,77 @@ $(function() {
 			$('#dom-soc-provincia').val(aProvincias[intCodProvincia]);
 		}
 		
-		$('#tram-mod-dom-form-step-1').checkValidity();
+		$('#tram-mod-dom-form-step-1')[0].checkValidity();
 		$('#peticionTramitacion').focus();
 		
 	});
 	
+	$('#input-group-addon-tram-mod-dom-soc-localidad').on('click', function(event){
+		if( $('#dom-soc-cp')[0].checkValidity()){
+			var cp = $('#dom-soc-cp').val();
+			var optDest = $('#dom-soc-localidad-opt');
+			populateMunicipios(cp, optDest);		
+		}
+	});
+	
+	$('#input-group-addon-tram-mod-dom-fac-localidad').on('click', function(event){
+		if( $('#dom-fac-cp')[0].checkValidity()){
+			var cp = $('#dom-fac-cp').val();
+			var optDest = $('#dom-fac-localidad-opt');
+			populateMunicipios(cp, optDest);		
+		}
+	});
+	
 });
+
+function populateMunicipios(cp, optDest){
+	$.ajax({
+		url : '/marte-webapp/municipios/get/'+ cp,
+		success : function(data, textStatus, jqXHR){
+			var options = "";
+			console.log('Success SOC.');
+			optDest.children().remove();
+			options += "<option value=''>Selecciona municipio...</option>"
+			$.each(data, function(key, value){
+				options += "<option value='" + value.id + "'>" + value.municipio + "</option>";
+				console.log(key + ' :: ' + JSON.stringify(value));
+			});
+			optDest.append(options);
+			
+		},
+		error : function(event){
+			console.log('*** Error SOC.');
+		}
+	});
+
+}
+function populateMunicipiosSelected(cp, optDest, valSelected){
+	$.ajax({
+		url : '/marte-webapp/municipios/get/'+ cp,
+		success : function(data, textStatus, jqXHR){
+			var options = "";
+			console.log('populateMunicipiosSelected.');
+			optDest.children().remove();
+			options += "<option value=''>Selecciona municipio...</option>"
+				$.each(data, function(key, value){
+					console.log("value.id:valSelected = [" + value.id +"]:[" + valSelected + "]");
+					options += "<option ";
+					if(valSelected == value.id){
+						options += " selected='selected' ";
+						console.log(value.id +" selected!")
+					}
+					options += " value='" + value.id + "'>" + value.municipio + "</option>";
+					console.log(key + ' :: ' + JSON.stringify(value));
+				});
+			optDest.append(options);
+			
+		},
+		error : function(event){
+			console.log('*** Error SOC.');
+		}
+	});
+	
+}
 
 
 var motivoBajaMARTEOptionsHandler = function(){

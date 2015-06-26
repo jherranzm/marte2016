@@ -1,13 +1,14 @@
 package telefonica.aaee.marte.helpers;
 
-import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
-import java.util.logging.Logger;
 
 import org.apache.commons.lang3.time.DateUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 public class CalculoFechas {
 	private static final int ULTIMO_DIA_ANTES_APERTURA_FX_FACTURACION = 23;
@@ -15,7 +16,7 @@ public class CalculoFechas {
 	private static final boolean SABADO_ES_FIESTA = true;
 	private static final boolean DOMINGO_ES_FIESTA = true;
 
-	private static final Logger LOGGER = Logger.getLogger(CalculoFechas.class.getCanonicalName());
+	private static final Log logger = LogFactory.getLog(CalculoFechas.class);
 
 	
 	private static List<Date> diasDeFiesta = new ArrayList<Date>();
@@ -113,7 +114,7 @@ public class CalculoFechas {
 	 * @return
 	 */
 	public static Date primerDiaHabil(java.util.Date fecha, boolean mesSiguiente) {
-		LOGGER.info(String.format("Fecha petición       : [%s]", fecha));
+		logger.info(String.format("Fecha petición       : [%s]", fecha));
 		
 		java.util.Date hora1430 = Calendar.getInstance().getTime();
 		hora1430  = DateUtils.setHours(hora1430, 14);
@@ -126,12 +127,12 @@ public class CalculoFechas {
 		dia23 = DateUtils.setDays(fecha, ULTIMO_DIA_ANTES_APERTURA_FX_FACTURACION);
 		
 		int lastDay = Calendar.getInstance().getActualMaximum(Calendar.DAY_OF_MONTH);
-		LOGGER.info(String.format("Último día del mes       : [%d]", lastDay));
-		LOGGER.info(String.format("Último día hábil del mes : [%d]", lastDay-2));
+		logger.info(String.format("Último día del mes       : [%d]", lastDay));
+		logger.info(String.format("Último día hábil del mes : [%d]", lastDay-2));
 		
 		// Si la petición se hace a partir de las 14h30 es para el día siguiente
 		if(fecha.after(hora1430)){
-			LOGGER.info(String.format("A partir de las 1430, día siguiente: [%s]", fecha));
+			logger.info(String.format("A partir de las 1430, día siguiente: [%s]", fecha));
 			fecha = manyana(fecha);
 			while(esFiesta(fecha)){
 				fecha = manyana(fecha);
@@ -144,7 +145,7 @@ public class CalculoFechas {
 		
 		// Las peticiones que hay que pasar al mes siguiente
 		if(fecha.after(dia13) && mesSiguiente){
-			LOGGER.info(String.format("Para el mes siguiente: [%s]", fecha));
+			logger.info(String.format("Para el mes siguiente: [%s]", fecha));
 			fecha = DateUtils.addMonths(fecha, 1);
 			fecha = DateUtils.setDays(fecha, 1);
 			fecha  = DateUtils.setHours(fecha, 8);
@@ -158,14 +159,14 @@ public class CalculoFechas {
 		// Para todas las peticiones... entre el 13 y el 23 NO se puede tramitar en FX.
 		// Se pasan al 23
 		if(fecha.after(dia13) && fecha.before(dia23)){
-			LOGGER.info(String.format("Periodo facturación 'ABIERTA': [%s]", fecha));
+			logger.info(String.format("Periodo facturación 'ABIERTA': [%s]", fecha));
 			fecha = DateUtils.setDays(fecha, 23);
 			while(esFiesta(fecha)){
 				fecha = manyana(fecha);
 			}
 		}
 		
-		LOGGER.info(String.format("Primer día hábil     : [%s]", fecha));
+		logger.info(String.format("Primer día hábil     : [%s]", fecha));
 		return fecha;
 	}
 	
@@ -196,16 +197,16 @@ public class CalculoFechas {
         fecha = org.apache.commons.lang.time.DateUtils.setDays(fecha, p);
         
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        LOGGER.info(String.format("Domingo de Resurrección: [%s]",sdf.format(fecha)));
+        logger.info(String.format("Domingo de Resurrección: [%s]",sdf.format(fecha)));
 
         java.util.Date viernesSanto = org.apache.commons.lang.time.DateUtils.addDays(fecha, -2);
-        LOGGER.info(sdf.format(viernesSanto));
+        logger.info(sdf.format(viernesSanto));
         diasDeFiesta.add(viernesSanto);
-        LOGGER.info(String.format("Viernes Santo: [%s]",sdf.format(viernesSanto)));
+        logger.info(String.format("Viernes Santo: [%s]",sdf.format(viernesSanto)));
         java.util.Date lunesPascua = org.apache.commons.lang.time.DateUtils.addDays(fecha, +1);
-        LOGGER.info(sdf.format(lunesPascua));
+        logger.info(sdf.format(lunesPascua));
         diasDeFiesta.add(lunesPascua);
-        LOGGER.info(String.format("Lunes de Pascua: [%s]",sdf.format(lunesPascua)));
+        logger.info(String.format("Lunes de Pascua: [%s]",sdf.format(lunesPascua)));
         
         String result;
         switch(n)
@@ -255,14 +256,14 @@ public class CalculoFechas {
 	
 	public static void main (String[] args){
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		LOGGER.info(CalculoFechas.getEasterSundayDate(2015));
+		logger.info(CalculoFechas.getEasterSundayDate(2015));
 		for(Date date : diasDeFiesta){
-			LOGGER.info(String.format("Fiesta: [%s]",sdf.format(date)));
+			logger.info(String.format("Fiesta: [%s]",sdf.format(date)));
 		}
 		
 		java.util.Date fecha = Calendar.getInstance().getTime();
 		fecha = primerDiaHabil(fecha, false);
-		LOGGER.info(String.format("Primer día hábil: [%s]",sdf.format(fecha)));
+		logger.info(String.format("Primer día hábil: [%s]",sdf.format(fecha)));
 		
 		java.util.Date fecha13hora1430 = Calendar.getInstance().getTime();
 		fecha13hora1430 = DateUtils.setDays(fecha13hora1430, 13);
@@ -270,7 +271,7 @@ public class CalculoFechas {
 		fecha13hora1430 = DateUtils.setMinutes(fecha13hora1430, 30);
 		
 		fecha13hora1430 = primerDiaHabil(fecha13hora1430, false);
-		LOGGER.info(String.format("Primer día hábil 13/02/2015 14:30: [%s]",sdf.format(fecha13hora1430)));
+		logger.info(String.format("Primer día hábil 13/02/2015 14:30: [%s]",sdf.format(fecha13hora1430)));
 
 		java.util.Date fecha13hora1430_tipo14 = Calendar.getInstance().getTime();
 		fecha13hora1430_tipo14 = DateUtils.setDays(fecha13hora1430_tipo14, 13);
@@ -278,6 +279,6 @@ public class CalculoFechas {
 		fecha13hora1430_tipo14 = DateUtils.setMinutes(fecha13hora1430_tipo14, 30);
 		
 		fecha13hora1430_tipo14 = primerDiaHabil(fecha13hora1430_tipo14, true);
-		LOGGER.info(String.format("Primer día hábil 13/02/2015 14:30 (tipo 14): [%s]",sdf.format(fecha13hora1430_tipo14)));
+		logger.info(String.format("Primer día hábil 13/02/2015 14:30 (tipo 14): [%s]",sdf.format(fecha13hora1430_tipo14)));
 	}
 }

@@ -192,10 +192,19 @@
 												th:text="#{tram.form.field.localidad}">Localidad</span>
 											<input 
 												id="dom-soc-localidad"
-												type="text" class="form-control" 
+												type="hidden" class="form-control" 
 												th:field="${tramModDomForm.domsoc.localidad}"
 												required="required"
 												placeholder="Localidad" />
+											<select
+												id="dom-soc-localidad-opt"
+												class="form-control"
+												th:field="${tramModDomForm.domsoc.idMunicipio}"
+												required="required"
+												>
+												 <option value="-1">Selecciona municipio...</option>
+												 <option th:each="item : ${municipiosSoc}" th:value="${item.id}" th:text="${item.municipio}">Municipio</option>
+											</select>
 										</div>
 									</div>
 									<div class="form-group col-sm-4">
@@ -226,7 +235,7 @@
 								<div id="tram-mod-dom-fac" 
 									class="row form-group form-inline well well-sm">
 									<h4 th:text="#{dom.envio.factura}">Domicilio Envío de Factura</h4>
-									<div class="col-sm-12">
+									<div class="form-group col-sm-12">
 										<div class="input-group input-group-sm">
 											<span class="input-group-addon" 
 												id="input-group-addon-tram-mod-dom-fac-aa" 
@@ -239,7 +248,7 @@
 												placeholder="Persona de Contacto" />
 										</div>
 									</div>
-									<div class="col-sm-12">
+									<div class="form-group col-sm-12">
 										<div class="input-group input-group-sm">
 											<span class="input-group-addon" 
 												id="input-group-addon-tram-mod-dom-fac-direccion" 
@@ -252,7 +261,7 @@
 												placeholder="Calle, número Piso Puerta" />
 										</div>
 									</div>
-									<div class="col-sm-2">
+									<div class="form-group col-sm-2">
 										<div class="input-group input-group-sm">
 											<span class="input-group-addon" 
 												id="input-group-addon-tram-mod-dom-fac-cp" 
@@ -267,20 +276,29 @@
 												placeholder="00000" />
 										</div>
 									</div>
-									<div class="col-sm-6">
+									<div class="form-group col-sm-6">
 										<div class="input-group input-group-sm">
 											<span class="input-group-addon" 
 												id="input-group-addon-tram-mod-dom-fac-localidad" 
 												th:text="#{tram.form.field.localidad}">Localidad</span>
 											<input 
 												id="dom-fac-localidad"
-												type="text" class="form-control" 
+												type="hidden" class="form-control" 
 												th:field="${tramModDomForm.domfac.localidad}"
 												required="required"
 												placeholder="Localidad" />
+											<select
+												id="dom-fac-localidad-opt"
+												class="form-control"
+												required="required"
+												th:field="${tramModDomForm.domfac.idMunicipio}"
+												>
+												 <option value="-1">Selecciona municipio...</option>
+												 <option th:each="item : ${municipiosFac}" th:value="${item.id}" th:text="${item.municipio}">Municipio</option>
+											</select>
 										</div>
 									</div>
-									<div class="col-sm-4">
+									<div class="form-group col-sm-4">
 										<div class="input-group input-group-sm">
 											<span class="input-group-addon" 
 												id="input-group-addon-tram-mod-dom-fac-provincia" 

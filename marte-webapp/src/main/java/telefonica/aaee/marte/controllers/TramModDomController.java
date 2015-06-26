@@ -35,6 +35,7 @@ import telefonica.aaee.marte.form.TramitacionModDomForm;
 import telefonica.aaee.marte.marte.model.FacturaPagaLibroFacturacion;
 import telefonica.aaee.marte.marte.vo.DireccionEnvio;
 import telefonica.aaee.marte.model.pagination.PageWrapper;
+import telefonica.aaee.marte.mofa.dao.model.Municipio;
 import telefonica.aaee.util.Constantes;
 import eu.bitwalker.useragentutils.UserAgent;
 
@@ -116,9 +117,15 @@ public class TramModDomController extends BasicController {
 		
 		modelAndView.addObject("direcciones", direcciones.keySet());
 		
+		List<Municipio> municipiosSoc = new ArrayList<Municipio>();
+		List<Municipio> municipiosFac = new ArrayList<Municipio>();
+		
 		if(form == null){
 			form = new TramitacionModDomForm();
 			form.setIdAcuerdo(acuerdo.getIDAcuerdo());
+			
+			form.setMunicipiosSoc(municipiosSoc);
+			form.setMunicipiosFac(municipiosFac);
 		}
 		logger.info(String.format("[%s]", form.toString()));
 		modelAndView.addObject("tramModDomForm", form);
