@@ -94,21 +94,20 @@
 		<div class="container">
 			<div class="tab-content">
 				<div th:fragment="acuerdo-info">
+                    <div th:if="${sp.situacionPlanaEstado == null}" 
+                    	id="informacionBajaNoSolicitableViaMARTE" 
+                    	class="alert alert-danger col-sm-12" 
+                    	role="alert">
+                        <strong>Este acuerdo está pendiente de regularizar</strong>, 
+                        por lo que la petición de BAJA se ha de solicitar en la 
+                        WEB de REGULARIZACIÓN PLANAS.
+                    </div>
+                    <div></div>
 					<div id="acuerdo-info" class="well well-sm">
 					
-						<div class="row form-group form-inline">
-		                    <div th:if="${sp.situacionPlanaEstado == null}" 
-		                    	id="informacionBajaNoSolicitableViaMARTE" 
-		                    	class="alert alert-danger col-sm-offset-1 col-sm-10" 
-		                    	role="alert">
-		                        <strong>Este acuerdo está pendiente de regularizar</strong>, 
-		                        por lo que la petición de BAJA se ha de solicitar en la 
-		                        WEB de REGULARIZACIÓN PLANAS.
-		                    </div>
-						</div><!-- .row form-group form-inline -->
 					
-						<div class="row form-group form-inline">
-							<div class="col-sm-3">
+						<div class="row form-inline">
+							<div class="form-group col-sm-3">
 								<div class="input-group input-group-sm">
 									<span 
 										class="input-group-addon danger" 
@@ -122,7 +121,7 @@
 										placeholder="T1234567" />
 								</div>
 							</div>
-							<div class="col-sm-3">
+							<div class="form-group col-sm-3">
 								<div class="input-group input-group-sm">
 									<span 
 										class="input-group-addon primary" 
@@ -135,7 +134,7 @@
 										placeholder="Plana Empresas" />
 								</div>
 							</div>
-							<div class="col-sm-3">
+							<div class="form-group col-sm-3">
 								<div class="input-group input-group-sm">
 									<span 
 										class="input-group-addon primary" 
@@ -148,8 +147,8 @@
 										placeholder="Nuevo Negocio" />
 								</div>
 							</div>
-							<div th:if="${acuerdo.baja == true}" class="col-sm-3 has-error">
-								<div class="input-group input-group-sm">
+							<div class="form-group col-sm-3 has-error">
+								<div th:if="${acuerdo.baja == true}" class="input-group input-group-sm">
 									<span 
 										class="input-group-addon" 
 										id="input-group-addon-negocio"
@@ -162,8 +161,8 @@
 								</div>
 							</div>
 						</div><!-- .row form-group form-inline -->
-						<div class="row form-group form-inline">
-							<div class="col-sm-2">
+						<div class="row form-inline">
+							<div class="form-group col-sm-2">
 								<div class="input-group input-group-sm">
 									<span 
 										class="input-group-addon primary" 
@@ -176,7 +175,7 @@
 										placeholder="L" />
 								</div>
 							</div>
-							<div class="col-sm-3">
+							<div class="form-group col-sm-3">
 								<div class="input-group input-group-sm">
 									<span 
 										class="input-group-addon primary" 
@@ -189,7 +188,7 @@
 										placeholder="A12345678" />
 								</div>
 							</div>
-							<div class="col-sm-7">
+							<div class="form-group col-sm-7">
 								<div class="input-group input-group-sm">
 									<span 
 										class="input-group-addon primary" 
@@ -203,8 +202,8 @@
 								</div>
 							</div>
 						</div><!-- .row form-group form-inline -->
-						<div class="row form-group form-inline">
-							<div class="col-sm-4">
+						<div class="row form-inline">
+							<div class="form-group col-sm-4">
 								<div class="input-group input-group-sm">
 									<span 
 										class="input-group-addon primary" 
@@ -217,7 +216,7 @@
 										placeholder="LA12345678  012015" />
 								</div>
 							</div>
-							<div class="col-sm-4">
+							<div class="form-group col-sm-4">
 								<div class="input-group input-group-sm">
 									<span 
 										class="input-group-addon primary" 
@@ -229,7 +228,7 @@
 										placeholder="Normal/Simplificada" />
 								</div>
 							</div>
-							<div class="col-sm-4">
+							<div class="form-group col-sm-4">
 								<div class="input-group input-group-sm">
 									<span 
 										class="input-group-addon primary" 
@@ -242,8 +241,8 @@
 								</div>
 							</div>
 						</div><!-- .row form-group form-inline -->
-						<div class="row form-group form-inline">
-							<div class="col-sm-3">
+						<div class="row form-inline">
+							<div class="form-group col-sm-3">
 								<div class="input-group input-group-sm">
 									<span 
 										class="input-group-addon primary" 
@@ -256,7 +255,7 @@
 										placeholder="1234.55" />
 								</div>
 							</div>
-							<div class="col-sm-3">
+							<div class="form-group col-sm-3">
 								<div class="input-group input-group-sm">
 									<span 
 										class="input-group-addon primary" 
@@ -269,7 +268,7 @@
 										placeholder="100" />
 								</div>
 							</div>
-							<div th:if="${acuerdo.nuevoMercado == 'True'}" class="col-sm-3">
+							<div th:if="${acuerdo.nuevoMercado == 'True'}" class="form-group col-sm-3">
 								<div class="input-group input-group-sm">
 									<span 
 										class="input-group-addon primary" 
@@ -285,7 +284,7 @@
 										placeholder="12345.00" />
 								</div>
 							</div>
-							<div th:if="${acuerdo.nuevoMercado == 'True'}" class="col-sm-3">
+							<div th:if="${acuerdo.nuevoMercado == 'True'}" class="form-group col-sm-3">
 								<div class="input-group input-group-sm">
 									<span 
 										class="input-group-addon primary" 
@@ -366,6 +365,7 @@
 								    	href="#"
 								    	th:href="@{/tram/modtiposoporte/form/{id}(id=${acuerdo.IDAcuerdo})}" >
 								    		<span th:text="#{tram.option.mod.tiposoporte}">Cambio Tipo Soporte</span></a></li>
+								    <li role="separator" class="divider"></li>
 								    <li><a 
 								    	id="tram-option-mod-ccc"
 								    	href="#"
@@ -381,16 +381,28 @@
 								    	href="#"
 								    	th:href="@{/tram/modco/form/{id}(id=${acuerdo.IDAcuerdo})}" >
 								    		<span th:text="#{tram.option.mod.cco}">Cambio Cuenta Oficial</span></a></li>
+								    <li role="separator" class="divider"></li>
 								    <li><a 
 								    	id="tram-option-mod-email"
 								    	href="#"
 								    	th:href="@{/tram/modemail/form/{id}(id=${acuerdo.IDAcuerdo})}" >
 								    		<span th:text="#{tram.option.mod.email}">Cambio email</span></a></li>
+								    <li role="separator" class="divider"></li>
 								    <li><a 
 								    	id="tram-option-mod-dom"
 								    	href="#"
 								    	th:href="@{/tram/moddom/form/{id}(id=${acuerdo.IDAcuerdo})}" >
 								    		<span th:text="#{tram.option.mod.dom}">Domicilios</span></a></li>
+								    <li><a 
+								    	id="tram-option-mod-dom-soc"
+								    	href="#"
+								    	th:href="@{/tram/moddom/soc/form/{id}(id=${acuerdo.IDAcuerdo})}" >
+								    		<span th:text="#{tram.option.mod.dom.soc}">Domicilio Social</span></a></li>
+								    <li><a 
+								    	id="tram-option-mod-dom-fac"
+								    	href="#"
+								    	th:href="@{/tram/moddom/fac/form/{id}(id=${acuerdo.IDAcuerdo})}" >
+								    		<span th:text="#{tram.option.mod.dom.fac}">Domicilio Postal</span></a></li>
 								  </ul>
 								</div>
 								<!-- Otros -->

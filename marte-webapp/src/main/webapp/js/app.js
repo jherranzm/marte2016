@@ -258,17 +258,41 @@ $(function() {
 			
 			$('#dom-soc-localidad').val(domSocLocOptTxt);
 			$('#dom-fac-localidad').val(domFacLocOptTxt);
-			$('#dom-soc-localidad').val(domSocLocOptTxt);
-			$('#dom-fac-localidad').val(domFacLocOptTxt);
 			
 			console.log('Selected Municipio SOC. [' + $('#dom-soc-localidad').val() + ']');
 			console.log('Selected Municipio FAC. [' + $('#dom-fac-localidad').val() + ']');
 			var l = Ladda.create(this);
 			l.start();
 
-
-			
 			$('#tram-mod-dom-form-step-1').submit();
+		}
+	});
+	
+	$('#tram-mod-dom-soc-form-btn-save').on('click', function(event){
+		var valid = $('#tram-mod-dom-soc-form-step-1')[0].checkValidity();
+		event.preventDefault();
+		if(valid){
+			var domSocLocOptTxt = $('#dom-soc-localidad-opt  option:selected').text();
+			console.log('Selected Municipio SOC. [' + domSocLocOptTxt + ']');
+			$('#dom-soc-localidad').val(domSocLocOptTxt);
+			console.log('Selected Municipio SOC. [' + $('#dom-soc-localidad').val() + ']');
+			var l = Ladda.create(this);
+			l.start();
+			$('#tram-mod-dom-soc-form-step-1').submit();
+		}
+	});
+	
+	$('#tram-mod-dom-fac-form-btn-save').on('click', function(event){
+		var valid = $('#tram-mod-dom-fac-form-step-1')[0].checkValidity();
+		event.preventDefault();
+		if(valid){
+			var domSocLocOptTxt = $('#dom-soc-localidad-opt  option:selected').text();
+			console.log('Selected Municipio SOC. [' + domSocLocOptTxt + ']');
+			$('#dom-soc-localidad').val(domSocLocOptTxt);
+			console.log('Selected Municipio SOC. [' + $('#dom-soc-localidad').val() + ']');
+			var l = Ladda.create(this);
+			l.start();
+			$('#tram-mod-dom-fac-form-step-1').submit();
 		}
 	});
 	
@@ -284,6 +308,20 @@ $(function() {
 		var l = Ladda.create(this);
 		l.start();
 		$('#tram-mod-dom-form-step-2').submit();
+	});
+	
+	$('#tram-mod-dom-soc-form-btn-confirm').on('click', function(event){
+		event.preventDefault();
+		var l = Ladda.create(this);
+		l.start();
+		$('#tram-mod-dom-soc-form-step-2').submit();
+	});
+	
+	$('#tram-mod-dom-fac-form-btn-confirm').on('click', function(event){
+		event.preventDefault();
+		var l = Ladda.create(this);
+		l.start();
+		$('#tram-mod-dom-fac-form-step-2').submit();
 	});
 	
 	$('#ccc-valid').on('click', clickBtnCCCValidate);
@@ -344,6 +382,26 @@ $(function() {
 	$('#tram-mod-dom-form-btn-confirm').on('click', function(){
 		$('#tram-mod-dom-form-step-2').attr('action', '/marte-webapp/tram/moddom/ok');
 		$('#tram-mod-dom-form-step-2').submit();
+	});
+	
+	$('#tram-mod-dom-soc-form-btn-back').on('click', function(){
+		$('#tram-mod-dom-soc-form-step-2').attr('action', '/marte-webapp/tram/moddom/soc/form');
+		$('#tram-mod-dom-soc-form-step-2').submit();
+	});
+	
+	$('#tram-mod-dom-soc-form-btn-confirm').on('click', function(){
+		$('#tram-mod-dom-soc-form-step-2').attr('action', '/marte-webapp/tram/moddom/soc/ok');
+		$('#tram-mod-dom-soc-form-step-2').submit();
+	});
+	
+	$('#tram-mod-dom-fac-form-btn-back').on('click', function(){
+		$('#tram-mod-dom-fac-form-step-2').attr('action', '/marte-webapp/tram/moddom/fac/form');
+		$('#tram-mod-dom-fac-form-step-2').submit();
+	});
+	
+	$('#tram-mod-dom-fac-form-btn-confirm').on('click', function(){
+		$('#tram-mod-dom-fac-form-step-2').attr('action', '/marte-webapp/tram/moddom/fac/ok');
+		$('#tram-mod-dom-fac-form-step-2').submit();
 	});
 	
 	
@@ -437,6 +495,7 @@ function populateMunicipios(cp, optDest){
 	$.ajax({
 		url : '/marte-webapp/municipios/get/'+ cp,
 		success : function(data, textStatus, jqXHR){
+			$('#loadedMunicipiosSoc').html('Loading...')
 			var options = "";
 			console.log('Success SOC.');
 			optDest.children().remove();
@@ -446,6 +505,7 @@ function populateMunicipios(cp, optDest){
 				console.log(key + ' :: ' + JSON.stringify(value));
 			});
 			optDest.append(options);
+			$('#loadedMunicipiosSoc').html('Ready!')
 			
 		},
 		error : function(event){
@@ -458,6 +518,7 @@ function populateMunicipiosSelected(cp, optDest, valSelected){
 	$.ajax({
 		url : '/marte-webapp/municipios/get/'+ cp,
 		success : function(data, textStatus, jqXHR){
+			$('#loadedMunicipiosSoc').html('Loading...')
 			var options = "";
 			console.log('populateMunicipiosSelected.');
 			optDest.children().remove();
@@ -473,6 +534,7 @@ function populateMunicipiosSelected(cp, optDest, valSelected){
 					console.log(key + ' :: ' + JSON.stringify(value));
 				});
 			optDest.append(options);
+			$('#loadedMunicipiosSoc').html('Ready!')
 			
 		},
 		error : function(event){

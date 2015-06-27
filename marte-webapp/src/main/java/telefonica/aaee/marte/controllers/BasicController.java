@@ -32,6 +32,7 @@ import telefonica.aaee.marte.acuerdos.dao.service.MarteUsuarioService;
 import telefonica.aaee.marte.acuerdos.dao.service.MotivoBajaService;
 import telefonica.aaee.marte.acuerdos.dao.service.SituacionPlanaService;
 import telefonica.aaee.marte.acuerdos.dao.service.TramitacionAPIService;
+import telefonica.aaee.marte.form.DireccionVO;
 import telefonica.aaee.marte.form.TramitacionForm;
 import telefonica.aaee.marte.form.TramitacionModDomForm;
 import telefonica.aaee.marte.helpers.CalculoFechas;
@@ -148,15 +149,21 @@ public abstract class BasicController {
 	protected TramitacionForm getCorrectEncoding(TramitacionForm form){
 		
 		if(form instanceof TramitacionModDomForm){
-			((TramitacionModDomForm) form).getDomsoc().setAa(getCorrectEncoding(((TramitacionModDomForm) form).getDomsoc().getAa()));
-			((TramitacionModDomForm) form).getDomsoc().setDireccion(getCorrectEncoding(((TramitacionModDomForm) form).getDomsoc().getDireccion()));
-			((TramitacionModDomForm) form).getDomsoc().setLocalidad(getCorrectEncoding(((TramitacionModDomForm) form).getDomsoc().getLocalidad()));
-			((TramitacionModDomForm) form).getDomsoc().setProvincia(getCorrectEncoding(((TramitacionModDomForm) form).getDomsoc().getProvincia()));
+			DireccionVO domsoc = ((TramitacionModDomForm) form).getDomsoc();
+			if(domsoc != null){
+				((TramitacionModDomForm) form).getDomsoc().setAa(getCorrectEncoding(((TramitacionModDomForm) form).getDomsoc().getAa()));
+				((TramitacionModDomForm) form).getDomsoc().setDireccion(getCorrectEncoding(((TramitacionModDomForm) form).getDomsoc().getDireccion()));
+				((TramitacionModDomForm) form).getDomsoc().setLocalidad(getCorrectEncoding(((TramitacionModDomForm) form).getDomsoc().getLocalidad()));
+				((TramitacionModDomForm) form).getDomsoc().setProvincia(getCorrectEncoding(((TramitacionModDomForm) form).getDomsoc().getProvincia()));
+			}
 
-			((TramitacionModDomForm) form).getDomfac().setAa(getCorrectEncoding(((TramitacionModDomForm) form).getDomfac().getAa()));
-			((TramitacionModDomForm) form).getDomfac().setDireccion(getCorrectEncoding(((TramitacionModDomForm) form).getDomfac().getDireccion()));
-			((TramitacionModDomForm) form).getDomfac().setLocalidad(getCorrectEncoding(((TramitacionModDomForm) form).getDomfac().getLocalidad()));
-			((TramitacionModDomForm) form).getDomfac().setProvincia(getCorrectEncoding(((TramitacionModDomForm) form).getDomfac().getProvincia()));
+			DireccionVO domfac = ((TramitacionModDomForm) form).getDomfac();
+			if(domfac != null){
+				((TramitacionModDomForm) form).getDomfac().setAa(getCorrectEncoding(((TramitacionModDomForm) form).getDomfac().getAa()));
+				((TramitacionModDomForm) form).getDomfac().setDireccion(getCorrectEncoding(((TramitacionModDomForm) form).getDomfac().getDireccion()));
+				((TramitacionModDomForm) form).getDomfac().setLocalidad(getCorrectEncoding(((TramitacionModDomForm) form).getDomfac().getLocalidad()));
+				((TramitacionModDomForm) form).getDomfac().setProvincia(getCorrectEncoding(((TramitacionModDomForm) form).getDomfac().getProvincia()));
+			}
 		}
 		
 		form.setPeticionTramitacion(getCorrectEncoding(form.getPeticionTramitacion()));

@@ -205,6 +205,7 @@
 												 <option value="-1">Selecciona municipio...</option>
 												 <option th:each="item : ${municipiosSoc}" th:value="${item.id}" th:text="${item.municipio}">Municipio</option>
 											</select>
+											<div id="loadedMunicipiosSoc" hidden="hidden">No</div>
 										</div>
 									</div>
 									<div class="form-group col-sm-4">

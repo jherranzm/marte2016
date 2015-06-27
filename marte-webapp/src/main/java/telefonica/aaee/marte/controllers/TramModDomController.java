@@ -47,6 +47,12 @@ public class TramModDomController extends BasicController {
 
 	private static final String TRAM_MOD_DOM_FORM = "html/findcif/tram-mod-dom-form";
 	private static final String TRAM_MOD_DOM_CONF = "html/findcif/tram-mod-dom-conf";
+	
+	private static final String TRAM_MOD_DOM_SOC_FORM = "html/findcif/tram-mod-dom-soc-form";
+	private static final String TRAM_MOD_DOM_SOC_CONF = "html/findcif/tram-mod-dom-soc-conf";
+	
+	private static final String TRAM_MOD_DOM_FAC_FORM = "html/findcif/tram-mod-dom-fac-form";
+	private static final String TRAM_MOD_DOM_FAC_CONF = "html/findcif/tram-mod-dom-fac-conf";
 
 	protected final Log logger = LogFactory.getLog(getClass());
 	
@@ -93,6 +99,7 @@ public class TramModDomController extends BasicController {
 			@ModelAttribute TramitacionModDomForm form,
 			@PathVariable String idAcuerdo
 			) {
+		logger.info(String.format("showFormModDomAcuerdo", ""));
 		List<String> errores = new ArrayList<String>();
 		idAcuerdo = (idAcuerdo == null) ? "" : idAcuerdo;
 	
@@ -134,8 +141,7 @@ public class TramModDomController extends BasicController {
 	
 		return modelAndView; 
 	}
-
-
+	
 	@RequestMapping(value="/form", method=RequestMethod.POST)
 	public ModelAndView tramModDomAcuerdoForm(
 			@ModelAttribute TramitacionModDomForm form,
@@ -144,14 +150,22 @@ public class TramModDomController extends BasicController {
 			Authentication auth,
 			Locale locale
 			) {
+		logger.info(String.format("Button BACK Clicked! tramModDomAcuerdoForm", ""));
 		
 		ModelAndView modelAndView = new ModelAndView();
 
 		getSignature(form, request, auth);
 		
-//		form.setPeticionTramitacion(getCorrectEncoding(form.getPeticionTramitacion()));
-		
 		form = (TramitacionModDomForm) getCorrectEncoding(form);
+		
+		Page<Municipio> pageSoc = municipioService.findByCP(form.getDomsoc().getCp(), 1);
+		Page<Municipio> pageFac = municipioService.findByCP(form.getDomfac().getCp(), 1);
+		
+		List<Municipio> listaSoc = new ArrayList<Municipio>(pageSoc.getContent());
+		List<Municipio> listaFac = new ArrayList<Municipio>(pageFac.getContent());
+
+		logger.info(String.format("[%d]", listaSoc.size()));
+		logger.info(String.format("[%d]", listaFac.size()));
 		
 		Acuerdo acuerdo = acuerdoService.findById(form.getIdAcuerdo());
 		logger.info(String.format("[%s]", acuerdo.toString()));
@@ -163,10 +177,11 @@ public class TramModDomController extends BasicController {
 		modelAndView.setViewName(TRAM_MOD_DOM_FORM);
 		modelAndView.addObject("tramModDomForm", form);
 		modelAndView.addObject("acuerdo", acuerdo);
+		modelAndView.addObject("municipiosSoc", listaSoc);
+		modelAndView.addObject("municipiosFac", listaFac);
 		return modelAndView;
 	}
-
-
+	
 	@RequestMapping(value="/conf", method=RequestMethod.POST)
 	public ModelAndView tramModDomAcuerdoConf(
 			@ModelAttribute TramitacionModDomForm form,
@@ -175,7 +190,7 @@ public class TramModDomController extends BasicController {
 			Authentication auth,
 			Locale locale
 			) {
-		
+		logger.info(String.format("tramModDomAcuerdoConf", ""));
 		ModelAndView modelAndView = new ModelAndView();
 
 		getSignature(form, request, auth);
@@ -196,10 +211,235 @@ public class TramModDomController extends BasicController {
 		modelAndView.addObject("acuerdo", acuerdo);
 		return modelAndView;
 	}
-
-
+	
 	@RequestMapping(value="/ok", method=RequestMethod.POST)
-	public ModelAndView tramModDomAcuerdoConfirmada(
+		public ModelAndView tramModDomAcuerdoConfirmada(
+				@ModelAttribute TramitacionModDomForm form,
+				HttpServletRequest request,  
+				final RedirectAttributes redirectAttributes, 
+				Authentication auth,
+				Locale locale
+				) {
+			
+			UserDetails userDetails = (UserDetails) auth.getPrincipal();
+		
+			getSignature(form, request, auth);
+			
+	//		form.setPeticionTramitacion(getCorrectEncoding(form.getPeticionTramitacion()));
+			
+			form = (TramitacionModDomForm) getCorrectEncoding(form);
+			
+			TramitacionAPI tramAPI = new TramitacionAPI();
+			CodAPI codAPI = codAPIService.findById("Otros");
+			tramAPI.setCodAPI(codAPI);
+			tramAPI.setCodAPIOrig(codAPI);
+			
+			Date ahora = Calendar.getInstance().getTime();
+			tramSetFechas(tramAPI, ahora);
+			
+			Acuerdo acuerdo = acuerdoService.findById(form.getIdAcuerdo());
+			copyAcuerdoToTram(tramAPI, acuerdo);
+			
+			tramAPI.setObservaciones("");
+			tramAPI.setSoporteAnterior("");
+			tramAPI.setDireccionAnterior("");
+			tramAPI.setCcc("");
+			tramAPI.setCccAnteriror("");
+			tramAPI.setAutorizacion("");
+			tramAPI.setBajaCliente("False");
+			tramAPI.setTramitar("False");
+			tramAPI.setCargaGAE("False");
+			tramAPI.setEnvioCorreo("S");
+			
+			tramSetRdV(tramAPI, acuerdo);
+	
+			tramAPI.setEmail("");
+			tramAPI.setTipoSoporte("05");
+			
+			MotivoBaja motivoBaja = motivoBajaService.findById(99L);
+			logger.info(String.format("%s", motivoBaja.toString()));
+			tramAPI.setMotivoBajaMARTE(motivoBaja);
+			tramAPI.setMotivoBaja(motivoBaja.getIdMotivoBajaFX().shortValue());
+			
+			MarteUsuario marteUsuario = marteUsuarioService.findByUsername(userDetails.getUsername());
+			logger.info(String.format("%s", marteUsuario.toString()));
+			tramAPI.setMatPeticionario(marteUsuario);
+			
+			EstadoTramitacion estadoTramitacion = estadoTramitacionService.findById((short)0);
+			logger.info(String.format("%s", estadoTramitacion.toString()));
+			tramAPI.setMarteEstadoTramitacion(estadoTramitacion);
+			
+			tramAPI.setCambioImporteTemporal("P");
+			tramAPI.setTrabajo("AAEE"+sdf.format(ahora));
+			
+			StringBuilder datosSession = getDatosSession(request, ahora,
+					marteUsuario);
+		
+			StringBuffer sbPeticionTramitacion = new StringBuffer();
+			sbPeticionTramitacion
+				.append("Modificación de direcciones.").append(Constantes.CRLF)
+				.append("============================").append(Constantes.CRLF)
+				.append("Dirección Social del Cliente.").append(Constantes.CRLF)
+				.append("A la atención de:").append(form.getDomsoc().getAa()).append(Constantes.CRLF)
+				.append("Dirección:").append(form.getDomsoc().getDireccion()).append(Constantes.CRLF)
+				.append("Código Postal:").append(form.getDomsoc().getCp()).append(Constantes.CRLF)
+				.append("Localidad:").append(form.getDomsoc().getLocalidad()).append(Constantes.CRLF)
+				.append("Provincia:").append(form.getDomsoc().getProvincia()).append(Constantes.CRLF)
+				.append(Constantes.CRLF)
+				.append(Constantes.CRLF)
+				.append("Dirección de Envío de Facturas en Papel.").append(Constantes.CRLF)
+				.append("A la atención de:").append(form.getDomfac().getAa()).append(Constantes.CRLF)
+				.append("Dirección:").append(form.getDomfac().getDireccion()).append(Constantes.CRLF)
+				.append("Código Postal:").append(form.getDomfac().getCp()).append(Constantes.CRLF)
+				.append("Localidad:").append(form.getDomfac().getLocalidad()).append(Constantes.CRLF)
+				.append("Provincia:").append(form.getDomfac().getProvincia()).append(Constantes.CRLF)
+				.append(Constantes.CRLF)
+				.append(Constantes.CRLF);		
+			if(!"".equals(form.getPeticionTramitacion())){
+				sbPeticionTramitacion.append(form.getPeticionTramitacion());
+			}
+			
+			
+			sbPeticionTramitacion.append(datosSession);
+			tramAPI.setPeticionTramitacion(sbPeticionTramitacion.toString());
+		
+			logger.info(String.format("%s", tramAPI.toString()));
+		
+			TramitacionAPI tram = tramitacionAPIService.save(tramAPI);
+			
+			logger.info(String.format("%s", tramAPI.toString()));
+			
+			ModelAndView modelAndView = new ModelAndView();
+			modelAndView.addObject("acuerdo", acuerdo);
+			modelAndView.addObject("tramitacion", tram);
+			
+			addSituacionPlanaToMAV(modelAndView, acuerdo);
+			
+			modelAndView.setViewName(SHOW_ACUERDO_TRAM);
+			return modelAndView;
+		}
+	
+	@RequestMapping(value="/soc/form/{idAcuerdo}", method={RequestMethod.GET, RequestMethod.POST})
+	public ModelAndView showFormModDomSocAcuerdo(
+			@ModelAttribute TramitacionModDomForm form,
+			@PathVariable String idAcuerdo
+			) {
+		logger.info(String.format("showFormModDomSocAcuerdo", ""));
+		List<String> errores = new ArrayList<String>();
+		idAcuerdo = (idAcuerdo == null) ? "" : idAcuerdo;
+		
+		ModelAndView modelAndView = new ModelAndView();
+		if("".equals(idAcuerdo)){
+			errores.add("El Acuerdo viene sin informar.");
+			modelAndView.setViewName(FIND_CIF_FORM);
+			modelAndView.addObject("errores", errores);
+			return modelAndView;
+		}
+		Acuerdo acuerdo = acuerdoService.findById(idAcuerdo);
+		if(acuerdo == null){
+			errores.add("El Acuerdo NO existe en el sistema.");
+			modelAndView.setViewName(FIND_CIF_FORM);
+			modelAndView.addObject("errores", errores);
+			return modelAndView;
+		}
+		modelAndView.addObject("acuerdo", acuerdo);
+		modelAndView.setViewName(TRAM_MOD_DOM_SOC_FORM);
+		
+		getDIRPorAcuerdoConcertada(acuerdo);
+		
+		modelAndView.addObject("direcciones", direcciones.keySet());
+		
+		List<Municipio> municipiosSoc = new ArrayList<Municipio>();
+		List<Municipio> municipiosFac = new ArrayList<Municipio>();
+		
+		if(form == null){
+			form = new TramitacionModDomForm();
+			form.setIdAcuerdo(acuerdo.getIDAcuerdo());
+			
+			form.setMunicipiosSoc(municipiosSoc);
+			form.setMunicipiosFac(municipiosFac);
+		}
+		logger.info(String.format("[%s]", form.toString()));
+		modelAndView.addObject("tramModDomForm", form);
+		
+		addSituacionPlanaToMAV(modelAndView, acuerdo);
+		
+		return modelAndView; 
+	}
+
+	@RequestMapping(value="/soc/form", method=RequestMethod.POST)
+	public ModelAndView tramModDomSocAcuerdoForm(
+			@ModelAttribute TramitacionModDomForm form,
+			HttpServletRequest request,  
+			final RedirectAttributes redirectAttributes, 
+			Authentication auth,
+			Locale locale
+			) {
+		logger.info(String.format("Button BACK Clicked! tramModDomAcuerdoForm", ""));
+		
+		ModelAndView modelAndView = new ModelAndView();
+		
+		getSignature(form, request, auth);
+		
+		form = (TramitacionModDomForm) getCorrectEncoding(form);
+		
+		Page<Municipio> pageSoc = municipioService.findByCP(form.getDomsoc().getCp(), 1);
+		Page<Municipio> pageFac = municipioService.findByCP(form.getDomfac().getCp(), 1);
+		
+		List<Municipio> listaSoc = new ArrayList<Municipio>(pageSoc.getContent());
+		List<Municipio> listaFac = new ArrayList<Municipio>(pageFac.getContent());
+		
+		logger.info(String.format("[%d]", listaSoc.size()));
+		logger.info(String.format("[%d]", listaFac.size()));
+		
+		Acuerdo acuerdo = acuerdoService.findById(form.getIdAcuerdo());
+		logger.info(String.format("[%s]", acuerdo.toString()));
+		
+		getDIRPorAcuerdoConcertada(acuerdo);
+		
+		modelAndView.addObject("direcciones", direcciones.keySet());
+		
+		modelAndView.setViewName(TRAM_MOD_DOM_FORM);
+		modelAndView.addObject("tramModDomForm", form);
+		modelAndView.addObject("acuerdo", acuerdo);
+		modelAndView.addObject("municipiosSoc", listaSoc);
+		modelAndView.addObject("municipiosFac", listaFac);
+		return modelAndView;
+	}
+
+	@RequestMapping(value="/soc/conf", method=RequestMethod.POST)
+	public ModelAndView tramModDomSocAcuerdoConf(
+			@ModelAttribute TramitacionModDomForm form,
+			HttpServletRequest request,  
+			final RedirectAttributes redirectAttributes, 
+			Authentication auth,
+			Locale locale
+			) {
+		logger.info(String.format("tramModDomSocAcuerdoConf", ""));
+		ModelAndView modelAndView = new ModelAndView();
+		
+		getSignature(form, request, auth);
+		
+//		form.setPeticionTramitacion(getCorrectEncoding(form.getPeticionTramitacion()));
+		
+		form = (TramitacionModDomForm) getCorrectEncoding(form);
+		
+		Acuerdo acuerdo = acuerdoService.findById(form.getIdAcuerdo());
+		logger.info(String.format("[%s]", acuerdo.toString()));
+		
+		getDIRPorAcuerdoConcertada(acuerdo);
+		
+		modelAndView.addObject("direcciones", direcciones.keySet());
+		
+		modelAndView.setViewName(TRAM_MOD_DOM_SOC_CONF);
+		modelAndView.addObject("tramModDomForm", form);
+		modelAndView.addObject("acuerdo", acuerdo);
+		return modelAndView;
+	}
+
+
+	@RequestMapping(value="/soc/ok", method=RequestMethod.POST)
+	public ModelAndView tramModDomSocAcuerdoConfirmada(
 			@ModelAttribute TramitacionModDomForm form,
 			HttpServletRequest request,  
 			final RedirectAttributes redirectAttributes, 
@@ -208,10 +448,10 @@ public class TramModDomController extends BasicController {
 			) {
 		
 		UserDetails userDetails = (UserDetails) auth.getPrincipal();
-	
+		
 		getSignature(form, request, auth);
 		
-//		form.setPeticionTramitacion(getCorrectEncoding(form.getPeticionTramitacion()));
+		//		form.setPeticionTramitacion(getCorrectEncoding(form.getPeticionTramitacion()));
 		
 		form = (TramitacionModDomForm) getCorrectEncoding(form);
 		
@@ -238,7 +478,7 @@ public class TramModDomController extends BasicController {
 		tramAPI.setEnvioCorreo("S");
 		
 		tramSetRdV(tramAPI, acuerdo);
-
+		
 		tramAPI.setEmail("");
 		tramAPI.setTipoSoporte("05");
 		
@@ -260,27 +500,19 @@ public class TramModDomController extends BasicController {
 		
 		StringBuilder datosSession = getDatosSession(request, ahora,
 				marteUsuario);
-	
+		
 		StringBuffer sbPeticionTramitacion = new StringBuffer();
 		sbPeticionTramitacion
-			.append("Modificación de direcciones.").append(Constantes.CRLF)
-			.append("============================").append(Constantes.CRLF)
-			.append("Dirección Social del Cliente.").append(Constantes.CRLF)
-			.append("A la atención de:").append(form.getDomsoc().getAa()).append(Constantes.CRLF)
-			.append("Dirección:").append(form.getDomsoc().getDireccion()).append(Constantes.CRLF)
-			.append("Código Postal:").append(form.getDomsoc().getCp()).append(Constantes.CRLF)
-			.append("Localidad:").append(form.getDomsoc().getLocalidad()).append(Constantes.CRLF)
-			.append("Provincia:").append(form.getDomsoc().getProvincia()).append(Constantes.CRLF)
-			.append(Constantes.CRLF)
-			.append(Constantes.CRLF)
-			.append("Dirección de Envío de Facturas en Papel.").append(Constantes.CRLF)
-			.append("A la atención de:").append(form.getDomfac().getAa()).append(Constantes.CRLF)
-			.append("Dirección:").append(form.getDomfac().getDireccion()).append(Constantes.CRLF)
-			.append("Código Postal:").append(form.getDomfac().getCp()).append(Constantes.CRLF)
-			.append("Localidad:").append(form.getDomfac().getLocalidad()).append(Constantes.CRLF)
-			.append("Provincia:").append(form.getDomfac().getProvincia()).append(Constantes.CRLF)
-			.append(Constantes.CRLF)
-			.append(Constantes.CRLF);		
+		.append("Modificación de direcciones.").append(Constantes.CRLF)
+		.append("============================").append(Constantes.CRLF)
+		.append("Dirección Social del Cliente.").append(Constantes.CRLF)
+		.append("A la atención de:").append(form.getDomsoc().getAa()).append(Constantes.CRLF)
+		.append("Dirección:").append(form.getDomsoc().getDireccion()).append(Constantes.CRLF)
+		.append("Código Postal:").append(form.getDomsoc().getCp()).append(Constantes.CRLF)
+		.append("Localidad:").append(form.getDomsoc().getLocalidad()).append(Constantes.CRLF)
+		.append("Provincia:").append(form.getDomsoc().getProvincia()).append(Constantes.CRLF)
+		.append(Constantes.CRLF)
+		.append(Constantes.CRLF);		
 		if(!"".equals(form.getPeticionTramitacion())){
 			sbPeticionTramitacion.append(form.getPeticionTramitacion());
 		}
@@ -288,9 +520,9 @@ public class TramModDomController extends BasicController {
 		
 		sbPeticionTramitacion.append(datosSession);
 		tramAPI.setPeticionTramitacion(sbPeticionTramitacion.toString());
-	
+		
 		logger.info(String.format("%s", tramAPI.toString()));
-	
+		
 		TramitacionAPI tram = tramitacionAPIService.save(tramAPI);
 		
 		logger.info(String.format("%s", tramAPI.toString()));
@@ -305,7 +537,225 @@ public class TramModDomController extends BasicController {
 		return modelAndView;
 	}
 
-
+	
+	@RequestMapping(value="/fac/form/{idAcuerdo}", method={RequestMethod.GET, RequestMethod.POST})
+	public ModelAndView showFormModDomFacAcuerdo(
+			@ModelAttribute TramitacionModDomForm form,
+			@PathVariable String idAcuerdo
+			) {
+		logger.info(String.format("showFormModDomFacAcuerdo", ""));
+		List<String> errores = new ArrayList<String>();
+		idAcuerdo = (idAcuerdo == null) ? "" : idAcuerdo;
+		
+		ModelAndView modelAndView = new ModelAndView();
+		if("".equals(idAcuerdo)){
+			errores.add("El Acuerdo viene sin informar.");
+			modelAndView.setViewName(FIND_CIF_FORM);
+			modelAndView.addObject("errores", errores);
+			return modelAndView;
+		}
+		Acuerdo acuerdo = acuerdoService.findById(idAcuerdo);
+		if(acuerdo == null){
+			errores.add("El Acuerdo NO existe en el sistema.");
+			modelAndView.setViewName(FIND_CIF_FORM);
+			modelAndView.addObject("errores", errores);
+			return modelAndView;
+		}
+		modelAndView.addObject("acuerdo", acuerdo);
+		modelAndView.setViewName(TRAM_MOD_DOM_FAC_FORM);
+		
+		getDIRPorAcuerdoConcertada(acuerdo);
+		
+		modelAndView.addObject("direcciones", direcciones.keySet());
+		
+		List<Municipio> municipiosSoc = new ArrayList<Municipio>();
+		List<Municipio> municipiosFac = new ArrayList<Municipio>();
+		
+		if(form == null){
+			form = new TramitacionModDomForm();
+			form.setIdAcuerdo(acuerdo.getIDAcuerdo());
+			
+			form.setMunicipiosSoc(municipiosSoc);
+			form.setMunicipiosFac(municipiosFac);
+		}
+		logger.info(String.format("[%s]", form.toString()));
+		modelAndView.addObject("tramModDomForm", form);
+		
+		addSituacionPlanaToMAV(modelAndView, acuerdo);
+		
+		return modelAndView; 
+	}
+	
+	@RequestMapping(value="/fac/form", method=RequestMethod.POST)
+	public ModelAndView tramModDomFacAcuerdoForm(
+			@ModelAttribute TramitacionModDomForm form,
+			HttpServletRequest request,  
+			final RedirectAttributes redirectAttributes, 
+			Authentication auth,
+			Locale locale
+			) {
+		logger.info(String.format("Button BACK Clicked! tramModDomAcuerdoForm", ""));
+		
+		ModelAndView modelAndView = new ModelAndView();
+		
+		getSignature(form, request, auth);
+		
+		form = (TramitacionModDomForm) getCorrectEncoding(form);
+		
+		Page<Municipio> pageSoc = municipioService.findByCP(form.getDomsoc().getCp(), 1);
+		Page<Municipio> pageFac = municipioService.findByCP(form.getDomfac().getCp(), 1);
+		
+		List<Municipio> listaSoc = new ArrayList<Municipio>(pageSoc.getContent());
+		List<Municipio> listaFac = new ArrayList<Municipio>(pageFac.getContent());
+		
+		logger.info(String.format("[%d]", listaSoc.size()));
+		logger.info(String.format("[%d]", listaFac.size()));
+		
+		Acuerdo acuerdo = acuerdoService.findById(form.getIdAcuerdo());
+		logger.info(String.format("[%s]", acuerdo.toString()));
+		
+		getDIRPorAcuerdoConcertada(acuerdo);
+		
+		modelAndView.addObject("direcciones", direcciones.keySet());
+		
+		modelAndView.setViewName(TRAM_MOD_DOM_FAC_FORM);
+		modelAndView.addObject("tramModDomForm", form);
+		modelAndView.addObject("acuerdo", acuerdo);
+		modelAndView.addObject("municipiosSoc", listaSoc);
+		modelAndView.addObject("municipiosFac", listaFac);
+		return modelAndView;
+	}
+	
+	@RequestMapping(value="/fac/conf", method=RequestMethod.POST)
+	public ModelAndView tramModDomFacAcuerdoConf(
+			@ModelAttribute TramitacionModDomForm form,
+			HttpServletRequest request,  
+			final RedirectAttributes redirectAttributes, 
+			Authentication auth,
+			Locale locale
+			) {
+		logger.info(String.format("tramModDomFacAcuerdoConf", ""));
+		ModelAndView modelAndView = new ModelAndView();
+		
+		getSignature(form, request, auth);
+		
+//		form.setPeticionTramitacion(getCorrectEncoding(form.getPeticionTramitacion()));
+		
+		form = (TramitacionModDomForm) getCorrectEncoding(form);
+		
+		Acuerdo acuerdo = acuerdoService.findById(form.getIdAcuerdo());
+		logger.info(String.format("[%s]", acuerdo.toString()));
+		
+		getDIRPorAcuerdoConcertada(acuerdo);
+		
+		modelAndView.addObject("direcciones", direcciones.keySet());
+		
+		modelAndView.setViewName(TRAM_MOD_DOM_FAC_CONF);
+		modelAndView.addObject("tramModDomForm", form);
+		modelAndView.addObject("acuerdo", acuerdo);
+		return modelAndView;
+	}
+	
+	
+	@RequestMapping(value="/fac/ok", method=RequestMethod.POST)
+	public ModelAndView tramModDomFacAcuerdoConfirmada(
+			@ModelAttribute TramitacionModDomForm form,
+			HttpServletRequest request,  
+			final RedirectAttributes redirectAttributes, 
+			Authentication auth,
+			Locale locale
+			) {
+		
+		UserDetails userDetails = (UserDetails) auth.getPrincipal();
+		
+		getSignature(form, request, auth);
+		
+		//		form.setPeticionTramitacion(getCorrectEncoding(form.getPeticionTramitacion()));
+		
+		form = (TramitacionModDomForm) getCorrectEncoding(form);
+		
+		TramitacionAPI tramAPI = new TramitacionAPI();
+		CodAPI codAPI = codAPIService.findById("Otros");
+		tramAPI.setCodAPI(codAPI);
+		tramAPI.setCodAPIOrig(codAPI);
+		
+		Date ahora = Calendar.getInstance().getTime();
+		tramSetFechas(tramAPI, ahora);
+		
+		Acuerdo acuerdo = acuerdoService.findById(form.getIdAcuerdo());
+		copyAcuerdoToTram(tramAPI, acuerdo);
+		
+		tramAPI.setObservaciones("");
+		tramAPI.setSoporteAnterior("");
+		tramAPI.setDireccionAnterior("");
+		tramAPI.setCcc("");
+		tramAPI.setCccAnteriror("");
+		tramAPI.setAutorizacion("");
+		tramAPI.setBajaCliente("False");
+		tramAPI.setTramitar("False");
+		tramAPI.setCargaGAE("False");
+		tramAPI.setEnvioCorreo("S");
+		
+		tramSetRdV(tramAPI, acuerdo);
+		
+		tramAPI.setEmail("");
+		tramAPI.setTipoSoporte("05");
+		
+		MotivoBaja motivoBaja = motivoBajaService.findById(99L);
+		logger.info(String.format("%s", motivoBaja.toString()));
+		tramAPI.setMotivoBajaMARTE(motivoBaja);
+		tramAPI.setMotivoBaja(motivoBaja.getIdMotivoBajaFX().shortValue());
+		
+		MarteUsuario marteUsuario = marteUsuarioService.findByUsername(userDetails.getUsername());
+		logger.info(String.format("%s", marteUsuario.toString()));
+		tramAPI.setMatPeticionario(marteUsuario);
+		
+		EstadoTramitacion estadoTramitacion = estadoTramitacionService.findById((short)0);
+		logger.info(String.format("%s", estadoTramitacion.toString()));
+		tramAPI.setMarteEstadoTramitacion(estadoTramitacion);
+		
+		tramAPI.setCambioImporteTemporal("P");
+		tramAPI.setTrabajo("AAEE"+sdf.format(ahora));
+		
+		StringBuilder datosSession = getDatosSession(request, ahora,
+				marteUsuario);
+		
+		StringBuffer sbPeticionTramitacion = new StringBuffer();
+		sbPeticionTramitacion
+		.append("Modificación de direcciones.").append(Constantes.CRLF)
+		.append("============================").append(Constantes.CRLF)
+		.append("Dirección Postal del Cliente.").append(Constantes.CRLF)
+		.append("A la atención de:").append(form.getDomfac().getAa()).append(Constantes.CRLF)
+		.append("Dirección:").append(form.getDomfac().getDireccion()).append(Constantes.CRLF)
+		.append("Código Postal:").append(form.getDomfac().getCp()).append(Constantes.CRLF)
+		.append("Localidad:").append(form.getDomfac().getLocalidad()).append(Constantes.CRLF)
+		.append("Provincia:").append(form.getDomfac().getProvincia()).append(Constantes.CRLF)
+		.append(Constantes.CRLF)
+		.append(Constantes.CRLF);		
+		if(!"".equals(form.getPeticionTramitacion())){
+			sbPeticionTramitacion.append(form.getPeticionTramitacion());
+		}
+		
+		
+		sbPeticionTramitacion.append(datosSession);
+		tramAPI.setPeticionTramitacion(sbPeticionTramitacion.toString());
+		
+		logger.info(String.format("%s", tramAPI.toString()));
+		
+		TramitacionAPI tram = tramitacionAPIService.save(tramAPI);
+		
+		logger.info(String.format("%s", tramAPI.toString()));
+		
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.addObject("acuerdo", acuerdo);
+		modelAndView.addObject("tramitacion", tram);
+		
+		addSituacionPlanaToMAV(modelAndView, acuerdo);
+		
+		modelAndView.setViewName(SHOW_ACUERDO_TRAM);
+		return modelAndView;
+	}
+	
 	private void getSignature(
 			TramitacionForm form
 			, HttpServletRequest request

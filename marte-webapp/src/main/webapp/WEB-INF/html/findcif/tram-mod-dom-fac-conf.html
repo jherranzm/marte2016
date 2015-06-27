@@ -5,7 +5,7 @@
 
 	<head th:replace="html/header :: head">
 		<meta charset="UTF-8" />
-		<title th:text="#{app.name}">tram-mod-dom-conf</title>
+		<title th:text="#{app.name}">tram-mod-dom-fac-conf</title>
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		
 		
@@ -93,7 +93,7 @@
 	<div id="wrap">
 		<div class="container">
 			<div class="tab-content">
-				<div th:fragment="tram-mod-dom-conf">
+				<div th:fragment="tram-mod-dom-fac-conf">
 				
 					<div>
 						<div class="row form-group form-inline">
@@ -127,106 +127,28 @@
 					</div>
 				
 					<form 
-						id="tram-mod-dom-form-step-2" 
+						id="tram-mod-dom-fac-form-step-2" 
 						method="POST" 
 						th:object="${tramModDomForm}"
 						class="form-horizontal"
-						th:action="@{/tram/moddom/2}">
+						th:action="@{/tram/moddom/fac/2}">
 				
 				
-							<div id="tram-mod-dom-step-1" class="col-md-offset-1 col-md-10">
-			                    <div id="tram-mod-dom-aclaraciones" 
+							<div id="tram-mod-dom-fac-step-1" class="col-md-offset-1 col-md-10">
+			                    <div id="tram-mod-dom-fac-aclaraciones" 
 			                    	class="alert alert-info" role="alert">
-			                        <strong>Modificación de Direcciones</strong>, fiscal y de envío de factura.
+			                        <strong>Modificación de Dirección de Envío de Factura</strong>
 			                    </div>
 								<div id="tram-mod-dom-soc" 
 									class="row form-group form-inline well well-sm">
-									<h4 th:text="#{dom.social}">Domicilio Social</h4>
-									<div class="col-sm-12">
-										<div class="input-group input-group-sm">
-											<span class="input-group-addon" 
-												id="input-group-addon-tram-mod-dom-soc-aa" 
-												th:text="#{tram.form.field.aa}">A la atención de:</span>
-											<input 
-												id="dom-soc-aa"
-												type="text" class="form-control" 
-												th:field="${tramModDomForm.domsoc.aa}"
-												readonly="readonly"
-												placeholder="Persona de Contacto" />
-										</div>
-									</div>
-									<div class="col-sm-12">
-										<div class="input-group input-group-sm">
-											<span class="input-group-addon" 
-												id="input-group-addon-tram-mod-dom-soc-direccion" 
-												th:text="#{tram.form.field.direccion}">Dirección</span>
-											<input 
-												id="dom-soc-dir"
-												type="text" class="form-control" 
-												th:field="${tramModDomForm.domsoc.direccion}"
-												readonly="readonly"
-												placeholder="Calle, número Piso Puerta" />
-										</div>
-									</div>
-									<div class="col-sm-2">
-										<div class="input-group input-group-sm">
-											<span class="input-group-addon" 
-												id="input-group-addon-tram-mod-dom-soc-cp" 
-												th:text="#{tram.form.field.cp}">CP</span>
-											<input 
-												id="dom-soc-cp"
-												type="text" class="form-control" 
-												th:field="${tramModDomForm.domsoc.cp}"
-												size="5"
-												maxlength="5"
-												readonly="readonly"
-												placeholder="00000" />
-										</div>
-									</div>
-									<div class="col-sm-6">
-										<div class="input-group input-group-sm">
-											<span class="input-group-addon" 
-												id="input-group-addon-tram-mod-dom-soc-localidad" 
-												th:text="#{tram.form.field.localidad}">Localidad</span>
-											<input 
-												id="dom-soc-localidad"
-												type="text" class="form-control" 
-												th:field="${tramModDomForm.domsoc.localidad}"
-												readonly="readonly"
-												placeholder="Localidad" />
-											<input 
-												id="dom-soc-idmunicipio"
-												type="hidden" class="form-control" 
-												th:field="${tramModDomForm.domsoc.idMunicipio}"
-												readonly="readonly"
-												placeholder="Localidad" />
-										</div>
-									</div>
-									<div class="col-sm-4">
-										<div class="input-group input-group-sm">
-											<span class="input-group-addon" 
-												id="input-group-addon-tram-mod-dom-soc-provincia" 
-												th:text="#{tram.form.field.provincia}">Provincia</span>
-											<input 
-												id="dom-soc-provincia"
-												type="text" class="form-control" 
-												th:field="${tramModDomForm.domsoc.provincia}"
-												readonly="readonly"
-												placeholder="Provincia" />
-										</div>
-									</div>
-								</div>
-								
-								<div id="tram-mod-dom-fac" 
-									class="row form-group form-inline well well-sm">
-									<h4 th:text="#{dom.envio.factura}">Domicilio Envío de Factura</h4>
+									<h4 th:text="#{dom.envio.factura}">Domicilio Postal</h4>
 									<div class="col-sm-12">
 										<div class="input-group input-group-sm">
 											<span class="input-group-addon" 
 												id="input-group-addon-tram-mod-dom-fac-aa" 
 												th:text="#{tram.form.field.aa}">A la atención de:</span>
 											<input 
-												id="dom-fac-aa"
+												id="dom-soc-aa"
 												type="text" class="form-control" 
 												th:field="${tramModDomForm.domfac.aa}"
 												readonly="readonly"
@@ -239,7 +161,7 @@
 												id="input-group-addon-tram-mod-dom-fac-direccion" 
 												th:text="#{tram.form.field.direccion}">Dirección</span>
 											<input 
-												id="dom-fac-dir"
+												id="dom-soc-dir"
 												type="text" class="form-control" 
 												th:field="${tramModDomForm.domfac.direccion}"
 												readonly="readonly"
@@ -252,7 +174,7 @@
 												id="input-group-addon-tram-mod-dom-fac-cp" 
 												th:text="#{tram.form.field.cp}">CP</span>
 											<input 
-												id="dom-fac-cp"
+												id="dom-soc-cp"
 												type="text" class="form-control" 
 												th:field="${tramModDomForm.domfac.cp}"
 												size="5"
@@ -267,13 +189,13 @@
 												id="input-group-addon-tram-mod-dom-fac-localidad" 
 												th:text="#{tram.form.field.localidad}">Localidad</span>
 											<input 
-												id="dom-fac-localidad"
+												id="dom-soc-localidad"
 												type="text" class="form-control" 
 												th:field="${tramModDomForm.domfac.localidad}"
 												readonly="readonly"
 												placeholder="Localidad" />
 											<input 
-												id="dom-fac-idmunicipio"
+												id="dom-soc-idmunicipio"
 												type="hidden" class="form-control" 
 												th:field="${tramModDomForm.domfac.idMunicipio}"
 												readonly="readonly"
@@ -286,7 +208,7 @@
 												id="input-group-addon-tram-mod-dom-fac-provincia" 
 												th:text="#{tram.form.field.provincia}">Provincia</span>
 											<input 
-												id="dom-fac-provincia"
+												id="dom-soc-provincia"
 												type="text" class="form-control" 
 												th:field="${tramModDomForm.domfac.provincia}"
 												readonly="readonly"
@@ -295,7 +217,8 @@
 									</div>
 								</div>
 								
-								<div id="tram-mod-dom-fecha-prevista" 
+								
+								<div id="tram-mod-dom-fac-fecha-prevista" 
 									class="row form-group form-inline">
 									<div class="col-sm-6">
 										<div class="input-group input-group-sm">
@@ -311,7 +234,7 @@
 									</div>
 								</div>
 								<div 
-									id="tram-mod-dom-peticion" 			
+									id="tram-mod-dom-fac-peticion" 			
 									class="row form-group form-inline">
 									<div class="col-sm-12">
 										<h4><span th:text="#{tram.form.field.peticion}">Observaciones</span></h4>
@@ -326,7 +249,7 @@
 								</div>
 								
 								<!-- .row -->
-							</div><!-- tram-mod-dom-step-1 -->
+							</div><!-- tram-mod-dom-fac-step-1 -->
 							<!-- Spring Security -->
 							<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 							<input type="hidden" th:field="${tramModDomForm.idAcuerdo}" />
@@ -336,7 +259,7 @@
 								<div class="col-md-offset-4 col-md-4">
 									<p class="text-center">
 										<button 
-											id="tram-mod-dom-form-btn-back" 
+											id="tram-mod-dom-fac-form-btn-back" 
 											type="button" 
 											class="btn btn-warning ladda-button" 
 											data-style="expand-right" >
@@ -349,7 +272,7 @@
 											<span th:text="#{tram.form.btn.cancel}"></span>
 										</a>
 										<button 
-											id="tram-mod-dom-form-btn-confirm" 
+											id="tram-mod-dom-fac-form-btn-confirm" 
 											type="button" 
 											class="btn btn-primary ladda-button" 
 											data-style="expand-right" >
