@@ -28,7 +28,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
         basePackages = {"telefonica.aaee.marte.mofa.dao"}
         )
 @ComponentScan("telefonica.aaee.marte.mofa.dao") //Specifies which package to scan
-@PropertySource("file:/usr/local/apache-tomcat-7.0.57/conf/application.properties")
+@PropertySource("file:/usr/local/apache-tomcat-8.0.23/conf/application.properties")
 //@PropertySource("file:/usr/share/tomcat-7.0.53/conf/application.properties")
 public class JPAMofaTestConfig {
 

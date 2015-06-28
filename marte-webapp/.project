@@ -59,22 +59,22 @@
 		<link>
 			<name>application.properties</name>
 			<type>1</type>
-			<location>/usr/local/apache-tomcat-7.0.57/conf/application.properties</location>
+			<location>/usr/local/apache-tomcat-8.0.23/conf/application.properties</location>
 		</link>
 		<link>
 			<name>catalina.out</name>
 			<type>1</type>
-			<location>/usr/local/apache-tomcat-7.0.53/logs/catalina.out</location>
+			<location>/usr/local/apache-tomcat-8.0.23/logs/catalina.out - (does not exist)</location>
 		</link>
 		<link>
 			<name>settings.xml</name>
 			<type>1</type>
-			<location>/usr/local/apache-maven-3.2.1/conf/settings.xml</location>
+			<location>/usr/local/apache-maven-3.3.3/conf/settings.xml</location>
 		</link>
 		<link>
 			<name>tomcat-users.xml</name>
 			<type>1</type>
-			<location>/usr/local/apache-tomcat-7.0.53/conf/tomcat-users.xml</location>
+			<location>/usr/local/apache-tomcat-8.0.23/conf/tomcat-users.xml</location>
 		</link>
 	</linkedResources>
 </projectDescription>

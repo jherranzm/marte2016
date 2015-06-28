@@ -1,9 +1,12 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project 
+	xmlns="http://maven.apache.org/POM/4.0.0" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="
 		http://maven.apache.org/POM/4.0.0 
 		http://maven.apache.org/maven-v4_0_0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
+	<groupId>telefonica.aaee.marte</groupId>
 	<artifactId>marte-webapp</artifactId>
 	<packaging>war</packaging>
 	<name>Marte Maven Webapp</name>
@@ -11,7 +14,7 @@
 
 	<properties>
 		<url.deployment>http://localhost:8080/manager/text</url.deployment>
-		<server.deployment>Tomcat7</server.deployment>
+		<server.deployment>Tomcat8</server.deployment>
 
 		<jdk.version>1.7</jdk.version>
 		<maven.compiler.version>3.1</maven.compiler.version>
@@ -493,12 +496,5 @@
 		</repository>
 
 	</repositories>
-
-	<parent>
-		<groupId>telefonica.aaee.informes</groupId>
-		<artifactId>informes</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
-		<relativePath>../informes</relativePath>
-	</parent>
 	<version>v20140405</version>
 </project>

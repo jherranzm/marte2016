@@ -41,7 +41,7 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandl
 		, "telefonica.aaee.marte" // project:marte-webapp
 })
 @EnableWebMvc
-@PropertySource("file:${catalina.home}/conf/marte.properties")
+@PropertySource("file:${catalina.home}/conf/application.properties")
 public class Marte2016Config extends WebMvcConfigurationSupport {
 
 	protected final Log logger = LogFactory.getLog(getClass());
