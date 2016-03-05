@@ -12,26 +12,6 @@
 <tr><td rowspan="1" colspan="3">marte-webapp-mod-ccc</td></tr>
 </thead><tbody>
 <tr>
-	<td>open</td>
-	<td>/marte-webapp/</td>
-	<td></td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>id=username</td>
-	<td>130796</td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>id=password</td>
-	<td>MXP130796</td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>id=btn-save</td>
-	<td></td>
-</tr>
-<tr>
 	<td>type</td>
 	<td>id=cif</td>
 	<td>A29112869</td>
@@ -101,7 +81,6 @@
 	<td>id=form-logout-btn-submit</td>
 	<td></td>
 </tr>
-
 </tbody></table>
 </body>
 </html>
